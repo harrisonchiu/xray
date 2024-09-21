@@ -1,4 +1,4 @@
-# AI Chest X-Ray 
+# Chest Scan
 
 Developer Names: Harrison Chiu, Hamza Issa, Jared Paul, Ahmad Hamadi, Gurnoor Bal
 
