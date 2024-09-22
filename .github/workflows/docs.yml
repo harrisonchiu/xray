@@ -20,6 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Install pdflatex
-        run: sudo apt-get install -y pdflatex
+        run: sudo apt-get install -y texlive-latex-base
       - name: Build latex pdf files
         run: make -C ./docs/ all
