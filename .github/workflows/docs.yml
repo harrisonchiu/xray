@@ -19,9 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
-      - uses: dante-ev/latex-action@2021-A
+      - name: Install pdflatex
+        run: sudo apt-get install -y pdflatex
       - name: Build latex pdf files
-        run: |
-          cd docs/
-          make all
-          make clean
+        run: make -C ./docs/ all
