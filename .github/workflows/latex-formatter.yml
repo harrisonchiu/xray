@@ -23,19 +23,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 2
 
     - name: Get list of changed .tex files
       id: tex_files
       run: |
-        COMMIT_RANGE="${{ github.event.before }}...${{ github.event.after }}"
-        TEX_FILES=$(git diff --name-only $COMMIT_RANGE | grep '\.tex$' || echo '')
+        TEX_FILES=$(git diff --name-only HEAD^ | grep '\.tex$' || echo '')
         echo "files=$TEX_FILES" >> $GITHUB_OUTPUT
 
     - name: Install tex-fmt
       if: steps.tex_files.outputs.files != ''
       run: |
-        # Update package list
         sudo apt-get update
         sudo apt-get install cargo
         sudo cargo install tex-fmt
@@ -45,5 +46,5 @@ jobs:
       run: |
         for file in ${{ steps.tex_files.outputs.files }}; do
           # Run tex-fmt on each file (replace with the actual command)
-          tex-fmt "$file"
+          sudo /root/.cargo/bin/tex-fmt "$file"
         done
