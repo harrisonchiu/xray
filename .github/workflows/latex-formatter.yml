@@ -23,12 +23,12 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Get list of changed .tex files
       id: tex_files
       run: |
-        TEX_FILES=$(git show --name-only | grep '\.tex$' || echo '')
+        TEX_FILES=$(git diff --name-only HEAD^ HEAD | grep '\.tex$' || echo '')
         echo "files=$TEX_FILES" >> $GITHUB_OUTPUT
 
     - name: Install tex-fmt
