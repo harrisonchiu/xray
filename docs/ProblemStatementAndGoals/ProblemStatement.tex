@@ -23,6 +23,7 @@
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
 21 Sept 2024 & Harrison Chiu & Started basic info of doc \\
+24 Sept 2024 & Jared Paul & asdasd \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -47,44 +48,94 @@ diagnostic errors, and provide faster assessments.
 
 \subsection{Inputs and Outputs}
 
-\wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
-Use abstraction so that you can avoid details.}
+The high-level \textbf{inputs and outputs} of this problem are described as follows:\\
+\textbf{Inputs}:
+\begin{itemize}
+\item Chest X-ray images sourced from publicly available datasets (i.e. ChexPert, MIMIC) for model training and testing.
+\item Existing academic literature on AI improvements to chest x-ray analysis and results accuracy.
+\end{itemize}
+
+\noindent \textbf{Outputs}:
+\begin{itemize}
+\item Tuned convolutional neural network model that attempts to accurately classify particular chest related defects from X-rays, such as cardiac or lung disease.
+\item Research paper discussing experiment approach, novel findings and measurable success metric such as precision, and accuracy.
+\item Larger web application that enables interested researchers to experiment with our CNN model online.
+
+\end{itemize} 
 
 \subsection{Stakeholders}
 
+The various \textbf{stakeholders} of this problem and this project's proposed solution are described in detail below:
+
+\begin{itemize}
+\begin{item}
+    \textbf{Radiologists}: Healthcare professionals who will use the AI system for diagnostic assistance. 
+    These professionals will need to learn how to use the system, and learn about the practicality of the research in regards to their professional needs.
+\end{item}
+\begin{item}
+    \textbf{Biomedical Researchers}: Researchers that have an interest in the intersection of AI and Healthcare, who will benefit from new research insights and potential conducting their own research in reference to ours.
+\end{item}
+\begin{item}
+    \textbf{Patients}: Individuals whose chest X-rays will be analyzed by the system. Patients will potentially receive a more hassle free service with accurate results as a result of this research.
+\end{item}
+\begin{item}
+    \textbf{AI Researchers and Engineers}: Individuals who are actively working in the AI space who can find practicality in the Chest-X ray CNN research as it applies to their particular field of interest.
+\end{item}
+\begin{item}
+    \textbf{Hospitals and Medical Centers}: Institutions that will implement this technology for faster and more accurate diagnoses. May need to conduct legal liability assessment based on the degree of accuracy of the research results.
+\end{item}
+\end{itemize}
+
+
 \subsection{Environment}
 
-\wss{Hardware and software environment}
+The \textbf{environment} of this problem and project's proposed solution are described below:
+
+\begin{itemize}
+\begin{item}
+\textbf{Software}:  Machine learning frameworks such as TensorFlow or PyTorch for model development, and natural language processing libraries for report generation.
+\end{item}
+\begin{item}
+\textbf{Hardware}: High-performance GPUs or cloud-based systems for model training and deployment.
+\end{item}
+\end{itemize}
 
 \section{Goals}
 
 \section{Stretch Goals}
+The \textbf{stretch goals} of this project's proposed solution are described in detail below:
+
+\begin{itemize}
+\begin{item}
+    \textbf{Advanced Model Exploration}: Experiment with advanced techniques, such as fine-tuning transformer-based models for medical imaging.
+\end{item}
+\begin{item} 
+    \textbf{Dataset Augmentation}: Investigate methods for augmenting the training dataset to improve model performance on underrepresented conditions. This may include elements of transfer learning techniques, depending on the availability of relevant datasets.
+\end{item}
+\begin{item} 
+    \textbf{Free-Form Report Generation}:Extend the radiology report generation beyond structured outputs to free-form, natural language-based reporting.
+\end{item}
+\end{itemize}
 
 \section{Challenge Level and Extras}
+This project falls into the research-focused, advanced challenge level. The complexity arises from the need to thoroughly review and synthesize state-of-the-art AI techniques in medical imaging while also building an MVP that translates research findings into a functional system. The deliverables emphasize academic inquiry, but with practical application as a secondary goal.\\
 
-\wss{State your expected challenge level (advanced, general or basic).  The
-challenge can come through the required domain knowledge, the implementation or
-something else.  Usually the greater the novelty of a project the greater its
-challenge level.  You should include your rationale for the selected level.
-Approval of the level will be part of the discussion with the instructor for
-approving the project.  The challenge level, with the approval (or request) of
-the instructor, can be modified over the course of the term.}
-
-\wss{Teams may wish to include extras as either potential bonus grades, or to
-make up for a less advanced challenge level.  Potential extras include usability
-testing, code walkthroughs, user documentation, formal proof, GenderMag
-personas, Design Thinking, etc.  Normally the maximum number of extras will be
-two.  Approval of the extras will be part of the discussion with the instructor
-for approving the project.  The extras, with the approval (or request) of the
-instructor, can be modified over the course of the term.}
+\textbf{Extras}:
+\begin{itemize}
+\begin{item}
+    Research Paper Synthesis: Develop a report summarizing key findings from the literature and how they inform the product’s design.
+\end{item}
+\begin{item}
+Usability Testing (Optional): If the MVP is developed to a sufficient level, testing with radiologists may be explored.
+\end{item}
+\begin{item}
+Documentation: Create both research and user-facing documentation that outlines the methodologies used, as well as any findings on model performance.
+\end{item}
+\end{itemize}
 
 \newpage{}
 
 \section*{Appendix --- Reflection}
-
-\wss{Not required for CAS 741}
-
-\input{../Reflection.tex}
 
 \begin{enumerate}
     \item What went well while writing this deliverable? 
