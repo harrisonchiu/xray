@@ -267,21 +267,30 @@ used in a medical setting.
     vast amount of machine learning and data processing libraries. It has a lot of support for
     machine learning support.
   \item \textbf{JavaScript}: Used to create the frontend of the application. It will create the UI.
+    Chosen because it is very popular to create frontend web applications. There are many online 
+    support for creating JavaScript front end and many frameworks to help with it.
 \end{itemize}
 
 \subsection{Libraries}
 \begin{itemize}
   \item \textbf{React}: Very popular frontend UI framework for developing dynamic sites. There is
     a lot of online documentation. There are many already-made components to help us get started.
-  \item \textbf{NodeJS}: Popular JavaScript library to handle backend requests.
-  \item \textbf{Pytorch}: Popular machine learning library. Will be used to train the neural
-    network.
+  \item \textbf{NodeJS}: Popular JavaScript library to handle backend requests. Lots of support. 
+    Old framework, so it is tested and has a large online backing. It also means it is stable.
+  \item \textbf{Pytorch}: Extremely popular machine learning library. Will be used to train the 
+    neural network. Chosen because nearly all machine learning training in Python uses Pytorch. It
+    is good to stick with the convention so other people can easily understand what we are doing. 
+    Also, there is a lot of support for Pytorch.
   \item \textbf{OpenCV}: Image processing Python library. Used to cleanse training data and help
-    test the neural network to check its performance.
+    test the neural network to check its performance. Chosen because it is an extremely popular
+    image library. It is old so there is lots of documentation, huge community, and has little 
+    bugs.
 \end{itemize}
 
 \subsection{Linters and Formatters}
-All linters and formatters are checked through the CI pipeline.
+All linters and formatters are checked through the CI pipeline. All linters and formatters were
+chosen because they are very popular. As a result, it is known that they have very little bugs, 
+large community support, and the formatters stick to the global conventional style.
 \begin{itemize}
   \item \textbf{Flake8}: Ensures Python code aligns with PEP8 style guide.
   \item \textbf{Black}: Ensures Python code is formatted nicely and readable, following the PEP8
@@ -294,15 +303,19 @@ All linters and formatters are checked through the CI pipeline.
 
 \subsection{Unit Testing}
 \begin{itemize}
-  \item \textbf{Pytest}: Writes and automates tests to ensure Python code works. All created Unit tests will be kept for future regression testing.
+  \item \textbf{Pytest}: Writes and automates tests to ensure Python code works. All created Unit 
+  tests will be kept for future regression testing. Popular testing framework, so our team members
+  already know how to use it.
 \end{itemize}
 
 \subsection{Continuous Integration}
 \begin{itemize}
   \item \textbf{Github Actions}: Github Actions will provide all the tools to set up a CI pipeline.
-    It will be used to check linting and formatting.
+    It will be used to check linting and formatting. Used because it is already part of Github.
+    There is no need to create an external CI pipeline.
   \item \textbf{Branch protection}: The \verb|main| branch is protected. Make a pull request to
-    add commits to \verb|main|.
+    add commits to \verb|main|. This forces developers to create branch and enforce a linear main 
+    branch which makes reverting and history tracking easier.
 \end{itemize}
 
 \subsection{Other Software Tools}
@@ -343,10 +356,16 @@ each member to find the balance.
 seperate lines. This is so text can easily be read in viewers without word wrap.\\
 \textbf{Python:} All Python code will follow the Black code style \\
 (\url{https://black.readthedocs.io/en/stable/}) which aligns with the PEP 8 style guide but it is
-more strict. The Black formatter (in the CI pipeline) will ensure all code follows the style.
+more strict. The Black formatter (in the CI pipeline) will ensure all code follows the style. This
+style was chosen because it is strict and ensures that all parts of the code follows exactly that
+style. The style mentioned in PEP 8 is too loose and generally results in many different styles. 
+For example, it does not even standardize whether to use single quotes or double quotes for 
+strings. Black is very opinionated, so it enforces all those ambiguities in the styles.
 Python's import will also be alphabetical and organized into sections by type. The utility 
 \verb|isort| (also in the CI pipeline) will ensure compliance.\\
-\textbf{JavaScript:} All JavaScript code will follow Airbnb's JavaScript style guide\\
+\textbf{JavaScript:} All JavaScript code will follow Airbnb's JavaScript style guide. JavaScript 
+does not really have a standard style. Thus, this style was chosen because it is more specific and
+in depth than most other popular ones such as Google's.\\
 See here: \url{https://github.com/airbnb/javascript}\\
 
 
