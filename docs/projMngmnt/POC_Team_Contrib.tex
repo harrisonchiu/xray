@@ -39,12 +39,12 @@ number of team meetings held by the team.}
 \toprule
 \textbf{Student} & \textbf{Meetings}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 4\\
+Ahmad Hamadi & 4\\
+Harrison Chiu & 4\\
+Hamza Issa & 4\\
+Gurnoor Bal & 4\\
+Jared Paul & 4\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -66,12 +66,12 @@ stakeholders (potential users) that can serve a similar purpose.}
 \toprule
 \textbf{Student} & \textbf{Meetings}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 2\\
+Ahmad Hamadi & 2\\
+Harrison Chiu & 2\\
+Hamza Issa & 2\\
+Gurnoor Bal & 2\\
+Jared Paul & 2\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -91,12 +91,12 @@ lectures since the beginning of the term.}
 \toprule
 \textbf{Student} & \textbf{Lectures}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 9\\
+Ahmad Hamadi & 5\\
+Harrison Chiu & 6\\
+Hamza Issa & 5\\
+Gurnoor Bal & 6\\
+Jared Paul & 5\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -114,12 +114,12 @@ with the TA were attended over the time period of interest.}
 \toprule
 \textbf{Student} & \textbf{Lectures}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 0\\
+Ahmad Hamadi & 0\\
+Harrison Chiu & 0\\
+Hamza Issa & 0\\
+Gurnoor Bal & 0\\
+Jared Paul & 0\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -139,12 +139,12 @@ percentage of the total commits made by each team member.}
 \toprule
 \textbf{Student} & \textbf{Commits} & \textbf{Percent}\\
 \midrule
-Total & Num & 100\% \\
-Name 1 & Num & \% \\
-Name 2 & Num & \% \\
-Name 3 & Num & \% \\
-Name 4 & Num & \% \\
-Name 5 & Num & \% \\
+Total & 10 & 100\% \\
+Ahmad Hamadi & 2 & 20\% \\
+Harrison Chiu & 2 & 20\% \\
+Hamza Issa & 2 & 20\% \\
+Gurnoor Bal & 2 & 20\% \\
+Jared Paul & 2 & 20\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -166,22 +166,25 @@ issues (C only)) over the time period of interest.}
 \toprule
 \textbf{Student} & \textbf{Authored (O+C)} & \textbf{Assigned (C only)}\\
 \midrule
-Name 1 & Num & Num \\
-Name 2 & Num & Num \\
-Name 3 & Num & Num \\
-Name 4 & Num & Num \\
-Name 5 & Num & Num \\
+Ahmad Hamadi & 3 & 2 \\
+Harrison Chiu & 3 & 2 \\
+Hamza Issa & 3 & 2 \\
+Gurnoor Bal & 3 & 2 \\
+Jared Paul & 3 & 2 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.}
+Everyone had different issues assigned and closed, but in the end it came out to everyone having the same number.
 
 \section{CICD}
 
-\wss{Say how CICD will be used in your project}
+The team uses CI pipelines to check the code before being merged into the protected \verb|main| branch. 
+\verb|flake8| and \verb|isort| are the two Python linters that ensure our code style follows the PEP 8 
+style guide and is free of static errors. There is also the \verb|black| formatter to ensure all our code
+is formatted in a readable and visually appealing manner. Another CI pipeline runs for JavaScript code.
+It is composed of ESLint and Prettier to ensure that JavaScript code is formatted nicely and is free of 
+static errors.
 
-\wss{If your team has additional metrics of productivity, please feel free to
-add them to this report.}
 
 \end{document}
