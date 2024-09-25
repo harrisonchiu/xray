@@ -247,8 +247,13 @@ neural network (CNN) can correctly identify and extract the key features from
 the X-ray images. In addition to recognizing patterns in the images, it is
 also important that the model can generate clear and accurate text that 
 describes the findings in a way that medical professionals can understand.
-Since this is the core functionality of the project, it represents the biggest
-risk we need to address.
+Since this is the core functionality of the project, the inability for our
+neural network to correctly identify diseases represent our biggest risk.
+
+Our concern is that the neural network has a low accuracy (<80\%) in correctly identifying
+diseases. If our project cannot identify, then it is unreliable as a tool for radiologists, and
+thus, potentially useless. Furthermore, it could even misdiagnose with false negatives and prove 
+to be detrimental to patients.
 
 To show that this risk can be overcome, the Proof of Concept Demo will involve
 manually setting up the backend pipeline for the image analysis and report generation.
@@ -257,6 +262,23 @@ the model to show that it can correctly analyze the images and produce useful
 descriptions of the findings. The goal of the demo is to demonstrate that the system
 can accurately process chest X-rays and generate meaningful outputs that could be
 used in a medical setting.
+
+Another large risk our project faces is the possibility of insufficient testing data. Finding a 
+large amount of chest x-ray images that are labeled by radiologists' reports that are varied 
+enough to train a model can be very challenging. This could be because the datasets are not 
+open sourced or because the available datasets are too small. It directly affects our model's 
+performance. To mitigate this, our team will read research papers on chest x-rays to search for 
+datasets other than MIMIC-CXR.
+
+A large risk involving the web aspect of the project is the possibility that the neural network is
+too large and too slow to run efficiently on the backend. It may have high latency classifying the
+images which would affect its usability, especially with multiple users and requests. A very large
+model would also make it difficult to store in the backend cloud. This will negatively affect 
+continuous deployment speed and scalability. To mitigate both of this, we will scale down images,
+so they take up less space. The processing will be done in parallel with multiple images. This will
+reduce the high latency of running the model. Furthermore, the model will be partitioned into 
+distributed nodes, so parts of the model can be run in parallel and be stored separately at a 
+smaller size.
 
 \section{Expected Technology}
 
