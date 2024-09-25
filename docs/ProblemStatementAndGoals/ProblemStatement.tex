@@ -102,21 +102,34 @@ While the research aspect is the main focus, some degree of product development 
 \begin{itemize}
 \begin{item}
     \textbf{G1}: Conduct a comprehensive literature review to identify existing AI methods for chest X-ray interpretation. This includes gathering relevant research papers and datasets, understanding the techniques, and identifying gaps or opportunities for improvement. 
+    This is so we have a good understanding of what needs to be improved on in machine learning 
+    applications in chest x-rays.
 \end{item}
 \begin{item}
-    \textbf{G2}: Perform a market analysis and design study to determine which features are most valuable and practical for an AI-based chest X-ray interpretation system.
+    \textbf{G2}: Perform a market analysis and design study to determine which features are most valuable and practical for an AI-based chest X-ray interpretation system. This helps us
+    understand the direction we want our model to solve specifically.
 \end{item}
 \begin{item}
-    \textbf{G3}: Train a machine learning model (either convolutional neural network or transformer-based) to automatically detect a targeted set of clinical findings from chest X-ray images. The focus will be on optimizing the training process to handle large datasets efficiently and improve model accuracy.
+    \textbf{G3}: Train a machine learning model (either convolutional neural network or transformer-based) to automatically detect a targeted set of clinical findings from chest X-ray images. The focus will be on optimizing the training process to handle large datasets efficiently and improve model accuracy. The main goal of all of this is for our model to be
+    extremely accurate (above 80\% accuracy). It is useless as a tool if it cannot identify 
+    chest conditions correctly.
 \end{item}
 \begin{item}
-    \textbf{G4}: Develop a full-stack application that processes chest X-ray images, runs the model, and generates a list of findings.
+    \textbf{G4}: Develop a full-stack application that processes chest X-ray images, runs the model, and generates a list of findings. This provides a wrapper around the neural network,
+    so that the model can actually be used by others. Our primary stakeholders such as 
+    radiologists, do not care about the inner workers of the model's layers and do not want to 
+    create a complex script to run it. They just want to use the tool. By abstracting the usage 
+    with a simple user interface, the model can be quickly and easily used as intended.
 \end{item}
 \begin{item}
-    \textbf{G5}: Develop a method for converting the models findings into a structured radiology report. 
+    \textbf{G5}: Develop a method for converting the models findings into a structured radiology report. Our project focuses more on the research aspect of machine learning than the 
+    practical side. By creating a research paper documenting our progress and expanding on the 
+    work done by other researchers, we innovate better ways to use neural networks in chest 
+    x-rays.
 \end{item}
 \begin{item}
-    \textbf{G6}: Explore the possibility of generating free-form reports if sufficient training data is available.
+    \textbf{G6}: Explore the possibility of generating free-form reports if sufficient training data is available. Generating a full radiologists' report from our model is extremely 
+    innovative and will definitely make our project more useful to radiologists.
 \end{item}
 \end{itemize}
 
