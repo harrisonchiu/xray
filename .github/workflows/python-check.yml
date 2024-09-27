@@ -27,6 +27,6 @@ jobs:
           skip-mypy: true
           fail-on-isort: true
       - name: Python Black Formatter
-        uses: cytopia/docker-black@0.8
+        uses: jpetrucciani/black-check@master
         with:
-          path: 'src/'
+          black_flags: '--exclude ./docs/'
