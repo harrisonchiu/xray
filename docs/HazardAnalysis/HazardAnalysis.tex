@@ -3,13 +3,18 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage[margin=1.75in]{geometry}
 
 \hypersetup{
-    colorlinks=true,       % false: boxed links; true: colored links
-    linkcolor=red,          % color of internal links (change box color with linkbordercolor)
-    citecolor=green,        % color of links to bibliography
-    filecolor=magenta,      % color of file links
-    urlcolor=cyan           % color of external links
+  colorlinks=true,       % false: boxed links; true: colored links
+  linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+  citecolor=green,        % color of links to bibliography
+  filecolor=magenta,      % color of file links
+  urlcolor=cyan           % color of external links
 }
 
 \title{Hazard Analysis\\\progname}
@@ -31,92 +36,535 @@
 \pagenumbering{roman}
 
 \begin{table}[hp]
-\caption{Revision History} \label{TblRevisionHistory}
-\begin{tabularx}{\textwidth}{llX}
-\toprule
-\textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
-\midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
-\bottomrule
-\end{tabularx}
+  \caption{Revision History} \label{TblRevisionHistory}
+  \begin{tabularx}{\textwidth}{llX}
+    \toprule
+    \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
+    \midrule
+    25 October 2024 & Harrison & Section 5, 6 \\
+    25 October 2024 & Hamza & Section 6 \\
+    25 October 2024 & Jared & Section 1, 3 \\
+    25 October 2024 & Gurnoor & Section 2 \\
+    25 October 2024 & Ahmad & Section 7\\
+    \bottomrule
+  \end{tabularx}
 \end{table}
-
-~\newpage
-
-\tableofcontents
 
 ~\newpage
 
 \pagenumbering{arabic}
 
-\wss{You are free to modify this template.}
-
 \section{Introduction}
 
-\wss{You can include your definition of what a hazard is here.}
+This document outlines the potential hazards and corresponding controls for the "AI for Chest
+X-ray" project, focusing on convolutional neural networks (CNNs) to automatically detect lung and
+heart conditions. A hazard, in this context, refers to any condition, event, or malfunction that
+could compromise system accuracy, reliability, security, or patient safety. Conducting a thorough
+hazard analysis is crucial to mitigate risks, ensure legal compliance (e.g., HIPAA), and improve
+the system's safety and reliability for clinical decision support, while safeguarding patient
+data integrity and confidentiality.
+
+In developing machine learning systems for medical diagnostics, hazard analysis is essential to
+identify potential risks, whether from system failures, unintended consequences, or improper
+functionality. These risks can lead to harm, mislead users with erroneous outputs, or negatively
+impact the system’s performance. For this project, hazards encompass both software issues and
+interactions between the AI system and users, such as radiologists and medical institutions. The
+goal of this hazard analysis is to assess these risks, evaluate their potential impacts, and
+implement measures to ensure the system functions safely and effectively in a real-world medical
+environment.
 
 \section{Scope and Purpose of Hazard Analysis}
 
-\wss{You should say what \textbf{loss} could be incurred because of the
-hazards.}
+The purpose of this hazard analysis is to identify and mitigate risks associated with the "AI for
+Chest X-ray" system, particularly in clinical environments. Hazards may arise from various issues,
+including misdiagnosis (false positives/negatives), loss of data integrity, unauthorized access
+to patient records, and system downtime. The goal is to implement technical, procedural, and
+security controls that ensure the system operates safely and reliably while supporting
+radiologists in their diagnoses. This analysis covers the entire AI system's lifecycle—from data
+acquisition, image analysis, and diagnosis reporting to user interactions and system maintenance.
+
+By focusing on these areas, the hazard analysis aims to safeguard the accuracy of the diagnostic
+process, protect patient privacy, and prevent errors that could lead to misdiagnoses or delays in
+care. The potential losses associated with these hazards include not only misdiagnosis and delayed
+diagnoses but also security breaches and a loss of trust among medical professionals. Given the
+high stakes involved in medical decision-making, addressing these hazards comprehensively is
+critical to ensuring patient safety and system reliability.
 
 \section{System Boundaries and Components}
 
-\wss{Dividing the system into components will help you brainstorm the hazards.
-You shouldn't do a full design of the components, just get a feel for the major
-ones.  For projects that involve hardware, the components will typically include
-each individual piece of hardware.  If your software will have a database, or an
-important library, these are also potential components.}
+The system under analysis is designed to facilitate the detection of lung and heart conditions
+from chest X-ray images using advanced technologies. Its key components include the Machine
+Learning Model, specifically Convolutional Neural Networks (CNNs), which processes the X-rays to
+identify potential health issues. Complementing this is the Diffusion Model, which generates
+realistic chest X-ray images that enhance the training of the CNN. The Web Application serves as
+the interface for radiologists and researchers, allowing them to upload images and review the
+outputs generated by the AI.
+
+Additionally, the system relies on publicly available datasets like CheXpert and MIMIC for
+training the AI model, raising concerns about dataset accuracy and bias.
+
+In terms of functionality, the system includes:
+
+\textbf{Frontend}
+\begin{enumerate}
+  \item A web interface for user interaction and secure login authentication.
+  \item Features for image upload, retrieval, and display of diagnostic findings.
+  \item Access to diagnostic notes and reports restricted to authorized personnel.
+\end{enumerate}
+
+\textbf{Backend}
+\begin{enumerate}
+  \item An AI model endpoint for detecting anomalies in chest X-rays.
+  \item Databases that store patient records, X-ray images, and diagnostic reports.
+  \item Connections to external systems, including hospital IT infrastructure and Radiology
+    Information Systems (PACS).
+\end{enumerate}
+
+The system boundary is defined by these components and their interactions, focusing on the direct
+relationship between healthcare professionals and the AI while excluding external factors like
+hospital server management and potential network outages that are beyond our control. This
+ensures that the hazard analysis remains centered on elements that directly impact the system's
+safety, reliability, and effectiveness.
 
 \section{Critical Assumptions}
 
-\wss{These assumptions that are made about the software or system.  You should
-minimize the number of assumptions that remove potential hazards.  For instance,
-you could assume a part will never fail, but it is generally better to include
-this potential failure mode.}
+In conducting the hazard analysis for the CNN-based chest X-ray analysis system, several critical
+assumptions are made regarding the functionality, environment, and usage of the system. These
+assumptions are necessary to define the scope of potential hazards and their mitigation
+strategies. While assumptions help simplify the analysis, they also highlight areas where
+potential risks may need to be revisited as the system evolves.
+
+\begin{enumerate}
+  \item \textbf{Assumption 1: Model Performance} \\
+    It is assumed that the convolutional neural network (CNN) model will perform within the
+    expected accuracy levels (≥ 90\%) as defined by the system requirements. While the system is
+    tuned for high performance, this assumption leaves open the risk of false positives or false
+    negatives in diagnosis, which could lead to misdiagnosis if not managed properly.
+  \item \textbf{Assumption 2: Dataset Quality and Relevance} \\
+    It is assumed that the datasets used for training (CheXpert, MIMIC) are of high quality and
+    representative of real-world chest X-ray images, both in terms of diversity and annotation
+    accuracy. This implies that the data contains no significant biases or labeling errors;
+    however, if these assumptions are incorrect, the model may generate inaccurate or biased
+    results.
+  \item \textbf{Assumption 3: Web Application Stability} \\
+    The web application is assumed to operate reliably under typical internet conditions, with
+    minimal risk of downtime or interruptions. Any disruption in the service (e.g., server
+    outages, high latency) could impact user experience and limit accessibility, especially in
+    time-sensitive clinical situations.
+  \item \textbf{Assumption 4: Data Privacy and Security} \\
+    It is assumed that the system does not collect or store any personally identifiable
+    information (PII) or sensitive health data from users. This assumption is crucial for
+    minimizing privacy risks; however, failure to anonymize or secure data properly could lead to
+    breaches, exposing users to legal and ethical issues related to healthcare privacy.
+  \item \textbf{Assumption 5: User Competency} \\
+    It is assumed that the primary users (radiologists, researchers) possess adequate medical
+    knowledge to interpret the system’s outputs. The system does not explain its internal
+    decision-making processes ("black box" issue), which could lead to misinterpretation of
+    results by inexperienced users. If this assumption is invalid, there is a heightened risk of
+    incorrect diagnoses.
+  \item \textbf{Assumption 6: Integration with Hospital IT Infrastructure} \\
+    The system is assumed to integrate seamlessly with secure hospital IT infrastructure, ensuring
+    that patient data (X-rays and records) is stored and accessed securely in compliance with
+    HIPAA regulations. This integration is vital for the effective and safe operation of the AI
+    system in clinical environments.
+  \item \textbf{Assumption 7: Availability of Server Resources} \\
+    It is assumed that the server resources, both frontend and backend, will be continuously
+    available, except during planned maintenance or unexpected disruptions. Any unanticipated
+    downtime could hinder the system's functionality and impact clinical workflows.
+\end{enumerate}
 
 \section{Failure Mode and Effect Analysis}
 
-\wss{Include your FMEA table here. This is the most important part of this document.}
-\wss{The safety requirements in the table do not have to have the prefix SR.
-The most important thing is to show traceability to your SRS. You might trace to
-requirements you have already written, or you might need to add new
-requirements.}
-\wss{If no safety requirement can be devised, other mitigation strategies can be
-entered in the table, including strategies involving providing additional
-documentation, and/or test cases.}
+\newgeometry{left=0.25in,right=0.25in,top=0.25in,bottom=0.25in}
+\begin{landscape}
+  \begin{table}[hp]
+    \caption{FMEA Worksheet Part 1} \label{FMEA}
+    \centering
+    \begin{footnotesize}
+      \begin{tabular}{|p{0.8in}|p{1in}|p{1.2in}|p{1.5in}|p{0.6in}|p{0.8in}|p{0.3in}|p{2.2in}|p{0.2in}|p{0.2in}|}
+        % Header
+        \toprule
+        \textbf{Component} & \textbf{Failure Modes} & \textbf{Effects of Failure} &
+        \textbf{Causes of Failure} & \textbf{Detection} & \textbf{Controls} & \textbf{Risk} &
+        \textbf{Recommended Action} & \textbf{Req.} & \textbf{Ref.} \\
+        \bottomrule
+
+        \multirow{2}{1in}{Web Application: User Access Authentication} &
+        \multirow{2}{1in}{Fail to authenticate user} &
+        Medical professional cannot login &
+        \multirow{2}{1.5in}{Authentication error in web application} &
+        \multirow{2}{0.6in}{Manual testing} & &
+        \multirow{2}{0.3in}{Low} &
+        Allow users to have alternative methods to login and be authenticated &
+        AR1, SR2 &
+        H1.1 \\
+        \cline{3-3}\cline{8-10}
+        & &
+        Unauthorized third party attempting to login & & & & &
+        Include security safeguards to prevent unauthorized parties from logging in such as
+        passwords, or only making the web application accessible locally. &
+        SR2, SR3, AR0, AR2 &
+        H1.2 \\
+        \hline
+
+        Web Application: Loading Images from Backend &
+        Fails to load chest x-ray image &
+        Users cannot see chest x-ray images &
+        Failed to encode image or failed to send data to frontend from backend &
+        Manual testing & &
+        Low &
+        Include failsafe if backend could not send image to user. And try sending it again if
+        possible. & &
+        H2 \\
+        \hline
+
+        Web Application: Uploading Images to Backend &
+        Fails to upload chest x-ray image &
+        Backend server which runs the model cannot receive input in order to run disease
+        detection &
+        Failed to encode image or failed to send data to frontend from backend &
+        Manual testing & &
+        Low &
+        Add redundant data transfer when sending image data. Ensure network connection to backend
+        is setup correctly & &
+        H3 \\
+        \hline
+
+        \multirow{2}{1in}{Web Application: Display Findings} &
+        Fails to show diagnostic reports of an x-ray image &
+        User cannot read the diagnostic summary report of finding diseases in the images &
+        \multirow{2}{1.5in}{Failed to send results from backend or failed to parse output from the
+        model into a summary} &
+        \multirow{2}{0.6in}{Manual testing} & &
+        \multirow{2}{0.3in}{Low} &
+        Include other ways for users to read the reports generated from the model & &
+        H4.1 \\
+        \cline{2-3}\cline{8-10}
+        &
+        Shows an incorrect disease report &
+        User reads a diagnostic report unrelated to the image at hand & & & & &
+        Double check if the output of the model is correct &
+        SR0 &
+        H4.2 \\
+        \hline
+
+        \multirow{2}{1in}{Model: Disease detection in the chest x-ray image} &
+        False positive detection &
+        Healthy patient could be diagnosed; waste of treatment and healthcare time &
+        Model is too sensitive to certain patterns and shapes, causing it to detect diseases in
+        normal x-ray images &
+        \multirow{2}{0.6in}{Automated validation testing during model training} & &
+        \multirow{2}{0.3in}{High} &
+        Optimize the neural network model to minimize false positives &
+        SR0, SR1 &
+        H5.1 \\
+        \cline{2-4}\cline{8-10}
+        &
+        False negative detection &
+        Patient does not correctly diagnosed and goes untreated; could worsen its state &
+        Model is too insensitive to certain shapes and patterns, so it fails to detect disease in
+        x-ray images with the diseases & & & &
+        Optimize the neural network model to minimize false negatives &
+        SR0, SR1 &
+        H5.2 \\
+        \hline
+
+        Model: Training &
+        Model overfitting &
+        Model performs very well on training data with high accuracy but has poor accuracy on
+        validation data (unseen images). Causes inaccurate detection &
+        Overfitting due to high number of training epochs or overly complex model architecture
+        layers &
+        Validation testing after training &
+        Use early stoppage, large training dataset, and regularization &
+        High &
+        Use techniques mentioned in "Controls" column to detect and prevent overfitting &
+        SR0, SR1 &
+        H6 \\
+        \bottomrule
+      \end{tabular}
+    \end{footnotesize}
+  \end{table}
+\end{landscape}
+\restoregeometry
+
+\newgeometry{left=0.25in,right=0.25in,top=0.25in,bottom=0.25in}
+\begin{landscape}
+  \begin{table}[hp]
+    \caption{FMEA Worksheet Part 2} \label{FMEA}
+    \centering
+    \begin{footnotesize}
+      \begin{tabular}{|p{1in}|p{1in}|p{1in}|p{1.5in}|p{0.6in}|p{0.8in}|p{0.7in}|p{1.8in}|p{0.2in}|p{0.2in}|}
+        % Header
+        \toprule
+        \textbf{Component} & \textbf{Failure Modes} & \textbf{Effects of Failure} &
+        \textbf{Causes of Failure} & \textbf{Detection} & \textbf{Controls} & \textbf{Risk} &
+        \textbf{Recommended Action} & \textbf{Req.} & \textbf{Ref.} \\
+        \bottomrule
+
+        \multirow{2}{1in}{Data Security} &
+        Cyberattacks &
+        Unauthorized access database which stores patient health records &
+        Weak security controls. This can include unsecured systems and login data unencrypted &
+        \multirow{2}{0.6in}{Unauthorized access detection} &
+        Good security policies &
+        \multirow{2}{0.8in}{Risk of leaking patient health records in a data breach} &
+        Improve cybersecurity &
+        \multirow{2}{0.2in}{AR0, AR2, SR3} &
+        H7.1 \\
+        \cline{2-4}\cline{6-6}\cline{8-8}\cline{10-10}
+        &
+        Unauthorized access &
+        Patient privacy at risk and possible data leak &
+        Weak access control measures & &
+        Minimize unnecessary access with with access groups & &
+        Improve access control & &
+        H7.2 \\
+        \hline
+
+        Access data from Database &
+        Data transfer failed &
+        Failed to retrieve patient data &
+        Network communication issues &
+        Automated data transfer checks with network handshakes &
+        Redundant data transfer paths &
+        Data retrieval risk &
+        Add data transfer redundancy when sending data &
+        SR3 &
+        H8 \\
+        \hline
+
+        \multirow{2}{1in}{Backend Server} &
+        Network failure &
+        Connection to database is disrupted &
+        Network connectivity issues &
+        \multirow{2}{0.6in}{Monitoring server performance} &
+        Redundant network connections &
+        \multirow{2}{0.9in}{Operational disruption} &
+        Use network connection redundancy & &
+        H9.1 \\
+        \cline{2-4}\cline{6-6}\cline{8-8}\cline{10-10}
+        &
+        Server downtime &
+        Unable to access database or run model &
+        Server overloaded with tasks blocking new tasks & &
+        Distributed systems & &
+        Use distributed systems to ensure server is always on & &
+        H9.2 \\
+        \hline
+
+        \multirow{2}{1in}{Data Storage} &
+        Data loss &
+        Patient images and data is lost &
+        Database accidentally deleted data &
+        Regular data backups &
+        Data redundancy by storing data in multiple places at once &
+        Data loss risk &
+        Regular backup and have a robust data storage system &
+        \multirow{2}{0.2in}{SR3, AR2} &
+        H10.1 \\
+        \cline{2-8}\cline{10-10}
+        &
+        Data corruption &
+        Patient images and data is lost &
+        Database server corruption or data got corrupted during transmission to database &
+        Data integrity checks &
+        Regular data backups &
+        Data loss leak &
+        Check integrity of data in database regularly & &
+        H10.2 \\
+        \bottomrule
+      \end{tabular}
+    \end{footnotesize}
+  \end{table}
+\end{landscape}
+\restoregeometry
 
 \section{Safety and Security Requirements}
 
-\wss{Newly discovered requirements.  These should also be added to the SRS.  (A
-rationale design process how and why to fake it.)}
+\subsection{Access Requirements}
+\textbf{AR0} The x-ray images used as training data should not be made available publicly; rather,
+they must be stored on a secure database system to prevent unauthorized access.
+
+Rationale: This is to ensure that private patient data remains secure and is not accessible by
+unauthorized individuals or bad actors.
+
+Fit Criterion: Only users with appropriate authorization credentials (e.g. researchers or system
+administrators) should be able to access the training data via the secure database.
+
+\textbf{AR1} The website should be made publicly accessible to anyone, allowing users to
+experiment with the associated research findings, including generating synthetic chest X-ray
+images.
+
+Rationale: This is to allow wide dissemination and experimentation with the research findings,
+ensuring that researchers and the public can interact with the model without restrictions.
+
+Fit Criterion: Any user, without needing credentials, should be able to access the website and
+experiment with generating synthetic chest X-ray images.
+
+\subsection{Integrity Requirements}
+\textbf{AR2} The system will encrypt all chest-x ray training data within the secure database.
+
+Rational: This data should not be available to any website user
+
+Fit criterion: All data is not stored in any discernible language
+
+\subsection{Safety Requirements}
+\textbf{SR0} The system will indicate the accuracy of the generated chest X-ray image relative to
+real-world test data.
+
+Rationale: Accurate generation is crucial to ensure the validity of research results and their
+practical application in the medical field.
+
+Fit Criterion: The system will compare generated images with real test data and display a
+precision and accuracy score.
+
+\textbf{SR1} The model will routinely experiment with different training data sets and model
+parameters to ensure optimal accuracy and precision of generated results.
+
+Rationale: Continuous experimentation and optimization are needed to refine the diffusion model
+and improve the quality of generated data.
+
+Fit Criterion: Results of the experiments will show improvement in precision and accuracy over
+time, as tested with various data sets.
+
+\textbf{SR2} There will be no requirement to log in to the platform, as users are not required to
+input any personal details. The platform serves purely as an opportunity to experiment with the
+findings of the research and model.
+
+Rationale: Removing the need for authentication simplifies access and ensures that no personal
+data is collected, enhancing privacy.
+
+Fit Criterion: Users will have unrestricted access to the platform without the need for
+authentication.
+
+\textbf{SR3} Patient's data will be encrypted during data transfers.
+
+Rationale: Encryption is needed to secure and ensure the privacy of patient's health data. It also
+prevents unauthorized access.
+
+Fit Criterion: The system and database will use a secure encryption algorithm like AES.
 
 \section{Roadmap}
 
-\wss{Which safety requirements will be implemented as part of the capstone timeline?
-Which requirements will be implemented in the future?}
+Given the project's goals and requirements, our focus will be on implementing core access,
+integrity, and safety requirements. However, due to the research-oriented nature of the project
+and limited development time, we will prioritize essential functionalities initially, while some
+advanced features and security enhancements will be deferred for future phases.
+
+\textbf{To be implemented during the capstone timeline:}
+\begin{itemize}
+  \item \textbf{AR0, AR1:} Secure storage of training data and public website access, scheduled for
+    implementation after the proof-of-concept demo
+  \item \textbf{SR0, SR1:} Displaying accuracy indicators for synthetic chest X-ray images in
+    relation to real-world data, scheduled for implementation by January 2025.
+\end{itemize}
+
+\textbf{To be implemented in the future:}
+\begin{itemize}
+  \item \textbf{Algorithm Optimization:} Continuous refinement of model parameters and training
+    data to improve precision and realism of synthetic X-ray images.
+  \item \textbf{Audit Log Maintenance:} Developing a logging system to track access and
+    interactions with the secure database for research tracking purposes.
+  \item \textbf{Regular Security Audits:} Periodic reviews and vulnerability assessments to ensure
+    data integrity and model accuracy, preventing unauthorized access or misuse of training data.
+  \item \textbf{Encryption Updates:} Continuously update encryption standards and protocols to
+    align with best practices in data protection and cybersecurity, ensuring ongoing compliance and
+    security of stored data.
+\end{itemize}
 
 \newpage{}
 
 \section*{Appendix --- Reflection}
 
-\wss{Not required for CAS 741}
-
 \input{../Reflection.tex}
 
 \begin{enumerate}
-    \item What went well while writing this deliverable? 
-    \item What pain points did you experience during this deliverable, and how
+  \item What went well while writing this deliverable?
+
+    One aspect that went well was defining the safety and security requirements for the project.
+    We had already defined non functional requirements in the SRS document, which provided us with
+    a clear idea of how to execute this task and format it. Making the assumptions went smoothly
+    since we were all on the same page and had a solid understanding of what assumptions to
+    make. Our previous work on the project contributed to this clarity, making the process more
+    efficient. Team collaboration went smoothly, as we were able to brainstorm effectively and
+    divide the tasks efficiently.
+
+  \item What pain points did you experience during this deliverable, and how
     did you resolve them?
-    \item Which of your listed risks had your team thought of before this
+
+    One of the main challenges we faced was determining how to limit the system boundaries and
+    what components to include. Given the complexity of our product and its integration
+    with external systems (such as hospital IT infrastructure and datasets), it was difficult to
+    know which elements to focus on within the scope of the hazard analysis. Another complicating
+    factor is that much of our project is research-based, meaning that as we make new discoveries
+    or refine our approach, the system boundaries and components may need to be changed. This
+    uncertainty made it challenging to confidently establish a stable set of boundaries for the
+    analysis. We addressed this by keeping the analysis flexible, acknowledging that components
+    and boundaries may shift over time as we progress in our research. This way, we can revisit
+    and adjust the hazard analysis as necessary to accommodate any new directions the project may
+    take.
+
+  \item Which of your listed risks had your team thought of before this
     deliverable, and which did you think of while doing this deliverable? For
     the latter ones (ones you thought of while doing the Hazard Analysis), how
     did they come about?
-    \item Other than the risk of physical harm (some projects may not have any
+
+    \textbf{Risks Identified Before Deliverable}
+    \begin{itemize}
+      \item Failure to Authenticate User (Web Application: User Access Authentication)
+      \item Failure to Load Chest X-ray Images (Web Application: Loading Images from Backend)
+      \item Failure to Display Report of an X-ray Image (Web Application: Display)
+      \item False Positive Detection (Model: Disease Detection in Chest X-ray Image)
+      \item False Negative Detection (Model: Disease Detection in Chest X-ray Image)
+      \item Model Overfitting (Model: Training)
+      \item Cyberattacks (Data Security)
+      \item Data Transfer Failed(Access Data from Database)
+      \item Network Failure (Backend Server)
+      \item Server Downtime (Backend Server)
+      \item Data Loss (Data Storage: Data Loss)
+      \item Data Corruption
+    \end{itemize}
+
+    \textbf{Risks Identified During Deliverable}
+    \begin{itemize}
+      \item Failure to Upload Chest X-ray Image (Web Application: Uploading Images to Backend)
+
+        This risk came about during the hazard analysis, when we conducted an assessment of the 
+        data flow from the web application to the backend. This assessment was part of our process 
+        for the system boundaries and components section which provided a better understanding of 
+        our application. This led us to recognize potential failures in image uploads due to
+        connectivity issues or encoding errors. This insight emerged from systematically analyzing
+        how user interactions with the frontend could encounter issues during backend integration.
+
+      \item Unauthorized access (Data Security)
+
+        We identified this risk during the safety and security requirements section. Specifically,
+        we consider scenarios where data might be breached and accessed by unknown/unauthorized
+        members. Training data incorporates real-life patient data which should be protected, and 
+        so the risk of cyberattacks is a crucial consideration.
+
+      \item Incorrect Display of Disease Report (Web Application: Display of Findings)
+
+        As part of the hazard analysis, we looked into how diagnostic findings are presented to
+        users (User interface characteristics). We identified that incorrect parsing or
+        summarization of data could lead to inaccurate outputs on the interface. By examining each
+        layer of interaction between the backend processing and frontend display, we discovered 
+        that failures in interpreting the model's output could cause misleading reports.
+    \end{itemize}
+
+  \item Other than the risk of physical harm (some projects may not have any
     appreciable risks of this form), list at least 2 other types of risk in
     software products. Why are they important to consider?
+
+    \textbf{Security Risks:} Unauthorized access or data breaches could expose sensitive patient
+    information. Security risks are critical to consider, especially in healthcare, because they
+    can lead to legal liabilities and the patient’s to lose trust in our process.
+
+    \textbf{Reliability Risks:} Software downtime or malfunction, especially in critical
+    environments like healthcare, can delay diagnosis, leading to unsatisfied patients and
+    negative outcomes. Ensuring high system reliability is essential to maintain efficiency and
+    avoid any negative impact on patient care.
 \end{enumerate}
 
 \end{document}
