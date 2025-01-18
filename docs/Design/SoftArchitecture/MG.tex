@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{parskip}
 \hypersetup{
     colorlinks,
     citecolor=blue,
@@ -47,7 +48,12 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-17 January & 1.0 & Finished MG \\
+January 6, 2025 & 1.0 & Initial draft of the Module Guide (MG) document created.\\
+January 8, 2025 & 1.1 & Added module descriptions and dependencies. Updated section on module interactions.\\
+January 10, 2025 & 1.2 & Incorporated feedback from team review. Clarified module responsibilities and refined explanations.\\
+January 12, 2025 & 1.3 & Improved formatting and consistency with the MIS document. Adjusted terminology for clarity.\\
+January 14, 2025 & 1.4 & Revised diagrams and module relationships. Added missing assumptions and constraints.\\
+January 16, 2025 & 1.5 & Finalized the document. Ensured alignment with project requirements and other documents (MIS, SRS).\\
 \bottomrule
 \end{tabularx}
 
@@ -74,7 +80,6 @@ This section records information for easy reference.
   SRS & Software Requirements Specification\\
   \progname & Explanation of program name\\
   UC & Unlikely Change \\
-  \wss{etc.} & \wss{...}\\
   \bottomrule
 \end{tabular}\\
 
@@ -121,17 +126,17 @@ This section outlines possible changes that may impact the system. These changes
 Anticipated changes are the areas of the system that are most likely to evolve and have been designed to accommodate future adjustments. Meaning that the software maintainability is built with this potential changes in mind. These changes are encapsulated within specific modules to ensure the system’s flexibility.
 
 \begin{itemize}
-  \item AC1: Model Architecture Updates:
+  \item \textbf{AC1:} Model Architecture Updates:
   The architecture of the diffusion model may evolve as new research or improved techniques emerge. The system should support swapping or updating the model without significant rework.
-  \item AC2 Chest X-ray Dataset Expansion:
+  \item \textbf{AC2:} Chest X-ray Dataset Expansion:
   As more real-world chest X-ray datasets become available, the system should be able to integrate additional datasets for training or validation seamlessly.
-  \item AC3 Synthetic Image Resolution:
+  \item \textbf{AC3:} Synthetic Image Resolution:
   The resolution of the generated chest X-ray images may need to be increased or adjusted based on user requirements or advancements in computational resources.
-  \item AC4 Evaluation Metrics:
+  \item \textbf{AC4:} Evaluation Metrics:
   New evaluation metrics or benchmarks may be adopted to assess the quality of the generated images. The system should allow the addition of new evaluation pipelines.
-  \item AC5 Export Formats for Generated Data:
+  \item \textbf{AC5:} Export Formats for Generated Data:
   Users may require the generated chest X-rays in additional formats (e.g., DICOM, JPEG). The system should accommodate exporting in various formats.
-  \item AC6 Integration with External Tools:
+  \item \textbf{AC6:} Integration with External Tools:
   The system may need to integrate with external tools, such as machine learning pipelines, medical imaging software, or hospital IT systems, to streamline usage.
 \end{itemize}
 
@@ -140,24 +145,24 @@ Anticipated changes are the areas of the system that are most likely to evolve a
 Unlikely changes are those that would require significant rework and are considered fixed for the foreseeable future. Designing for these changes would add unnecessary complexity to the system.
 
 \begin{itemize}
-\item UC1 Core Diffusion Model Methodology:
+\item \textbf{UC1:} Core Diffusion Model Methodology:
 A fundamental shift away from the diffusion model approach is considered highly unlikely, as it forms the core of the system's design.
-\item UC2 Removal of Synthetic Data Generation:
+\item \textbf{UC2:} Removal of Synthetic Data Generation:
 Generating synthetic chest X-ray data is the primary purpose of the system. Removing this feature would negate the system’s value.
-\item UC3 Elimination of GPU/TPU Acceleration:
+\item \textbf{UC3:} Elimination of GPU/TPU Acceleration:
 Hardware acceleration (e.g., GPUs or TPUs) is critical for training and generating high-quality images efficiently. Moving to CPU-only processing is not expected.
-\item UC4 Discontinuation of Medical Imaging Focus:
+\item \textbf{UC4:} Discontinuation of Medical Imaging Focus:
 The system is tailored for medical imaging, specifically chest X-rays. A shift to a completely different domain is not anticipated.
-\item UC5 Input Data Format Changes:
+\item \textbf{UC5:} Input Data Format Changes:
 The system is designed to process standardized chest X-ray input formats (e.g., DICOM). A fundamental change in these formats is unlikely in the short term.
-\item UC6 Standalone Usage Elimination:
+\item \textbf{UC6:} Standalone Usage Elimination:
 The software is intended to be a standalone tool for generating and exporting chest X-rays. Transitioning to a fully dependent cloud-based or third-party service is not planned.
 \end{itemize}
 
 \section{Module Hierarchy} \label{SecMH}
 
 This section of the document describes the modules that make up the project and their related hierarchy. Table 1 categorizes the modules based on encapsulation, whereas Table 2 categorizes modules according to the MVC architecture. Each category can be identified as nodes in a tree, where each of the respective modules in each category are leaves of that node.
-
+\\\\
 Total Module List:
 \begin{itemize}
   \item M1: DataPreprocessing Module
@@ -173,23 +178,26 @@ Total Module List:
   \item M11: Login Module
 \end{itemize}
 
-\textbf{Table 1: Encapsulation}
 \begin{table}[H]
-  \begin{tabular}{lllll}
-  \multicolumn{1}{c}{\textbf{Node}} & \multicolumn{1}{c}{\textbf{Leaf}} &  &  &  \\
-  \textbf{Hardware Encapsulation} & HardwareAcceleration &  &  &  \\
-  \textbf{Behavior Encapsulation} & DataPreprocessing, SyntheticImageGen, DatasetHandler, EvaluationMetrics, LoggingAndMonitoring, Login &  &  &  \\
-  \textbf{Software Decision Encapsulation} & DiffusionModel, ImageExport, UserInterface, IntegrationModule &  &  & 
+  \caption{Encapsulation}
+  \begin{tabular}{l|p{9cm}}
+  \textbf{Node} & \textbf{Leaf} \\
+  \hline
+  \textbf{Hardware Encapsulation} & HardwareAcceleration  \\
+  \textbf{Behavior Encapsulation} & DataPreprocessing, SyntheticImageGen, \newline DatasetHandler, EvaluationMetrics, \newline LoggingAndMonitoring, Login  \\
+  \textbf{Software Decision Encapsulation} & DiffusionModel, ImageExport, UserInterface, \newline IntegrationModule
   \end{tabular}
 \end{table}
 
-\textbf{Table 2: Model-View Controller}
+
 \begin{table}[H]
-  \begin{tabular}{lllll}
-  \multicolumn{1}{c}{\textbf{Node}} & \multicolumn{1}{c}{\textbf{Leaf}} &  &  &  \\
-  \textbf{Model Module} & DataPreprocessing, DatasetHandler, SyntheticImageGen, EvaluationMetrics, UserAuthMgmt &  &  &  \\
-  \textbf{View Module} & UserInterface, Login &  &  &  \\
-  \textbf{Controller Module} & DiffusionModel, ImageExport, IntegrationModule, LoggingAndMonitoring &  &  & 
+  \caption{Model-View-Controller}
+  \begin{tabular}{l|p{9cm}}
+  \textbf{Node} & \textbf{Leaf} \\
+  \hline
+  \textbf{Model Module} & DataPreprocessing, DatasetHandler, \newline SyntheticImageGen, EvaluationMetrics, \newline UserAuthMgmt \\
+  \textbf{View Module} & UserInterface, Login \\
+  \textbf{Controller Module} & DiffusionModel, ImageExport, IntegrationModule, LoggingAndMonitoring
   \end{tabular}
 \end{table}
 
@@ -204,15 +212,13 @@ Each module encapsulates a specific "secret," or design decision, which represen
 
 This modular approach allows for clear boundaries between components, ensuring that the overall system remains flexible and scalable. The following subsections detail each module's secrets, services, and implementation specifics.
 
-\subsection{Hardware Hiding Modules (\mref{mHH})}
+\subsection{Hardware Hiding Modules}
 
 Secrets: The data structure and algorithm used to implement virtual hardware acceleration for GPU/TPU computation.
 
 Services: Provides an interface to GPU/TPU hardware for high-performance training and image generation.
 
 Implemented By: OS
-
-
 
 \subsubsection{HardwareAcceleration Module (M9)}
 Secrets: The algorithms and optimizations used for efficient communication with GPU/TPU hardware.
@@ -264,7 +270,7 @@ Secrets: Metrics and evaluation techniques tailored to assess the quality of syn
 
 Services: Computes quantitative evaluations, including accuracy, recall, and F1 scores, to monitor and validate the system’s effectiveness.
 
-Implemented By: evaluation.py
+Implemented By: \verb|evaluation.py|
 
 \subsubsection{LoggingAndMonitoring Module (M10)}
 Secrets: Internal mechanisms for tracking system performance, error handling, and usage patterns.
@@ -320,16 +326,17 @@ The Traceability Matrix provides a mapping between the software requirements, an
 \subsection{Traceability Between Requirements and Modules}
 The table below maps the functional requirements (FR) from the Software Requirements Specification (SRS) to the corresponding modules responsible for their implementation:
 \begin{table}[H]
-  \begin{tabular}{lllll}
-  \multicolumn{1}{c}{\textbf{Requirement ID}} & \multicolumn{1}{c}{\textbf{Modules}} &  &  &  \\
-  FR1 & M1 (DataPreprocessing), M4 (DatasetHandler) &  &  &  \\
-  FR2 & M2 (DiffusionModel), M3 (SyntheticImageGen) &  &  &  \\
-  FR3 & M3 (SyntheticImageGen), M5 (EvaluationMetrics) &  &  &  \\
-  FR4 & M6 (ImageExport), M5 (EvaluationMetrics) &  &  &  \\
-  FR5 & M7 (UserInterface), M6 (ImageExport) &  &  &  \\
-  FR6 & M7 (UserInterface), M8 (IntegrationModule) &  &  &  \\
-  FR7 & M4 (DatasetHandler), M10 (LoggingAndMonitoring) &  &  &  \\
-  FR8 & M11(Login) &  &  & 
+  \begin{tabular}{l|l}
+  \textbf{Requirement ID} & \textbf{Modules} \\
+  \hline
+  FR1 & M1 (DataPreprocessing), M4 (DatasetHandler) \\
+  FR2 & M2 (DiffusionModel), M3 (SyntheticImageGen) \\
+  FR3 & M3 (SyntheticImageGen), M5 (EvaluationMetrics) \\
+  FR4 & M6 (ImageExport), M5 (EvaluationMetrics) \\
+  FR5 & M7 (UserInterface), M6 (ImageExport) \\
+  FR6 & M7 (UserInterface), M8 (IntegrationModule) \\
+  FR7 & M4 (DatasetHandler), M10 (LoggingAndMonitoring) \\
+  FR8 & M11(Login)
   \end{tabular}
 \end{table}
 
@@ -337,19 +344,17 @@ The table below maps the functional requirements (FR) from the Software Requirem
 The table below identifies how anticipated changes (AC) outlined in the SRS and design document are addressed by specific modules, ensuring that the design is resilient to future updates:
 
 \begin{table}[H]
-  \begin{tabular}{lllll}
-  \multicolumn{1}{c}{\textbf{Anticipated Change ID}} & \multicolumn{1}{c}{\textbf{Modules}} &  &  &  \\
-  AC1 & M2 (DiffusionModel), M9 (HardwareAcceleration) &  &  &  \\
-  AC2 & M1 (DataPreprocessing), M4 (DatasetHandler) &  &  &  \\
-  AC3 & M3 (SyntheticImageGen), M6 (ImageExport) &  &  &  \\
-  AC4 & M5 (EvaluationMetrics), M10 (LoggingAndMonitoring) &  &  &  \\
-  AC5 & M6 (ImageExport), M8 (IntegrationModule), M11(Login) &  &  &  \\
-  AC6 & M8 (IntegrationModule), M7 (UserInterface), M11(Login) &  &  &  \\
-   &  &  &  &  \\
-   &  &  &  & 
+  \begin{tabular}{l|l}
+  \textbf{Anticipated Change ID} & \textbf{Modules} \\
+  \hline
+  AC1 & M2 (DiffusionModel), M9 (HardwareAcceleration) \\
+  AC2 & M1 (DataPreprocessing), M4 (DatasetHandler) \\
+  AC3 & M3 (SyntheticImageGen), M6 (ImageExport) \\
+  AC4 & M5 (EvaluationMetrics), M10 (LoggingAndMonitoring) \\
+  AC5 & M6 (ImageExport), M8 (IntegrationModule), M11(Login) \\
+  AC6 & M8 (IntegrationModule), M7 (UserInterface), M11(Login)
   \end{tabular}
-  \end{table}
-
+\end{table}
 
 
 \subsubsection{Mapping Requirements to Modules}
@@ -363,6 +368,7 @@ Each functional requirement is addressed by one or more modules:
 \item FR6: Facilitated by UserInterface and IntegrationModule to ensure accessibility and interaction with external tools.
 \item FR7: Supported by DatasetHandler and LoggingAndMonitoring modules for secure data management.
 \end{itemize}
+
 \subsubsection{Mapping Anticipated Changes to Modules}
 Anticipated changes are encapsulated in specific modules:
 \begin{itemize}
@@ -376,8 +382,6 @@ Anticipated changes are encapsulated in specific modules:
 
 This traceability matrix ensures all requirements and anticipated changes are accounted for, aligning with the modular architecture specified in the design document.
 
-
-
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
 The Use Hierarchy illustrates the dependency relationships between modules, following a top-down structure aligned with the Model-View-Controller (MVC) architecture. The modules are organized by their roles within the system, with each level of the hierarchy representing a distinct layer of responsibility.
@@ -386,36 +390,39 @@ The Use Hierarchy illustrates the dependency relationships between modules, foll
 Model modules encapsulate the data and business logic of the system, providing core functionalities.
 
 \begin{table}[H]
-  \begin{tabular}{lllll}
+  \begin{tabular}{l|l}
   \textbf{Module} & \textbf{Uses} \\
+  \hline
   M1 (DataPreprocessing) & M4 (DatasetHandler)  \\
   M4 (DatasetHandler) & M3 (SyntheticImageGen), M5 (EvaluationMetrics) \\
   M3 (SyntheticImageGen) & M2 (DiffusionModel)  \\
   M5 (EvaluationMetrics) & M3 (SyntheticImageGen) 
   \end{tabular}
-  \end{table}
+\end{table}
 
 \subsection{View Modules}
 View modules are responsible for presenting information to the user and handling user interactions.
 
 \begin{table}[H]
-  \begin{tabular}{lll}
-  \textbf{Module} & \textbf{Uses} &  \\
-  M7 (UserInterface) & M6 (ImageExport) &  \\
-  M11(Login) & M7(UserInterface) & 
+  \begin{tabular}{l|l}
+  \textbf{Module} & \textbf{Uses} \\
+  \hline
+  M7 (UserInterface) & M6 (ImageExport) \\
+  M11(Login) & M7(UserInterface)
   \end{tabular}
-  \end{table}
+\end{table}
 
 \subsection{Controller Modules}
 Controller modules manage the flow of data between the model and view layers and coordinate system behavior.
 
 \begin{table}[H]
-  \begin{tabular}{lll}
-  \textbf{Module} & \textbf{Uses} &  \\
-  M2 (DiffusionModel) & M9 (HardwareAcceleration) &  \\
-  M6 (ImageExport) & M2 (DiffusionModel) &  \\
-  M8 (IntegrationModule) & M7 (UserInterface), M6 (ImageExport) &  \\
-  M10 (LoggingAndMonitoring) & All other modules & 
+  \begin{tabular}{l|l}
+  \textbf{Module} & \textbf{Uses} \\
+  \hline
+  M2 (DiffusionModel) & M9 (HardwareAcceleration) \\
+  M6 (ImageExport) & M2 (DiffusionModel) \\
+  M8 (IntegrationModule) & M7 (UserInterface), M6 (ImageExport) \\
+  M10 (LoggingAndMonitoring) & All other modules
   \end{tabular}
 \end{table}
 
@@ -428,7 +435,9 @@ Controller modules manage the flow of data between the model and view layers and
 \end{itemize}
 
 This hierarchy ensures a clear separation of concerns, making the system easier to maintain, test, and extend.
-\includegraphics[width=10cm]{image}
+\begin{center}
+\includegraphics[width=\textwidth]{module_use_hierarchy}
+\end{center}
 
 The Directed Acyclic Graph (DAG) above visualizes the Use Hierarchy Between Modules based on the Model-View-Controller architecture and the provided module dependencies. Each node represents a module, and edges indicate usage relationships. Colors distinguish categories:
 \begin{itemize}
@@ -438,15 +447,44 @@ The Directed Acyclic Graph (DAG) above visualizes the Use Hierarchy Between Modu
 \item Pink: Hardware modules
 \end{itemize}
 
-
-
 \section{User Interfaces}
-Figma design prototype:
-\verb|https://www.figma.com/proto/O31J64KIWA8uFswM7JgFy4/Capstone-Design?node-id=0-1&t=JrT3K3FziVB66kCh-1|
+Figma prototype includes login page, main page to prompt a generated image, a gallery page of the generated images, and a page to more clearly view the image and download it.
+
+Figma design prototype:\\
+\url{https://www.figma.com/proto/O31J64KIWA8uFswM7JgFy4/Capstone-Design?node-id=0-1&t=JrT3K3FziVB66kCh-1}
 
 
 \section{Timeline}
-\includegraphics[width=10cm]{table}
+\begin{table}[h]
+  \caption{Schedule of Tasks and Responsibilities}
+  \label{tab:tasks}
+  \centering
+  \begin{tabularx}{\textwidth}{|X|X|}
+    \hline
+    \textbf{Task} & \textbf{Responsible Team Member(s)} \\ 
+    \hline
+    Define system architecture and module design (MG and MIS) & Entire Team \\ 
+    \hline
+    Implement and train the diffusion model for image generation, including in-painting capabilities & Harrison, Hamza, Jared \\ 
+    \hline
+    Develop data preprocessing pipeline & Jared, Ahmad \\ 
+    \hline
+    Design and implement model evaluation using quantitative metrics & Ahmad, Gurnoor, Harrison \\ 
+    \hline
+    Develop and integrate bounding box detection for guiding synthetic image generation & Harrison, Jared \\ 
+    \hline
+    Develop and integrate the user interface & Hamza \\ 
+    \hline
+    Manage data storage, retrieval, and external system integration (DICOM compatibility, API connections) & Ahmad, Gurnoor \\ 
+    \hline
+    Conduct testing, debugging, and performance optimization for diffusion model, in-painting accuracy, and bounding box detection & Ahmad, Jared \\ 
+    \hline
+    Maintain documentation, version control, and deployment processes & Everyone \\ 
+    \hline
+  \end{tabularx}
+\end{table}
+
+
 
 \newpage{}
 
