@@ -24,7 +24,7 @@ Demo.  The time period of interest is the time between the POC demo and the Rev
 
 \section{Demo Plans}
 
-\wss{What will you be demonstrating}
+We will be demoing a full stack machine learning website designed to predict labels for chest x-ray images. The system uses a convolutional neural network model that processes input images and outputs one or more of 16 possible classifications. The React-based front end allows users to upload chest x-ray images, while the backend handles model inference and returns the predicted labels. The demo will showcase the functionality of both the website and the model, followed by a discussion of the challenges we encountered, including model accuracy, data processing, and training time. We will conclude with our planned improvements in model architecture, system performance, user interface, and result verification.
 
 \section{Team Meeting Attendance}
 
@@ -39,17 +39,17 @@ number of team meetings held by the team.}
 \toprule
 \textbf{Student} & \textbf{Meetings}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 9\\
+Hamza Issa & 7\\
+Gurnoor Bal & 9\\
+Ahmad Hamadi & 9\\
+Jared Paul & 8\\
+Harrison Chiu & 6\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.}
+Some meetings only involved working on specific parts of the project which are assigned to team members. So, not all meetings are necessary.
 
 \section{Supervisor/Stakeholder Meeting Attendance}
 
@@ -66,17 +66,15 @@ stakeholders (potential users) that can serve a similar purpose.}
 \toprule
 \textbf{Student} & \textbf{Meetings}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 2\\
+Hamza Issa & 2\\
+Gurnoor Bal & 2\\
+Ahmad Hamadi & 2\\
+Jared Paul & 2\\
+Harrison Chiu & 2\\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\wss{If needed, an explanation for the counts can be provided here.}
 
 \section{Lecture Attendance}
 
@@ -91,17 +89,15 @@ lectures since the beginning of the term.}
 \toprule
 \textbf{Student} & \textbf{Lectures}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 8\\
+Hamza Issa & 7\\
+Gurnoor Bal & 7\\
+Ahmad Hamadi & 8\\
+Jared Paul & 8\\
+Harrison Chiu & 7\\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\wss{If needed, an explanation for the lecture attendance can be provided here.}
 
 \section{TA Document Discussion Attendance}
 
@@ -114,17 +110,15 @@ with the TA were attended over the time period of interest.}
 \toprule
 \textbf{Student} & \textbf{Lectures}\\
 \midrule
-Total & Num\\
-Name 1 & Num\\
-Name 2 & Num\\
-Name 3 & Num\\
-Name 4 & Num\\
-Name 5 & Num\\
+Total & 2\\
+Hamza Issa & 2\\
+Gurnoor Bal & 2\\
+Ahmad Hamadi & 2\\
+Jared Paul & 2\\
+Harrison Chiu & 2\\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\wss{If needed, an explanation for the attendance can be provided here.}
 
 \section{Commits}
 
@@ -139,20 +133,19 @@ percentage of the total commits made by each team member.}
 \toprule
 \textbf{Student} & \textbf{Commits} & \textbf{Percent}\\
 \midrule
-Total & Num & 100\% \\
-Name 1 & Num & \% \\
-Name 2 & Num & \% \\
-Name 3 & Num & \% \\
-Name 4 & Num & \% \\
-Name 5 & Num & \% \\
+Total & 7 & 100\% \\
+Hamza Issa & 5 & 71\%\\
+Gurnoor Bal & 6 & 86\%\\
+Ahmad Hamadi & 6 & 86\%\\
+Jared Paul & 6 & 86\%\\
+Harrison Chiu & 6 & 86\%\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.  For
-instance, if a team member has more commits to unmerged branches, these numbers
-can be provided here.  If multiple people contribute to a commit, git allows for
-multi-author commits.}
+Most of the commits were authored by multiple people. Looking at the commits for contributions is misleading because some of the commits are very large while some are very small. For some of the commits for MG and MIS, we forgot to add co-authors, so it looks like only 1 person contributed, but everyone worked on it on a separate Google Docs. We counted commit contributions as if we had added those co-authors.
+
+All of the backend and frontend work, mostly by Hamza has not yet been commited. Furthermore, there are 2 commits (Add Hazard Analysis doc and Finish VnVPlan document) which were authored from before the time period of interest. They were recently added because of some issues with merging into main branch and the commits were deleted. Those commits were cherrypicked and added back. These commits were not counted.
 
 \section{Issue Tracker}
 
@@ -166,22 +159,21 @@ issues (C only)) over the time period of interest.}
 \toprule
 \textbf{Student} & \textbf{Authored (O+C)} & \textbf{Assigned (C only)}\\
 \midrule
-Name 1 & Num & Num \\
-Name 2 & Num & Num \\
-Name 3 & Num & Num \\
-Name 4 & Num & Num \\
-Name 5 & Num & Num \\
+Hamza Issa & 3 & 3\\
+Gurnoor Bal & 3 & 3\\
+Ahmad Hamadi & 3 & 3\\
+Jared Paul & 2 & 2\\
+Harrison Chiu & 3 & 3\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.}
+All assigned issues are closed.
 
 \section{CICD}
 
-\wss{Say how CICD is used in your project}
+For now, our main work involves Python. We use it to preprocess our training data and to train our model. Our CI involves a Github Action check on Python code that checks for linting and checks if it is formatted in Black style. Black is a formatting standard in which our team agreed to use. It is a command line tool formatter that should be ran before commiting any Python code. 
 
-\wss{If your team has additional metrics of productivity, please feel free to
-add them to this report.}
+We have not yet committed any web development code (JavaScript). This is because we are still in the process of organizing the frontend and backend components. The integration is a bit more complex than expected, and we want to ensure everything is structured properly before pushing to the repo. This will help avoid confusion later and make the codebase easier to maintain. As a result, CI for JavaScript is not yet set up.
 
 \end{document}
