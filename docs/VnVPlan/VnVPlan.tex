@@ -105,6 +105,8 @@ This document outlines the verification and validation (VnV) plan for the projec
 It lists the VnV team members and describes the process for verifying the SRS, design, VnV plan, and implementation, including the automated testing tools used. The VnV roadmap starts with verifying the SRS, followed by the design, VnV plan, and implementation. After these steps, the software will undergo validation, with milestones achieved through automated tools and guidance from the project supervisor. It also shows the tests done (system and unit tests) to each major module to verify its functionality and output.
 
 \section{General Information}
+\textbf{Current Content:} Describes verification and validation approach for AI-assisted chest X-ray diagnostics. \\
+\textbf{\textcolor{blue}{Update Needed:}} Shift focus to verifying \textbf{multi-class classification accuracy}, ensuring robustness against \textbf{dataset biases, model performance issues, and classification reliability} across multiple disease categories.
 
 \subsection{Summary}
 The software being developed is the "Chest Scan" AI diagnostic tool, designed to support radiologists by automating chest X-ray analysis and generating diagnostic reports. This tool will leverage convolutional neural networks (CNNs) to detect and classify lung and heart conditions from X-ray images, thus enhancing diagnostic efficiency and accuracy. The system aims to reduce radiologist workload, improve diagnostic precision, and ultimately elevate patient care. Key functions include image processing, disease identification, and report generation accessible via a user-friendly web interface.
@@ -173,9 +175,17 @@ Together, these documents will facilitate a comprehensive understanding of the t
 
 \section{Plan}
 
+\textbf{Current Content:} Outlines the V\&V methodology for structured report generation. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Modify to validate \textbf{multi-class classification outputs}, including \textbf{precision, recall, and confusion matrices} for each disease category.
+
+
 In this section, we will lay out the roadmap for ensuring each part of the project meets the intended standards through verification and validation. Responsibilities are assigned to team members for each task within the V\&V process. This plan will address how we will confirm that the project’s requirements, design documents, V\&V plan, and final implementation align with the specified criteria. Tools and automated testing solutions that support our verification efforts will also be outlined. Additionally, a detailed process for validating the software’s functionality and performance will be included. Our verification tasks will be presented in a structured sequence, moving from requirements analysis to design inspection, implementation testing, and review of the V\&V process itself. Requirements verification will continue throughout development, with design checks occurring as the code is produced. Validation of the implementation will be an ongoing effort, eventually leading to a proof-of-concept phase and final project demonstrations.
 
 \subsection{Verification and Validation Team}
+
+\textbf{Current Content:} Lists team members responsible for V\&V tasks. \\
+\textbf{\textcolor{blue}{Update Needed:}} Ensure team expertise includes \textbf{AI model performance assessment, dataset bias evaluation, and clinical validation of classification outputs}.
 
 \begin{table}[h]
   \centering
@@ -211,6 +221,8 @@ In this section, we will lay out the roadmap for ensuring each part of the proje
 \pagebreak
 
 \subsection{SRS Verification Plan}
+\textbf{Current Content:} Verifies general AI-assisted diagnostic functionality. \\
+\textbf{\textcolor{blue}{Update Needed:}} Add checks for \textbf{multi-class disease classification performance}, covering \textbf{false positives/negatives, model interpretability using Grad-CAM, and confidence score validation}.
 
 The SRS Verification Plan for the "Chest Scan" diagnostic tool ensures that all specified requirements are complete, accurate, and verifiable. This section outlines the approach to confirm that the SRS document meets quality standards, providing a solid foundation for subsequent design, implementation, and testing phases.
 
@@ -280,6 +292,10 @@ The SRS will be considered verified if:
 By following this SRS Verification Plan, we aim to establish a robust foundation for the "Chest Scan" tool, ensuring that every feature aligns with clinical and operational standards while providing clear, testable specifications for development.
 
 \subsection{Design Verification Plan}
+
+\textbf{Current Content:} Ensures modular design of AI-based diagnostic system. \\
+\textbf{\textcolor{blue}{Update Needed:}} Verify \textbf{CNN model architecture}, ensuring correct \textbf{layer configurations, activation functions, and feature extraction processes} for multi-class classification.
+
 This Design Verification Plan focuses on verifying that the system’s modular structure and interface specifications, as outlined in the Module Guide (MG) and Module Interface Specification (MIS), align with the requirements in the SRS. Each module’s functionality, integration, and adaptability to potential changes will be reviewed to ensure the system is robust, maintainable, and ready for clinical use.
 
 \subsubsection{Objectives}
@@ -400,6 +416,10 @@ The V\&V Plan will be considered verified if:
 This Verification Plan ensures that the V\&V Plan itself is reliable, thorough, and ready to support a comprehensive validation process for the "Chest Scan" diagnostic tool.
 
 \subsection{Implementation Verification Plan}
+
+\textbf{Current Content:} Focuses on AI system implementation correctness. \\
+\textbf{\textcolor{blue}{Update Needed:}} Include validation steps for \textbf{multi-class model training stability, bias reduction techniques, and real-world dataset adaptation}.
+
 This Implementation Verification Plan outlines the steps to confirm that the "Chest Scan" diagnostic tool’s final implementation accurately reflects its design, fulfills all specified requirements, and operates as intended. This plan ensures that each implemented feature undergoes rigorous testing to verify functionality, security, and usability as defined in the SRS, MG, and MIS documents.
 
 \subsubsection{Objectives}
@@ -428,6 +448,10 @@ The implementation will be considered verified if:
 This plan ensures the implementation is verified to support accurate, secure, and user-friendly operations for clinical use.
 
 \subsection{Automated Testing and Verification Tools}
+
+\textbf{Current Content:} Lists software tools for verification testing. \\
+\textbf{\textcolor{blue}{Update Needed:}} Integrate \textbf{automated evaluation scripts} to track \textbf{classification accuracy, fairness metrics, and adversarial robustness testing}.
+
 Automated testing will ensure consistent verification of the "Chest Scan" diagnostic tool’s functionality, accuracy, and security throughout its development. Based on the development plan, a selection of tools will be used to optimize testing efficiency, maintain code standards, and support continuous integration.
 
 \subsubsection{Objectives}
@@ -495,6 +519,14 @@ This validation plan leverages both external data and stakeholder input to ensur
 
 \section{System Tests}
 
+\textbf{Current Content:} Describes test cases for verifying system functionality. \\
+\textbf{\textcolor{blue}{Update Needed:}} Expand test cases to include:
+\begin{itemize}
+    \item \textbf{Classification accuracy validation} for each disease category.
+    \item \textbf{Handling of ambiguous cases} where multiple diseases are present.
+    \item \textbf{Robustness testing} for poor-quality X-ray images.
+\end{itemize}
+
 In this subsection, the system test cases are categorized based on different areas of
 functionality to ensure a thorough verification process. The following subsets of test cases are
 designed to validate the handling of input data, processing and disease signature generation,
@@ -507,6 +539,9 @@ For each test case, references to the relevant functional requirements from the 
 covered by it are included in the test case derivation part.
 
 \subsection{Tests for Functional Requirements}
+
+\textbf{Current Content:} General tests for AI-assisted reporting. \\
+\textbf{\textcolor{blue}{Update Needed:}} Focus on verifying \textbf{multi-class classification performance}, ensuring \textbf{balanced accuracy across disease types}.
 
 \subsubsection{Handling Input Data}
 \textbf{FRTC1}\\
@@ -772,6 +807,15 @@ covered by it are included in the test case derivation part.
 \vspace{1em}
 
 \subsection{Tests for Nonfunctional Requirements}
+
+\textbf{Current Content:} Evaluates usability, performance, and security. \\
+\textbf{\textcolor{blue}{Update Needed:}} Introduce tests for:
+\begin{itemize}
+    \item \textbf{Model interpretability} using Grad-CAM heatmaps.
+    \item \textbf{Latency measurement} for classification processing times.
+    \item \textbf{Bias detection} in training data and classification outputs.
+\end{itemize}
+
 In this subsection, the system test cases are designed to validate key non-functional requirements
 that are critical to the user experience and overall system performance. The tests focus on the
 appearance, usability, performance, and security aspects of the software. Each test case
@@ -1069,6 +1113,8 @@ constraints. These requirements are recognized but are not included in the testi
 \end{table}
 
 \section{Unit Test Description}
+\textbf{Current Content:} Defines unit test coverage for system components. \\
+\textbf{\textcolor{blue}{Update Needed:}} Ensure unit tests cover \textbf{each disease classification module separately}, tracking performance across \textbf{varied dataset conditions}.
 
 This section outlines the approach and rationale for the unit tests designed to verify each module within the chest X-ray diagnostic application. The overall philosophy for test case selection centers on ensuring each module functions correctly in isolation, covering both standard functionality and potential edge cases. This approach provides a robust foundation to identify and address any issues at the unit level before integrating modules into the broader system.
 
@@ -1394,6 +1440,10 @@ Notes: (Space for users to leave any additional comments or suggestions about th
 
 \newpage{}
 \section*{Appendix --- Reflection}
+
+\textbf{Current Content:} Summarizes lessons learned and challenges. \\
+\textbf{\textcolor{blue}{Update Needed:}} Expand reflections to cover \textbf{challenges in classification generalization, optimizing hyperparameters, and improving model transparency for clinical adoption}.
+
 
 \subsection{Question 1}
 What went well while writing this deliverable?
