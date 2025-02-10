@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{parskip}
+\usepackage{xcolor} 
 
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -23,8 +24,8 @@
 
 \newcommand{\lips}{\textit{Insert your content here.}}
 
-\input{../Comments}
-\input{../Common}
+% \input{../Comments}
+% \input{../Common}
 
 \begin{document}
 
@@ -59,6 +60,11 @@
 
 ~\newpage
 \section{Purpose of the Project}
+
+\textbf{Current Content:} The document currently describes an AI tool for analyzing chest X-rays, focusing on assisting radiologists with diagnostic reports.  \\
+\\
+{\textcolor{blue}{Update Needed:}} We need to revise this section to clearly state that our project is now focused on developing a \textbf{multi-class classification CNN model} that can categorize chest X-ray images into multiple disease types (e.g., pneumonia, tuberculosis, cardiomegaly, normal, etc.). Instead of simply enhancing efficiency for radiologists, our system aims to \textbf{automate and improve the accuracy of chest X-ray disease classification}, providing a structured and interpretable output.\\
+
 \subsection{User Business}
 Chest X-rays are essential to the healthcare industry for diagnosing lung and heart conditions. 
 However, the interpretation of these images are complex and require a high level of expertise. 
@@ -68,6 +74,10 @@ development of this diagnostic tool will lead to the enhancement of patient care
 efficiency of the medical industry. 
 
 \subsection{Goals of the Project}
+\textbf{Current Content:} The SRS describes a tool that enhances efficiency and accuracy in diagnosis by generating structured reports. \\
+\\
+{\textcolor{blue}{Update Needed:}} This section should now emphasize our \textbf{multi-class nature of disease classification}, including defining key performance indicators such as \textbf{precision, recall, F1-score, confusion matrices, and AUC-ROC scores} to evaluate our model. The goal should also shift from merely assisting radiologists to \textbf{developing an independent AI-based classification system} that can be integrated into medical workflows.\\
+
 The objective of this project is to create a neural network model that can precisely analyze chest 
 X-rays and produce diagnostic reports to help radiologists diagnose heart and lung diseases. By 
 using this tool, radiologists' workload will be reduced, diagnostic accuracy will increase, and 
@@ -77,6 +87,11 @@ effort required for radiologists to generate reports will determine its success.
 usefulness and efficacy will be assessed using performance metrics and radiologists' input.
 
 \section{Stakeholders}
+
+\textbf{Current Content:} Mentions radiologists, biomedical researchers, AI researchers, and hospitals as key stakeholders. \\
+\\
+{\textcolor{blue}{Update Needed:}} While stakeholders remain the same, the shift in project focus means that \textbf{medical AI researchers and data scientists} will play a bigger role in validating the classification model. Additionally, \textbf{hospitals and healthcare institutions} that may integrate this model for \textbf{real-time disease detection} should be included as key stakeholders.\\
+
 \subsection{Client}
 \textbf{Medical Technology Department and/or healthcare organization sponsoring the initiative: }
 This client is responsible for funding and overseeing the progress of the project to ensure it 
@@ -236,6 +251,12 @@ AI Systems Maintenance Engineer: Responsible for the ongoing support and mainten
 diagnostic tools.
 
 \section{Mandated Constraints}
+
+\textbf{Current Content:} The document currently lists general project constraints. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Include constraints related to \textbf{dataset quality, model accuracy thresholds, and regulatory compliance (HIPAA, GDPR)}. Define \textbf{minimum expected classification accuracy} and processing time constraints for real-world deployment.
+
+
 This section defines the essential requirements the product must follow, including legal, 
 regulatory, or system-related restrictions. These constraints ensure the product complies with 
 necessary standards and functions within the project's limitations.
@@ -446,6 +467,10 @@ Minimum Viable Product: A version of the proposed solution that includes only th
 features required to meet the core needs of the users and stakeholders.
 
 \section{Relevant Facts And Assumptions}
+\textbf{Current Content:} Covers dataset availability, user expertise, and model reliability assumptions. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Modify to highlight \textbf{assumptions specific to multi-class classification}, such as \textbf{balanced datasets, diverse training samples, and real-world test set evaluation}. Address risks if \textbf{dataset bias is present or annotation errors exist}.
+
 \subsection{Relevant Facts}
 
 \textbf{Content:}\\
@@ -515,6 +540,11 @@ manage expectations and facilitates proactive planning to mitigate risks associa
 potential inaccuracy.
 
 \section{The Scope of the Work}
+
+\textbf{Current Content:} Describes general project goals. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Revise to focus on \textbf{multi-class classification improvements}, including \textbf{disease differentiation accuracy and reducing misclassification rates}. Emphasize future \textbf{model adaptation to new disease categories}.
+
 The scope of the work determines the boundaries of the business area to be studied and outlines 
 how it fits into its environment. Our project, which focuses on AI-driven chest X-ray analysis, 
 aims to create a convolutional neural network (CNN) model that assists radiologists in diagnosing 
@@ -632,6 +662,10 @@ This BUC could be represented in multiple ways:
 \end{itemize}
 
 \section{Business Data Model and Data Dictionary}
+\textbf{Current Content:} General data models related to chest X-ray records. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Modify to include \textbf{detailed descriptions of dataset attributes} used in classification, such as \textbf{X-ray metadata, disease labels, and associated clinical notes}.
+
 \subsection{Business Data Model}
 \begin{figure}[H]
     \centering
@@ -658,6 +692,11 @@ This BUC could be represented in multiple ways:
 \end{itemize}
 
 \section{The Scope of the Product}
+
+\textbf{Current Content:} Defines the general functionality of the AI tool. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Shift focus to \textbf{classification performance} rather than diagnostic report generation. Ensure \textbf{multi-class classification output with confidence scores} is emphasized.
+
 \subsection{Product Boundary}
 The system covers the Automated Chest X-ray Diagnosis lifecycle, from image input to diagnostic report generation using diffusion models. It focuses on detecting lung-related conditions like pneumonia and pleural effusion. Key components include image analysis, disease prediction through diffusion models, a web interface for radiologists, and security for patient data. The application excludes real-time consultations and other imaging types.
 
@@ -729,6 +768,16 @@ The following are the individual product use cases (PUCs), with a description, l
 \end{itemize}
 
 \section{Functional Requirements}
+
+\textbf{Current Content:} The system is designed for disease identification and report generation. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}}
+\begin{itemize}
+    \item Define the \textbf{specific disease categories} that the model will classify, ensuring clarity on the scope of detection.
+    \item Introduce a requirement for \textbf{heatmap visualization (e.g., Grad-CAM)} to provide explainability in classifications.
+    \item Shift the reporting format from \textbf{free-form medical reports} to \textbf{structured classification outputs}, including \textbf{disease type, confidence scores, and severity indicators}.
+\end{itemize}\\
+
 \subsection{Functional Requirements}
 
 \begin{itemize}
@@ -790,6 +839,11 @@ The following are the individual product use cases (PUCs), with a description, l
 \end{itemize}
 
 \section{Look and Feel Requirements}
+
+\textbf{Current Content:} Covers user interface aesthetics. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Define \textbf{visualization tools such as heatmaps (Grad-CAM)} for classification transparency. Ensure UI allows \textbf{clear distinction of multi-class predictions}.
+
 \subsection{Appearance Requirements}
 NF-AR1 The web app will incorporate a cool, and calming color scheme that combines white and soft 
 tones of blue.
@@ -817,6 +871,11 @@ Fit Criterion: Usability tests should reveal that 80\% of users find the interfa
 navigate without feeling overwhelmed.
 
 \section{Usability and Humanity Requirements}
+
+\textbf{Current Content:} Describes usability for medical professionals. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Emphasize \textbf{ease of interpreting multi-class classification results}. Ensure \textbf{clear explanations for ambiguous or uncertain classifications}.
+
 \subsection{Ease of Use Requirements}
 NF-EUR0 The web app should focus only on core functionality, with no extra features that might 
 confuse users.
@@ -866,6 +925,11 @@ distinguish between the generated X-rays and real-world X-rays after reviewing t
 N/A
 
 \section{Performance Requirements}
+
+\textbf{Current Content:} Focuses on processing speed and reliability. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Define metrics such as \textbf{classification latency (time taken to process X-rays), model accuracy per disease category, and system robustness against adversarial inputs}.
+
 \subsection{Speed and Latency Requirements}
 NF-SLR0 The system should generate a chest X-ray image within a reasonable amount of time after a 
 request is made.
@@ -940,6 +1004,11 @@ remain stable.
 
 
 \section{Operational and Environmental Requirements}
+
+\textbf{Current Content:} Describes deployment environment. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Ensure system is \textbf{optimized for cloud deployment} and compatible with \textbf{hospital IT infrastructure (PACS, EHRs)}.
+
 \subsection{Expected Physical Environment}
 NF-EPE0 The web app will be accessed through regular computers or mobile devices with internet 
 access. Physical location is irrelevant.
@@ -978,6 +1047,11 @@ stable internet connection.
 N/A
 
 \section{Maintainability and Support Requirements}
+
+\textbf{Current Content:} Covers updates and long-term maintenance. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Define \textbf{requirements for periodic model retraining} with \textbf{new datasets} to improve accuracy and prevent model drift.
+
 \subsection{Maintenance Requirements}
 NF-MR0 The system will be maintained by the developers to ensure it stays operational and 
 compatible with updates to the diffusion model.
@@ -1002,6 +1076,11 @@ further assistance.
 N/A
 
 \section{Security Requirements}
+
+\textbf{Current Content:} Focuses on basic security measures. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Expand to include \textbf{data encryption, access control for medical professionals, and compliance with HIPAA and GDPR} for handling patient data.
+
 \subsection{Access Requirements}
 NF-AR0 The web app will be publicly accessible to anyone, without the need for login or 
 credentials.
@@ -1046,6 +1125,11 @@ Fit Criterion: N/A
 N/A
 
 \section{Cultural Requirements}
+
+\textbf{Current Content:} Mentions accessibility and language support. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Ensure \textbf{multi-language support for model outputs} and adaptability for \textbf{different healthcare regions and regulatory environments}.
+
 \subsection{Cultural Requirements}
 NF-CR0 The web app will be usable by people from any background or culture with no restrictions 
 such as in region. However it will be written in English, but users can rely on modern web 
@@ -1061,6 +1145,11 @@ other languages using their browser if necessary.
 
 
 \section{Compliance Requirements}
+
+\textbf{Current Content:} Lists general compliance needs. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Expand to include \textbf{FDA and CE regulatory compliance} for AI-based medical classification tools.
+
 \subsection{Legal Requirements}
 NF-LR0 The web app will comply with general data privacy laws by ensuring that no personal or 
 sensitive data is collected.
@@ -1119,6 +1208,11 @@ can be copied and used elsewhere for anyone following the license rules.
 
 
 \section{New Problems}
+
+\textbf{Current Content:} Identifies research gaps. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Highlight issues such as \textbf{handling multi-label cases where multiple diseases coexist in a single X-ray} and \textbf{model biases based on training data imbalances}.
+
 \subsection{Effects on the Current Environment}
 \begin{itemize}
     \item Improvements in neural networks and their ability to identify diseases may lead to an 
@@ -1165,6 +1259,7 @@ cracked, users may have their medical images exposed. This is a security and pri
 Users may blame the development team for the lack of security.
 
 \section{Tasks}
+
 \subsection{Project Planning}
 \begin{table}[H]
     \begin{tabular}{|l|l|}
@@ -1262,6 +1357,11 @@ no cloud service provider costs. The web application will be hosted locally as w
 be any costs, the total will not exceed \$500.
 
 \section{User Documentation and Training}
+
+\textbf{Current Content:} Covers basic user guides. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Ensure documentation includes \textbf{interpretation guides for multi-class classification outputs} and training for \textbf{understanding heatmaps and uncertainty scores}.
+
 \subsection{User Documentation Requirements}
 \begin{itemize}
     \item \textbf{User Interface Guide:} A step-by-step guide explaining how users (e.g., 
@@ -1318,6 +1418,11 @@ Possible future features or enhancements:
 
 \newpage{}
 \section*{Appendix --- Reflection}
+
+\textbf{Current Content:} Summarizes challenges and lessons learned. \\
+\\
+\textbf{\textcolor{blue}{Update Needed:}} Expand reflections on \textbf{handling data bias, tuning hyperparameters for optimal classification, and challenges in model interpretability}.
+
 
 The information in this section will be used to evaluate the team members on the
 graduate attribute of Lifelong Learning.  Please answer the following questions:
