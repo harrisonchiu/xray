@@ -25,7 +25,7 @@
 \newcommand{\lips}{\textit{Insert your content here.}}
 
 % \input{../Comments}
-% \input{../Common}
+\input{../Common}
 
 \begin{document}
 
@@ -34,10 +34,9 @@
 \date{\today}
 	
 \maketitle
+\pagenumbering{arabic}
 
 ~\newpage
-
-\pagenumbering{roman}
 
 \tableofcontents
 
@@ -776,7 +775,7 @@ The following are the individual product use cases (PUCs), with a description, l
     \item Define the \textbf{specific disease categories} that the model will classify, ensuring clarity on the scope of detection.
     \item Introduce a requirement for \textbf{heatmap visualization (e.g., Grad-CAM)} to provide explainability in classifications.
     \item Shift the reporting format from \textbf{free-form medical reports} to \textbf{structured classification outputs}, including \textbf{disease type, confidence scores, and severity indicators}.
-\end{itemize}\\
+\end{itemize}
 
 \subsection{Functional Requirements}
 
