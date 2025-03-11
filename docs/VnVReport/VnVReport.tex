@@ -543,6 +543,173 @@ The end product is still similar to our project but has slightly more features o
 
 
 \section{Unit Testing}
+The following unit tests cover key components of a chest X-ray classification pipeline, ensuring correctness in data preprocessing, dataset handling, model architecture, training, prediction, and data handling.
+
+\subsection{Data Preprocessing Tests}
+\begin{itemize}
+    \item \textbf{test\_create\_binary\_matrix:} Verifies the correct transformation of disease labels into a binary matrix (one-hot encoding) and ensures the correct number of rows and columns.
+    \item \textbf{test\_split\_train\_val\_data:} Confirms that the dataset is properly split into training and validation sets while maintaining proportions.
+    \item \textbf{test\_organize\_images:} Ensures images are properly moved to their respective train/validation directories.
+\end{itemize}
+
+\subsection{Dataset Handling Tests}
+\begin{itemize}
+    \item \textbf{test\_dataset\_initialization:} Checks that the ChestXrayDataset initializes correctly with the expected number of samples, labels, and class names.
+    \item \textbf{test\_dataset\_getitem:} Ensures that individual samples are correctly loaded and transformed, including image shape, label correctness, and normalization.
+\end{itemize}
+
+\subsection{Model Architecture Tests}
+\begin{itemize}
+    \item \textbf{test\_model\_structure:} Confirms that the OptimizedChestXRayResNet has the correct layer sizes, including input, hidden, and output layers.
+    \item \textbf{test\_layer\_freezing:} Ensures that early layers in the model are frozen while later layers remain trainable.
+    \item \textbf{test\_forward\_pass:} Validates that a forward pass produces an output of the correct shape and numerical range.
+\end{itemize}
+
+\subsection{Training and Prediction Tests}
+\begin{itemize}
+    \item \textbf{test\_training\_step:} Runs a minimal one-epoch training session and ensures the model is trainable without errors.
+    \item \textbf{test\_prediction:} Evaluates whether the model can generate valid predictions on a validation dataset.
+\end{itemize}
+
+\subsection{Model Persistence Tests}
+\begin{itemize}
+    \item \textbf{test\_save\_and\_load\_model:} Verifies that the model can be saved and reloaded while maintaining the same parameters and predictions.
+\end{itemize}
+
+\subsection{Data Download and Extraction Tests}
+\begin{itemize}
+    \item \textbf{test\_data\_extraction:} Ensures that a ZIP file containing X-ray images and labels is extracted correctly, preserving file integrity and structure.
+    \item \textbf{test\_data\_download:} Simulates downloading a dataset from an external source and verifies that the files are correctly fetched, extracted, and structured for training.
+\end{itemize}
+
+\section{Unit Test Outputs}
+
+\subsection{Dataset Handling Test Results}
+\begin{verbatim}
+test_dataset_getitem (test_chest_xray.TestChestXrayDataset.test_dataset_getitem)
+Test dataset item retrieval with expected vs actual outputs ...
+=== Testing Dataset Item Retrieval ===
+Checking image shape...
+Expected: (3, 224, 224)
+Actual  : (3, 224, 224)
+
+Checking labels...
+Expected: [1.0, 0.0, 1.0]
+Actual  : [1.0, 0.0, 1.0]
+
+Checking image normalization bounds...
+Image value range: [0.074, 0.426]
+ok
+\end{verbatim}
+
+\begin{verbatim}
+test_dataset_initialization (test_chest_xray.TestChestXrayDataset.test_dataset_initialization)
+Test dataset initialization with expected vs actual outputs ...
+=== Testing Dataset Initialization ===
+Checking dataset size...
+Expected: 1
+Actual  : 1
+
+Checking number of classes...
+Expected: 3
+Actual  : 3
+
+Checking class labels...
+Expected: ['Atelectasis', 'Mass', 'Nodule']
+Actual  : ['Atelectasis', 'Mass', 'Nodule']
+ok
+\end{verbatim}
+
+\subsection{Preprocessing and Model Tests}
+
+\begin{verbatim}
+test_create_binary_matrix (test_chest_xray.TestDataPreprocessing.test_create_binary_matrix)
+Test binary matrix creation with expected vs actual outputs ...
+=== Testing Binary Matrix Creation ===
+Checking if output file exists...
+File C:\Users\PaulJ\AppData\Local\Temp\tmppu3138lz\binary_matrix.csv exists: True
+
+Checking number of rows...
+Expected: 3
+Actual  : 3
+
+Checking columns...
+Expected columns: ['Image Index', 'Atelectasis', 'Effusion', 'Mass', 'Nodule']
+Actual columns  : ['Image Index', 'Atelectasis', 'Effusion', 'Mass', 'Nodule']
+
+Checking binary values for first image...
+Atelectasis  - Expected: 1, Actual: 1
+Effusion     - Expected: 1, Actual: 1
+Mass         - Expected: 0, Actual: 0
+Nodule       - Expected: 0, Actual: 0
+ok
+\end{verbatim}
+
+\begin{verbatim}
+test_forward_pass (test_chest_xray.TestModelArchitecture.test_forward_pass)
+Test forward pass with expected vs actual outputs ...
+=== Testing Forward Pass ===
+Checking output shape...
+Expected: (4, 14)
+Actual  : (4, 14)
+
+Checking output statistics...
+Output range: [-1.456, 1.686]
+Output mean: 0.011
+ok
+\end{verbatim}
+
+\section{Frontend Unit Testing and Coverage Analysis}
+
+\subsection{Overview}
+
+To ensure the reliability and functionality of our frontend application, we conducted unit testing using Jest and React Testing Library. These tests focused on verifying key functionalities across five core components: ModelPage, ModelDetail, Login, Register, and Navbar.
+
+A total of five test suites were executed, covering component rendering, user interactions, and form validation. All tests passed successfully, resulting in a 100\% success rate. However, coverage analysis revealed gaps in API service interactions, error handling, and edge case validation, indicating areas for further improvement.
+
+\begin{itemize}
+    \item \textbf{Total Test Suites:} 5
+    \item \textbf{Total Tests Executed:} 5
+    \item \textbf{Overall Success Rate:} 100\%
+    \item \textbf{Total Execution Time:} 65.562 seconds
+\end{itemize}
+
+\subsection{Component-Wise Testing Results}
+
+\textbf{ModelPage Component}
+\begin{itemize}
+    \item Test Cases Executed: 1
+    \item Focus Areas: Image upload functionality, UI elements, and file input handling.
+    \item Verified Behaviors:
+    \begin{itemize}
+        \item Upload section renders correctly.
+        \item "Upload Medical Image" text is displayed.
+        \item File input and drag-and-drop functionality work as expected.
+    \end{itemize}
+    \item \textbf{Coverage Summary:}
+    \begin{itemize}
+        \item Statement Coverage: 52.63\%
+        \item Gaps Identified: No tests for file upload errors, invalid file types, and loading states.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Navbar Component}
+\begin{itemize}
+    \item Test Cases Executed: 1
+    \item Focus Areas: Navigation elements and structure.
+    \item Verified Behaviors:
+    \begin{itemize}
+        \item Home link is displayed correctly.
+        \item Navigation elements are accessible and structured properly.
+    \end{itemize}
+    \item \textbf{Coverage Summary:}
+    \begin{itemize}
+        \item Statement Coverage: 100\%
+        \item No coverage gaps identified.
+    \end{itemize}
+\end{itemize}
+
+
 
 \section{Changes Due to Testing}
 
@@ -674,7 +841,8 @@ If a workflow fails, GitHub clearly indicates the exact nature and location of e
 This section provides a traceability matrix linking the functional and non-functional requirements to the test cases executed in the verification and validation process. The matrix ensures that all requirements outlined in the Software Requirements Specification (SRS) have been addressed through testing, confirming system correctness and completeness.
 
 \subsection{Traceability Matrix for Functional Requirements}
-\begin{table}[ht]
+
+\begin{table}[h!]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|l|l|l|}
@@ -690,7 +858,7 @@ FR6 - Heatmap Report &  &  &  &  &  &  \\ \hline
 }
 \end{table}
 
-\begin{table}[ht]
+\begin{table}[h!]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|l|l|l|}
@@ -706,9 +874,7 @@ FR6 - Heatmap Report & X &  &  &  & X &  \\ \hline
 }
 \end{table}
 
-
-
-\begin{table}[ht]
+\begin{table}[h!]
 \begin{tabular}{|l|l|l|}
 \hline
 \multicolumn{1}{|c|}{FR \textbackslash TC} & \multicolumn{1}{c|}{FRTC28} & \multicolumn{1}{c|}{FRTC29} \\ \hline
@@ -716,10 +882,12 @@ FR12 - Model Confidence                    & X                           & X    
 \end{tabular}
 \end{table}
 
+\pagebreak
+
 \subsection{Traceability Matrix for Non-Functional Requirements}
 Non-Functional Requirements Traceability Matrix (NFRTM)
 
-\begin{table}[h]
+\begin{table}[h!]
     \centering
     \resizebox{\textwidth}{!}{%
     \begin{tabular}{|l|l|l|l|l|l|l|}
@@ -735,7 +903,7 @@ Non-Functional Requirements Traceability Matrix (NFRTM)
     }
     \end{table}
 
-\begin{table}[h]
+\begin{table}[h!]
     \centering
     \resizebox{\textwidth}{!}{%
     \begin{tabular}{|l|l|l|l|l|l|l|}
@@ -751,7 +919,7 @@ Non-Functional Requirements Traceability Matrix (NFRTM)
     }
     \end{table}
 
-    \begin{table}[h]
+\begin{table}[h!]
         \centering
         \resizebox{\textwidth}{!}{%
         \begin{tabular}{|l|l|l|l|}
@@ -775,13 +943,13 @@ Traceability Matrix for Software Modules and Test Cases
 
 This matrix ensures that each software module has corresponding test cases to validate its functionality.
 
-\begin{table}[ht]
+\begin{table}[h!]
     \centering
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{|l|l|p{10cm}|}
     \hline
     \multicolumn{1}{|c|}{\textbf{Major Module}} & \multicolumn{1}{c|}{\textbf{Test Case ID(s)}} & \multicolumn{1}{c|}{\textbf{Description}} \\ \hline
-    \textbf{M1 - Data Preprocessing Tests} & FRTC1, FRTC2, NFRTC1 & Tests preprocessing functions like resizing, normalizing, and grayscale conversion. Ensures correct dataset organization. \\ \hline
+    \textbf{M1 - Data Preprocessing Tests} & FRTC1, FRTC2, NFRTC1 & Tests preprocessing functions like resizing, normalizing, and grayscale conversion. \newline Ensures correct dataset organization. \\ \hline
      & FRTC3, NFRTC2 & Ensures data augmentation techniques (rotation, flipping, contrast adjustment) function correctly. \\ \hline
     \textbf{M2 - Dataset Handling Tests} & FRTC4, FRTC5 & Validates dataset loading, correct sample retrieval, and label transformations. \\ \hline
      & FRTC6, NFRTC3 & Ensures data integrity by verifying labels and filtering out corrupted images. \\ \hline
@@ -791,7 +959,10 @@ This matrix ensures that each software module has corresponding test cases to va
      & FRTC11, NFRTC6 & Ensures correct prediction generation, accuracy validation, and performance benchmarks are met. \\ \hline
     \end{tabular}%
     }
-    \end{table}
+    \caption{Unit Test Summary with Proper Line Breaks}
+    \label{table:unit_test_summary}
+\end{table}
+
 
 
 \section{Code Coverage Metrics}
@@ -800,8 +971,18 @@ Test coverage was based on the unit tests that were created for the chest\_xray.
 
 \includegraphics[width=\textwidth]{codecoverage.png}
 
+\includegraphics[width=\textwidth]{tests.png}
+
+
+Overall, the system demonstrates a high degree of code coverage, ensuring that most critical paths and edge cases have been tested. Any gaps in coverage will be addressed in future iterations of testing.
+
+\includegraphics[width=\textwidth]{overallcoverage.png}
+
+
 Frontend test coverage stands at 54.42\% for statements, 20\% for branches, 21.87\% for functions, and 53.39\% for lines, indicating gaps in authentication, API integration, and file processing. The API service has the lowest coverage at 21.9\%, missing tests for authentication handling, login, registration, image analysis, and token management (Lines 48-54, 59-152). The ModelPage component (52.63\%) lacks tests for drag-and-drop (Lines 88-89), file validation (Line 93), error handling (Lines 97-100), processing states (Lines 105-106), and API response handling (Lines 111-134, 149-176).
+
 The Register component (58.82\%) is missing validation logic (Lines 56-72) and registration handling (Lines 90-110). The Login component (64.28\%) lacks coverage for form submission (Lines 53-66) and API error handling (Lines 86-96). ModelDetail (95.65\%) and Navbar (88.23\%) have high coverage but are missing error boundary handling (Line 100) and mobile menu interactions (Lines 60-61), respectively. Styled Components are fully covered at 100\%.
+
 Increasing test coverage for API services, form validation, and error handling will significantly improve reliability and ensure better handling of real-world scenarios.
 
 
