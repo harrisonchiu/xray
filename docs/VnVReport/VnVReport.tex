@@ -6,6 +6,10 @@
 \usepackage{parskip}
 \usepackage{makecell}
 \usepackage{longtable}
+\usepackage{graphicx}
+
+
+\graphicspath{ {./} }
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -542,10 +546,71 @@ The end product is still similar to our project but has slightly more features o
 
 \section{Changes Due to Testing}
 
-\wss{This section should highlight how feedback from the users and from 
-the supervisor (when one exists) shaped the final product.  In particular 
-the feedback from the Rev 0 demo to the supervisor (or to potential users) 
-should be highlighted.}
+Our project underwent significant refinements based on feedback from our Rev 0 demo, structured unit testing, integration testing, and user feedback sessions. Initially, we aimed to develop a diffusion model for generating CXR images to provide additional training data for researchers. However, as we progressed through exploratory research and implementation, we realized that the complexity of diffusion models, combined with our time constraints, made this approach impractical within the given project scope.
+
+During the Rev 0 demo, feedback from our supervisor prompted us to reassess our approach. Rather than discarding our efforts, we pivoted toward a more feasible and impactful solution: a CXR image classification web application. This shift allowed us to apply our existing machine learning expertise while maintaining our goal of supporting medical research.
+
+After implementing the prototype, multiple rounds of unit testing, integration testing, and user evaluations led to the following seven key changes:
+
+\subsection{Ensuring Correct Data Preprocessing Through Structured Validation}
+
+Backend unit tests on data preprocessing revealed inconsistencies in data splitting and binary matrix creation, leading to missing labels in the training data.
+\begin{itemize}
+    \item The \texttt{test\_create\_binary\_matrix} and \texttt{test\_split\_train\_val\_data} confirmed that labels were properly encoded and dataset splits maintained correct proportions.
+    \item Adjustments were made to improve data integrity and prevent label loss in the binary matrix.
+\end{itemize}
+
+\subsection{Verifying Dataset Consistency and Image Transformations}
+
+Dataset handling tests, particularly \texttt{test\_dataset\_initialization} and \texttt{test\_dataset\_getitem}, identified discrepancies in image normalization and label correctness.
+\begin{itemize}
+    \item Expected and actual image dimensions were matched, ensuring proper transformation application.
+    \item Label inconsistencies were corrected, ensuring that each dataset sample retained the correct multi-label classification.
+\end{itemize}
+
+\subsection{Stabilizing Model Training Through Layer Freezing Adjustments}
+
+\texttt{test\_layer\_freezing} confirmed that certain layers were not properly frozen, leading to unstable training.
+\begin{itemize}
+    \item We adjusted the model by freezing early layers while allowing later layers to fine-tune, reducing overfitting and improving convergence.
+    \item This refinement enabled more efficient training and better generalization across different datasets.
+\end{itemize}
+
+\subsection{Validating Model Architecture to Ensure Proper Output Dimensions}
+
+\texttt{test\_model\_structure} and \texttt{test\_forward\_pass} revealed that the model's expected output shape did not always align with the actual output during early testing.
+\begin{itemize}
+    \item Adjustments were made to ensure that the fully connected layers matched the correct input and output feature sizes, eliminating mismatches during inference.
+    \item The numerical range of output logits was examined, ensuring valid probability distributions for classification.
+\end{itemize}
+
+\subsection{Improving Model Evaluation by Incorporating Additional Performance Metrics}
+
+User and supervisor feedback indicated that accuracy alone was not sufficient for evaluating model performance.
+\begin{itemize}
+    \item Based on findings from \texttt{test\_prediction}, we integrated AUC-ROC, Precision-Recall curves, and F1 scores to provide a more comprehensive evaluation of the classifier.
+    \item These metrics were added to the final model reports to assess performance across imbalanced disease classes.
+\end{itemize}
+
+\subsection{Refining API Interactions and Error Handling for the Frontend}
+
+Frontend integration testing identified API response errors when handling missing images or incorrect file formats.
+\begin{itemize}
+    \item Error handling mechanisms were improved to ensure that users received clear feedback messages instead of unexpected crashes.
+    \item Tests confirmed that API responses correctly aligned with expected model outputs, preventing incorrect classifications from being displayed.
+    \item Coverage analysis also revealed low API service test coverage (10.9\%), prompting the need for additional tests on authentication, error handling, and response validation.
+\end{itemize}
+
+\subsection{Refactoring Code for Improved Maintainability and Debugging}
+
+\texttt{test\_training\_step} in the backend and coverage analysis for frontend components revealed that some functions were overly complex and duplicated, making debugging difficult.
+\begin{itemize}
+    \item We modularized key components, such as data loading, model inference, API interactions, and preprocessing functions, making the codebase more structured and scalable.
+    \item This refactoring enabled easier debugging, improved test coverage, and better collaboration among team members, reducing technical debt for future enhancements.
+\end{itemize}
+
+These changes significantly enhanced the reliability, usability, and transparency of our CXR classification web application. Unit testing for both backend and frontend provided critical insights into preprocessing, model architecture, training stability, API interactions, and user-facing functionality, helping shape the final product into a robust and user-friendly tool.
+
 
 \section{Automated Testing}
 Automated testing for our project currently emphasizes maintaining high code quality through consistent linting and formatting checks. The existing automated tests ensure code quality, readability, and consistency across the entire codebase. Our project does not require extensive CI/CD automated testing because the team is small and focused. The codebase is also manageable and easily divided up in parts where each member could work on it separately.
@@ -605,15 +670,148 @@ If a workflow fails, GitHub clearly indicates the exact nature and location of e
 
 		
 \section{Trace to Requirements}
-		
+
+This section provides a traceability matrix linking the functional and non-functional requirements to the test cases executed in the verification and validation process. The matrix ensures that all requirements outlined in the Software Requirements Specification (SRS) have been addressed through testing, confirming system correctness and completeness.
+
+\subsection{Traceability Matrix for Functional Requirements}
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+FR \ TC & FRTC1 & FRTC2 & FRTC3 & FRTC4 & FRTC5 & FRTC6 \\ \hline
+FR1 - User Authentication &  &  &  &  &  &  \\ \hline
+FR2 - Image Upload & X & X &  &  &  &  \\ \hline
+FR3 - Image Preprocessing &  &  & X & X &  &  \\ \hline
+FR4 - CNN Model Accurate Analysis &  &  &  &  & X & X \\ \hline
+FR5 - Display Results &  &  &  &  &  &  \\ \hline
+FR6 - Heatmap Report &  &  &  &  &  &  \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{FR \ TC} & \multicolumn{1}{c|}{FRTC9} & \multicolumn{1}{c|}{FRTC10} & \multicolumn{1}{c|}{FRTC15} & \multicolumn{1}{c|}{FRTC19} & \multicolumn{1}{c|}{FRTC20} & \multicolumn{1}{c|}{FRTC21} \\ \hline
+FR1 - User Authentication &  &  & X &  &  &  \\ \hline
+FR2 - Image Upload &  &  &  &  &  &  \\ \hline
+FR3 - Image Preprocessing &  &  &  &  &  &  \\ \hline
+FR4 - CNN Model Accurate Analysis &  &  &  &  &  &  \\ \hline
+FR5 - Display Results &  & X &  & X &  &  \\ \hline
+FR6 - Heatmap Report & X &  &  &  & X &  \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+
+
+\begin{table}[ht]
+\begin{tabular}{|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{FR \textbackslash TC} & \multicolumn{1}{c|}{FRTC28} & \multicolumn{1}{c|}{FRTC29} \\ \hline
+FR12 - Model Confidence                    & X                           & X                           \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Traceability Matrix for Non-Functional Requirements}
+Non-Functional Requirements Traceability Matrix (NFRTM)
+
+\begin{table}[h]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+    \multicolumn{1}{|c|}{NFR \ TC} & \multicolumn{1}{c|}{NFRTC1} & \multicolumn{1}{c|}{NFRTC3} & \multicolumn{1}{c|}{NFRTC4} & \multicolumn{1}{c|}{NFRTC7} & \multicolumn{1}{c|}{NFRTC8} & \multicolumn{1}{c|}{NFRTC9} \\ \hline
+    NFR1 - Consistent UI with Medical Imaging Software & X &  &  &  &  &  \\ \hline
+    NFR3 - Task Completion for Healthcare Professionals &  & X &  &  &  &  \\ \hline
+    NFR4 - Context-Sensitive Help and Tooltips &  &  & X &  &  &  \\ \hline
+    NFR5 - Image Processing Time (≤60s) &  &  &  & X &  &  \\ \hline
+    NFR6 - System Availability (99.9\% Uptime) &  &  &  &  & X &  \\ \hline
+    NFR7 - Concurrent Processing of 20 Images &  &  &  &  &  & X \\ \hline
+    \end{tabular}%
+    }
+    \end{table}
+
+\begin{table}[h]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|l|l|l|l|l|}
+    \hline
+    \multicolumn{1}{|c|}{NFR \textbackslash TC} & \multicolumn{1}{c|}{NFRTC10} & \multicolumn{1}{c|}{NFRTC11} & \multicolumn{1}{c|}{NFRTC12} & \multicolumn{1}{c|}{NFRTC13} & \multicolumn{1}{c|}{NFRTC14} & \multicolumn{1}{c|}{NFRTC15} \\ \hline
+    NFR8 - PACS Integration & X &  &  &  &  &  \\ \hline
+    NFR9 - Network Performance Under 200ms Latency &  & X &  &  &  &  \\ \hline
+    NFR10 - AES-256 Encryption for Data &  &  & X &  &  &  \\ \hline
+    NFR11 - Role-Based Access Control &  &  &  & X &  &  \\ \hline
+    NFR12 - Modular Architecture with Documentation &  &  &  &  & X &  \\ \hline
+    NFR13 - Automated Testing Coverage ≥80\% &  &  &  &  &  & X \\ \hline
+    \end{tabular}%
+    }
+    \end{table}
+
+    \begin{table}[h]
+        \centering
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|l|l|l|}
+        \hline
+        \multicolumn{1}{|c|}{\textbf{NFR \textbackslash TC}} & \multicolumn{1}{c|}{\textbf{NFRTC16}} & \multicolumn{1}{c|}{\textbf{NFRTC17}} & \multicolumn{1}{c|}{\textbf{NFRTC18}} \\ \hline
+        \textbf{NFR14 - Compliance with HIPAA and PIPEDA} & X &  &  \\ \hline
+        \textbf{NFR15 - Radiologist Review Required Before Final Diagnosis} &  & X &  \\ \hline
+        \textbf{NFR16 - AI Disclaimers Displayed Prominently} &  &  & X \\ \hline
+        \end{tabular}%
+        }
+        \end{table}
+
+
+\pagebreak
+
 \section{Trace to Modules}		
+This section provides a traceability matrix mapping system modules to the test cases that verify their correct functionality. The Module Guide (MG) serves as the reference document for module descriptions.
+
+\subsection{Traceability Matrix for Software Modules}
+Traceability Matrix for Software Modules and Test Cases
+
+This matrix ensures that each software module has corresponding test cases to validate its functionality.
+
+\begin{table}[ht]
+    \centering
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Major Module}} & \multicolumn{1}{c|}{\textbf{Test Case ID(s)}} & \multicolumn{1}{c|}{\textbf{Description}} \\ \hline
+    \textbf{M1 - Data Preprocessing Tests} & FRTC1, FRTC2, NFRTC1 & Tests preprocessing functions like resizing, normalizing, and grayscale conversion. Ensures correct dataset organization. \\ \hline
+     & FRTC3, NFRTC2 & Ensures data augmentation techniques (rotation, flipping, contrast adjustment) function correctly. \\ \hline
+    \textbf{M2 - Dataset Handling Tests} & FRTC4, FRTC5 & Validates dataset loading, correct sample retrieval, and label transformations. \\ \hline
+     & FRTC6, NFRTC3 & Ensures data integrity by verifying labels and filtering out corrupted images. \\ \hline
+    \textbf{M3 - Model Architecture Tests} & FRTC7, NFRTC4 & Confirms CNN layer structures, parameter counts, and expected model output dimensions. \\ \hline
+     & FRTC8, FRTC9 & Tests the CNN’s classification performance, ensuring correct label assignment with confidence scores. \\ \hline
+    \textbf{M4 - Training and Prediction Tests} & FRTC10, NFRTC5 & Validates model training stability, loss convergence, and parameter optimization. \\ \hline
+     & FRTC11, NFRTC6 & Ensures correct prediction generation, accuracy validation, and performance benchmarks are met. \\ \hline
+    \end{tabular}%
+    }
+    \end{table}
+
 
 \section{Code Coverage Metrics}
+
+Test coverage was based on the unit tests that were created for the chest\_xray.py file. he coverage of different modules was measured. The following Images are a report of how well our code is covered by our various tests. Note that run\_tests\_with\_coverage.py file has a 0\% coverage but that file is unrelated to what is being tested. (unfortunately, we were unable to remove this file from the coverage report, so please ignore any coverage metrics related to that python file).
+
+\includegraphics[width=\textwidth]{codecoverage.png}
+
+Frontend test coverage stands at 54.42\% for statements, 20\% for branches, 21.87\% for functions, and 53.39\% for lines, indicating gaps in authentication, API integration, and file processing. The API service has the lowest coverage at 21.9\%, missing tests for authentication handling, login, registration, image analysis, and token management (Lines 48-54, 59-152). The ModelPage component (52.63\%) lacks tests for drag-and-drop (Lines 88-89), file validation (Line 93), error handling (Lines 97-100), processing states (Lines 105-106), and API response handling (Lines 111-134, 149-176).
+The Register component (58.82\%) is missing validation logic (Lines 56-72) and registration handling (Lines 90-110). The Login component (64.28\%) lacks coverage for form submission (Lines 53-66) and API error handling (Lines 86-96). ModelDetail (95.65\%) and Navbar (88.23\%) have high coverage but are missing error boundary handling (Line 100) and mobile menu interactions (Lines 60-61), respectively. Styled Components are fully covered at 100\%.
+Increasing test coverage for API services, form validation, and error handling will significantly improve reliability and ensure better handling of real-world scenarios.
+
 
 \bibliographystyle{plainnat}
 \bibliography{../../refs/References}
 
 \newpage{}
+
+
+
 \section*{Appendix --- Reflection}
 
 The information in this section will be used to evaluate the team members on the
@@ -635,6 +833,57 @@ graduate attribute of Reflection.
   predict a feasible amount of effort and the right tasks needed to build the
   evidence that demonstrates the required quality?  (It is expected that most
   teams will have had to deviate from their original VnV Plan.)
+
+
+  \subsubsection{Answer}
+  \section{Verification and Validation (VnV) Plan Revisions}
+
+  \subsection{Security Compliance Verification Revisions}
+  
+  Originally, in our VnV Plan, under non-functional requirements, we had stated that our website needed to be compliant with data security standards, particularly those related to patient data protection, including secure storage, access controls, and adherence to privacy regulations (e.g., HIPAA). However, as we progressed, we realized that storing uploaded CXR images was unnecessary. Users, most likely radiologists or researchers, would only be looking for short-term insights, meaning long-term data storage would not only be an unnecessary cost but also irrelevant to their needs. 
+  
+  Instead, we decided to use SHA encryption for user account details, ensuring that in future refactoring of the website, any data shared by users would also be SHA encrypted and only stored in temporary storage, such as Redis Cache, before being deleted. This was our key revision regarding security compliance verification.
+  
+  \subsection{Backend Testing and Unit Test Revisions}
+  
+  In the VnV plan, we made no discussion of Postman backend testing. Although we discussed unit testing at length, the actual backend testing that we conducted was primarily successful through Postman testing. For each URL belonging to the backend API, we tested each repeatedly, assuming valid and invalid payloads and credentials. This allowed us to achieve complete test coverage as well as perform tests we otherwise wouldn’t have been able to conduct via the frontend or through a collective demo.
+  
+  Additionally, in our VnV plan, we had several unit tests, such as \texttt{FRTC3} and \texttt{FRTC4}, which ultimately had to be removed. This was due to a change in our project’s goals. Initially, we aimed to build a diffusion model project to generate CXR images, but we transitioned to developing a web application for multiclass classification on CXR images. As a result, these unit tests were no longer relevant and were removed.
+  
+  \subsection{Challenges in Anticipating Project Direction}
+  
+  These particular changes were not obvious beforehand and arose due to a shift in the project’s direction. Ideally, we would like to say that we could not have anticipated this, but at the time of writing the VnV document, we were already aware of potential challenges with our initial approach. As we were actively exploring solutions, it would have been beneficial to design unit tests that were more general or dynamic—tests that were adaptable to changing project contexts rather than being static. 
+  
+  This approach would have ensured that the initial VnV plan remained useful even if the project evolved. However, there is also an argument that a verification plan that is too abstract could lose its usefulness. In hindsight, given the nature of our project, adopting a more flexible verification approach could have been a valuable revision.
+  
+  \subsection{What Went Well?}
+  
+  \textbf{Gurnoor:} As a team, we distributed our roles across the document optimally. No one person was exclusive to a particular section, although each of us was primarily responsible for one section. We were all involved across different sections, helping each other and discussing any questions or confusion that arose.
+  
+  \textbf{Harrison:} I think we did well in reflecting on our work throughout the project. This reflection was not only limited to the appendix but also extended to addressing changes that occurred, particularly in Section 7. We encountered many obstacles throughout this project, and writing this document allowed us to address them with hindsight, which I found valuable.
+  
+  \textbf{Ahmed:} We did well as a team in organizing ourselves. Some of us were highly knowledgeable when it came to addressing previous unit tests and code testing, whether functional tests or coverage tests. Others were confident in handling areas such as user feedback or supervisor feedback. By playing to our strengths, we were able to put together the document in the best way possible.
+  
+  \textbf{Hamza:} Addressing the project changes went really well. In our earlier documents, we had outlined a different direction than the one we ultimately achieved. This wasn’t necessarily a bad thing. By acknowledging these changes in Section 7, we were able to extract valuable learnings for the future. Additionally, we cleared up a lot of confusion regarding earlier misalignments in our product's function.
+  
+  \textbf{Jared:} I believe writing and structuring our traceability matrix went quite well. We created a framework that allowed us to quickly gauge our progress in an easily understandable manner, and we did so with high accuracy. Additionally, the automated testing section was well-executed, capturing everything we aimed to achieve in ensuring correct testing practices beyond manual testing and demos.
+  
+  \subsection{Challenges and Their Resolutions}
+  
+  One of the biggest challenges we faced was time management, especially as the project progressed and required integrating new changes. Balancing coursework alongside this deliverable sometimes made deadlines feel overwhelming. To resolve this, we divided tasks into smaller sections and held regular check-ins to ensure no team member was overloaded. This helped us stay on track without compromising the quality of critical sections.
+  
+  With multiple team members working on different sections, ensuring consistency in terminology, formatting, and tone became a challenge. At one point, we noticed that some sections referenced outdated features while others reflected our latest changes. To address this, we conducted a final review session where each team member reviewed a section they hadn’t written. This process helped us flag inconsistencies and align all references with our final implementation.
+  
+  \subsection{Sources of Input for This Document}
+  
+  \subsubsection{Sections Stemming from Client or Peer Discussions}
+  
+  \textbf{Functional Requirements (Section 3):} Many of our functional requirements, such as \texttt{FR.8} (User Authentication) and \texttt{FR.1} (Image Upload), were shaped by discussions with peers and test users. Their feedback helped clarify expectations regarding user interactions and essential features. Feedback from our Rev 0 demo was particularly influential in shifting our project toward CXR classification rather than image generation.
+  
+  \textbf{Testing and System Refinements (Section 7 - Changes Due to Testing):} Feedback from test users and our supervisor led to significant modifications 
+  
+  
+
 \end{enumerate}
 
 \end{document}
