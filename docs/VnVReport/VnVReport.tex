@@ -356,9 +356,9 @@ User surveys indicate that at least 75\% of users feel the color scheme contribu
     \item The web app displays a color scheme that combines white and soft tones of blue.
     \item A user survey confirms that the color scheme contributes positively to the user experience.
 \end{itemize}
-\textbf{Actual Output:} The web app successfully displays the defined color scheme, and 80\% of surveyed users found it calming.  
-\textbf{Expected and Actual Output Match:} True  
-\textbf{Relevant Nonfunctional Requirement(s):} NF-AR1  
+\textbf{Actual Output:} The web app successfully displays the defined color scheme, and 80\% of surveyed users found it calming.
+\textbf{Expected and Actual Output Match:} True
+\textbf{Relevant Nonfunctional Requirement(s):} NF-AR1
 
 \subsubsection{NF-SR1: Consistent and Simple Style}
 The interface should have a minimalistic and easy-to-navigate design.  
@@ -419,7 +419,7 @@ A help section should be available from all primary screens of the application.
 \subsection{Performance Requirements}
 
 \subsubsection{NF-SLR0: Image Processing Time}
-The system should process 95\% of images within ≤60 seconds.
+The system should process 95\% of images within < 60 seconds.
 
 \paragraph{Test Case:} Image Processing Time Validation (NFRTC7)
 
@@ -427,7 +427,7 @@ The system should process 95\% of images within ≤60 seconds.
 \textbf{Input:} A 1024x1024 chest X-ray image is uploaded for analysis.  
 \textbf{Expected Output:}
 \begin{itemize}
-    \item 95\% of images should be processed in ≤60 seconds.
+    \item 95\% of images should be processed in <60 seconds.
 \end{itemize}
 \textbf{Actual Output:} 98\% of images were processed in an average of 50.5 seconds.  
 \textbf{Expected and Actual Output Match:} True  
@@ -507,20 +507,20 @@ CXR-LLaVA is an open-source multimodal large language model designed to interpre
 
 Their model was trained on many open source CXR datasets. These include:
 \begin{itemize}
-\item BrixIA: A dataset focusing on COVID-19 pneumonia severity scoring.​
+\item BrixIA: A dataset focusing on COVID-19 pneumonia severity scoring.
 \item CheXpert: A large dataset with labeled CXR images covering multiple pathologies.
-\item MIMIC-CXR: Comprises de-identified CXR images and corresponding radiology reports.​
+\item MIMIC-CXR: Comprises de-identified CXR images and corresponding radiology reports.
 \item NIH Chest X-ray Dataset: Contains over 100,000 CXR images with annotations for 14 disease labels.
-\item PadChest: Offers a wide variety of thoracic disease labels and radiographic findings.​
-\item RSNA COVID-19 AI Detection Challenge: Provides CXR images related to COVID-19 cases.​
+\item PadChest: Offers a wide variety of thoracic disease labels and radiographic findings.
+\item RSNA COVID-19 AI Detection Challenge: Provides CXR images related to COVID-19 cases.
 \item VinDR-CXR: A dataset with annotations for various lung diseases.
 \end{itemize}
 
 Collectively, there are more than 500 000 different CXR images which is a lot of training data.
 
-CXR-LLaVA's architecture is made of:​
+CXR-LLaVA's architecture is made of:
 \begin{itemize}
-\item Image Encoder: A Vision Transformer (ViT-L/16) processes CXR images at a resolution of 512x512 pixels in grayscale.​
+\item Image Encoder: A Vision Transformer (ViT-L/16) processes CXR images at a resolution of 512x512 pixels in grayscale.
 \item Language Model: LLAMA2-7B-CHAT serves as the foundational language model, facilitating the generation of coherent and contextually relevant radiologic reports.
 \end{itemize}
 
@@ -896,7 +896,7 @@ Non-Functional Requirements Traceability Matrix (NFRTM)
     NFR1 - Consistent UI with Medical Imaging Software & X &  &  &  &  &  \\ \hline
     NFR3 - Task Completion for Healthcare Professionals &  & X &  &  &  &  \\ \hline
     NFR4 - Context-Sensitive Help and Tooltips &  &  & X &  &  &  \\ \hline
-    NFR5 - Image Processing Time (≤60s) &  &  &  & X &  &  \\ \hline
+    NFR5 - Image Processing Time (<60s) &  &  &  & X &  &  \\ \hline
     NFR6 - System Availability (99.9\% Uptime) &  &  &  &  & X &  \\ \hline
     NFR7 - Concurrent Processing of 20 Images &  &  &  &  &  & X \\ \hline
     \end{tabular}%
@@ -906,18 +906,18 @@ Non-Functional Requirements Traceability Matrix (NFRTM)
 \begin{table}[h!]
     \centering
     \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|l|l|l|l|l|}
-    \hline
-    \multicolumn{1}{|c|}{NFR \textbackslash TC} & \multicolumn{1}{c|}{NFRTC10} & \multicolumn{1}{c|}{NFRTC11} & \multicolumn{1}{c|}{NFRTC12} & \multicolumn{1}{c|}{NFRTC13} & \multicolumn{1}{c|}{NFRTC14} & \multicolumn{1}{c|}{NFRTC15} \\ \hline
-    NFR8 - PACS Integration & X &  &  &  &  &  \\ \hline
-    NFR9 - Network Performance Under 200ms Latency &  & X &  &  &  &  \\ \hline
-    NFR10 - AES-256 Encryption for Data &  &  & X &  &  &  \\ \hline
-    NFR11 - Role-Based Access Control &  &  &  & X &  &  \\ \hline
-    NFR12 - Modular Architecture with Documentation &  &  &  &  & X &  \\ \hline
-    NFR13 - Automated Testing Coverage ≥80\% &  &  &  &  &  & X \\ \hline
-    \end{tabular}%
-    }
-    \end{table}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{NFR \textbackslash TC} & \multicolumn{1}{c|}{NFRTC10} & \multicolumn{1}{c|}{NFRTC11} & \multicolumn{1}{c|}{NFRTC12} & \multicolumn{1}{c|}{NFRTC13} & \multicolumn{1}{c|}{NFRTC14} & \multicolumn{1}{c|}{NFRTC15} \\ \hline
+NFR8 - PACS Integration & X &  &  &  &  &  \\ \hline
+NFR9 - Network Performance Under 200ms Latency &  & X &  &  &  &  \\ \hline
+NFR10 - AES-256 Encryption for Data &  &  & X &  &  &  \\ \hline
+NFR11 - Role-Based Access Control &  &  &  & X &  &  \\ \hline
+NFR12 - Modular Architecture with Documentation &  &  &  &  & X &  \\ \hline
+NFR13 - Automated Testing Coverage >80\% &  &  &  &  &  & X \\ \hline
+\end{tabular}%
+}
+\end{table}
 
 \begin{table}[h!]
         \centering
