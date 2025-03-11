@@ -85,7 +85,7 @@ This document ...
 \section{Functional Requirements Evaluation}
 
 \subsection{User Authentication (FR.8)}
-\subsubsection{User Authentication (FRTC11, 12, 15, 16, 17)}
+\subsubsection{User Authentication (FRTC11, 12, 15, 16, 17 - Updated)}
 \textbf{Initial State:} The system is operational with user accounts created.\\
 \textbf{Input:} Valid login credentials for an authorized user.\\
 \textbf{Expected Output:} The system authenticates the user and grants access according to the user's role.\\
@@ -122,7 +122,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.2 (Image Preprocessing)\\
 
-\subsubsection{Handling Invalid Image Formats (FRTC4)}
+\subsubsection{Handling Invalid Image Formats (FRTC4 - Updated)}
 \textbf{Initial State:} The system is awaiting an image upload.\\
 \textbf{Input:} An invalid image file (e.g., TXT, DOCX, unsupported formats, or corrupted image files).\\
 \textbf{Expected Output:}
@@ -135,7 +135,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.2 (Image Preprocessing)\\
 
-\subsection{CNN Model Accurate Analysis (FR.3)}
+\subsection{CNN Model Accurate Analysis (FR.3 - Updated)}
 \subsubsection{Disease Classification with Confidence Scores (FRTC5 - Updated)}
 \textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
 \textbf{Input:} A preprocessed chest X-ray image with known disease patterns (e.g., Pneumonia, Cardiomegaly, Atelectasis).\\
@@ -162,7 +162,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.3 (CNN Model Accurate Analysis)\\
 
-\subsection{Display Results (FR.6)}
+\subsection{Display Results (FR.6 - Updated)}
 \subsubsection{Diagnostic Report and Heatmap Access via Web Interface (FRTC10 - Updated)}
 \textbf{Input:} The user navigates to the results page after an image has been analyzed.\\
 \textbf{Expected Output:} The system displays the predicted disease classification(s). The confidence scores are presented next to each disease label. (Optional) A heatmap overlay is shown, visually indicating affected areas in the X-ray. The interface is formatted clearly for easy interpretation.\\
