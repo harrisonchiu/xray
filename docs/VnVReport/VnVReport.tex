@@ -3,6 +3,8 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{longtable}
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -30,8 +32,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+10 March & 1.0 & Gurnoor and Harrison add section 3\\
 \bottomrule
 \end{tabularx}
 
@@ -39,16 +40,32 @@ Date 2 & 1.1 & Notes\\
 
 \section{Symbols, Abbreviations and Acronyms}
 
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{l l} 
-  \toprule		
-  \textbf{symbol} & \textbf{description}\\
-  \midrule 
-  T & Test\\
-  \bottomrule
-\end{tabular}\\
+Table 1, includes the definitions and descriptions of all relevant symbols,
+abbreviations and acronyms used in this VnV Plan document.
 
-\wss{symbols, abbreviations or acronyms -- you can reference the SRS tables if needed}
+\begin{longtable}[c]{|p{0.3\textwidth}|p{0.7\textwidth}|}
+  \hline
+  \textbf{Symbol, Abbreviation or Acronym} & \textbf{Definiton or Description} \\ \hline
+  \textbf{ML} & Machine Learning: A branch of artificial intelligence that involves the use of algorithms to allow computers to learn from and make predictions based on data. This is a core technology used in the project for analyzing chest X-rays. \\ \hline
+  \textbf{DL} & Deep Learning: A subset of machine learning involving neural networks with many layers, used to analyze various types of data, including images. \\ \hline
+  \textbf{DICOM} & Digital Imaging and Communications in Medicine: A standard for transmitting, storing, and sharing medical imaging information. It is used to manage medical images in the proposed solution. \\ \hline
+  \textbf{CNN} & Convolutional Neural Network: A type of deep learning model specifically designed for processing structured grid data like images, used in the project for chest X-ray analysis. \\ \hline
+  \textbf{EHR} & Electronic Health Record: A digital version of a patient's paper chart, used for storing patient information and history that may be integrated with the proposed solution. \\ \hline
+  \textbf{API} & Application Programming Interface: A set of rules and protocols for building and interacting with software applications, enabling the integration of the proposed solution with other systems. \\ \hline
+  \textbf{MC} & Mandated Constraints: Various constraints placed on the project’s proposed solution that must be adhered to throughout the development process. \\ \hline
+  \textbf{FR} & Functional Requirement: A requirement that specifies what functionality the project’s proposed solution must provide to meet user needs. \\ \hline
+  \textbf{NFR} & Nonfunctional Requirement: A requirement that specifies criteria that can be used to judge the operation of a system, rather than specific behaviors (e.g., performance, usability). \\ \hline
+  \textbf{BUC} & Business Use Case: A scenario that describes how the proposed solution can be used within a business context to achieve specific goals. \\ \hline
+  \textbf{PUC} & Product Use Case: A scenario that details how an individual user will interact with the proposed solution to achieve specific tasks. \\ \hline
+  \textbf{MVP} & Minimum Viable Product: A version of the proposed solution that includes only the essential features required to meet the core needs of the users and stakeholders. \\ \hline
+  \textbf{MG} & Module Guide \\ \hline
+  \textbf{MIS} & Module Interface Specification \\ \hline
+  \textbf{PoC} & Proof of Concept \\ \hline
+  \textbf{SRS} & Software Requirements Specification \\ \hline
+  \textbf{FRTC} & Functional Requirements Test Case \\ \hline
+  \textbf{NFRTC} & Nonfunctional Requirements Test Case \\ \hline
+  \textbf{VnV} & Verification and Validation \\ \hline
+\end{longtable}
 
 \newpage
 
@@ -65,6 +82,259 @@ Date 2 & 1.1 & Notes\\
 This document ...
 
 \section{Functional Requirements Evaluation}
+
+\subsection{User Authentication (FR 8)}
+\subsubsection{User Authentication (FRTC15)}
+\textbf{Initial State:} The system is operational with user accounts created.\\
+\textbf{Input:} Valid login credentials for an authorized user.\\
+\textbf{Expected Output:} The system authenticates the user and grants access according to the user's role.\\
+\textbf{Actual Output:} The system successfully authenticates the user and redirects them to the dashboard, allowing appropriate access based on their role.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.8 (Authentication and Authorization Mechanisms)\\
+
+\subsection{Image Upload (FR.1)}
+\subsubsection{Chest X-ray Image Input Acceptance (FRTC1)}
+\textbf{Initial State:} The system is in a stable state with all components initialized and ready to receive input.\\
+\textbf{Input:} A sample chest X-ray image in a valid format (JPG, PNG, DICOM).\\
+\textbf{Expected Output:} The system accepts and reads the chest X-ray image successfully.
+No error messages or system anomalies occur.\\
+\textbf{Actual Output:} The system successfully accepts, reads, and stores the uploaded image in the backend.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.1 (Image Upload)\\
+
+Invalid Chest X-ray Image Format Rejection (FRTC2)
+\textbf{Initial State:} The system is ready to receive an image file.\\
+\textbf{Input:} A sample image in an invalid format (e.g., .TXT, .DOCX).\\
+\textbf{Expected Output:} The system rejects the invalid image input.\\
+An appropriate error message is displayed, informing the user about supported formats.
+\textbf{Actual Output:} The system correctly rejects invalid file formats and provides an error message.\\
+\textbf{Expected and Actual Output Match:} True\\
+
+\subsection{Image Preprocessing (FR.2)}
+\subsubsection{Image Preprocessing and Standardization (FRTC3)}
+\textbf{Initial State:} A chest X-ray image has been uploaded and is ready for preprocessing.\\
+\textbf{Input:} A valid chest X-ray image in JPG, PNG, or DICOM format.\\
+\textbf{Expected Output:} The system resizes the image to match the CNN model’s required dimensions.\\
+Pixel intensity values are normalized to enhance consistency.
+The preprocessed image is saved and ready for inference.
+\textbf{Actual Output:} The system successfully resizes and normalizes images, preparing them for model analysis.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.2 (Image Preprocessing)\\
+
+\subsubsection{Handling Invalid Image Formats (FRTC4)}
+\textbf{Initial State:} The system is awaiting an image upload.\\
+\textbf{Input:} An invalid image file (e.g., TXT, DOCX, unsupported formats, or corrupted image files).\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The system detects that the image is in an unsupported format or corrupted.
+\item The system displays an error message to the user.
+\item The system prevents further processing and does not send the image to the model.
+\end{itemize}
+\textbf{Actual Output:} The system successfully identifies invalid formats and blocks the upload, displaying an appropriate error message.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.2 (Image Preprocessing)\\
+
+\subsection{CNN Model Accurate Analysis (FR.3)}
+\subsubsection{Disease Classification with Confidence Scores (FRTC5 - Updated)}
+\textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
+\textbf{Input:} A preprocessed chest X-ray image with known disease patterns (e.g., Pneumonia, Cardiomegaly, Atelectasis).\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The CNN model classifies the image and assigns a disease label.
+\item The model outputs confidence scores (e.g., Pneumonia: 85\%, No Finding: 10\%).
+\item The prediction results are displayed to the user.
+\end{itemize}
+\textbf{Actual Output:} The CNN model successfully classifies diseases and assigns confidence scores.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.3 (CNN Model Accurate Analysis)\\
+
+\subsubsection{Model Prediction for No Disease Cases (FRTC6 - Updated)}
+\textbf{Initial State:} The CNN model is ready for analysis, and a healthy chest X-ray is uploaded.\\
+\textbf{Input:} A preprocessed chest X-ray image of a patient with no known disease.\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The CNN model classifies the image as No Finding or returns very low probabilities for disease labels.
+\item The confidence scores reflect minimal probability of disease.
+\item The prediction results are displayed to the user.
+\end{itemize}
+\textbf{Actual Output:} The system correctly identifies images without disease and returns a No Finding classification.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.3 (CNN Model Accurate Analysis)\\
+
+\subsection{Display Results (FR.6)}
+\subsubsection{Diagnostic Report and Heatmap Access via Web Interface (FRTC10 - Updated)}
+\textbf{Input:} The user navigates to the results page after an image has been analyzed.\\
+\textbf{Expected Output:} The system displays the predicted disease classification(s). The confidence scores are presented next to each disease label. (Optional) A heatmap overlay is shown, visually indicating affected areas in the X-ray. The interface is formatted clearly for easy interpretation.\\
+\textbf{Actual Output:} The system correctly displays predicted disease labels, corresponding confidence scores, and a heatmap visualization (if enabled).\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.6 (Display Results)\\
+
+\subsubsection{Display Prediction Results in Readable Format (FRTC19 - New)}
+\textbf{Initial State:} The system has completed model inference, and the user is accessing the results page.\\
+\textbf{Input:} The user opens the result page after an image has been analyzed.\\
+\textbf{Expected Output:} The predicted disease label(s) are prominently displayed. The corresponding confidence scores are formatted for clarity. No extraneous or misleading information is presented. Results are accessible within a reasonable timeframe (<5 seconds).\\
+\textbf{Actual Output:} The system successfully displays predictions in a structured and readable format.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.6 (Display Results)\\
+
+\subsection{Heatmap Report (FR.7)}
+\subsubsection{Heatmap Display on Chest X-ray Images (FRTC9 - Updated)}
+\textbf{Initial State:} The CNN model has completed image analysis, and the system has generated a heatmap.\\
+\textbf{Input:} The user navigates to the results page and requests a heatmap visualization.\\
+\textbf{Expected Output:} The system overlays a heatmap on the chest X-ray image. The heatmap highlights areas where the model detected abnormalities. The overlay does not obscure critical image details.\\
+\textbf{Actual Output:} The system successfully generates and overlays the heatmap on the X-ray image, maintaining image clarity.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.7 (Heatmap Report)\\
+
+\subsubsection{Heatmap Generation Error Handling (FRTC20 - New)}
+\textbf{Initial State:} The CNN model has completed analysis, but an error occurs in heatmap generation.\\
+\textbf{Input:} The system attempts to generate a heatmap but encounters an issue (e.g., missing heatmap data, computation error).\\
+\textbf{Expected Output:} The system displays a message indicating that the heatmap could not be generated. The rest of the diagnostic results (predictions and confidence scores) remain accessible.\\
+\textbf{Actual Output:} The system successfully identifies heatmap generation errors and informs the user without affecting other results.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.7 (Heatmap Report)\\
+
+\subsection{User Dashboard (FR.9)}
+\subsubsection{Display User Dashboard with Past Uploads (FRTC21)}
+\textbf{Initial State:} The user is logged in and has previously uploaded X-ray images.\\
+\textbf{Input:} The user navigates to the dashboard page.\\
+\textbf{Expected Output:} The system retrieves and displays a list of past uploaded X-ray images. Each entry includes the upload timestamp and corresponding diagnosis results.\\
+\textbf{Actual Output:} The system successfully loads and displays past uploads with timestamps and results.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.9 (User Dashboard)\\
+
+\subsection{Secure API for Model Inference (FR.9)}
+\subsubsection{API Endpoint for Image Inference (FRTC22)}
+\textbf{Initial State:} No request is made, and the API is available.\\
+\textbf{Input:} A POST request containing a valid chest X-ray image.\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The API processes the image and forwards it to the CNN model.
+\item The API returns a JSON response with the predicted disease label and confidence scores.
+\item The response follows the correct structure (e.g., { "disease": "Pneumonia", "confidence": 85\% }).
+\end{itemize}
+\textbf{Actual Output:} The API successfully processes the request and returns the correct JSON response format.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.9 (Secure API for Model Inference)\\
+
+\subsubsection{API Handling of Invalid Image Format (FRTC23)}
+\textbf{Initial State:} No request is made, and the API is available.\\
+\textbf{Input:} A POST request containing an invalid file format (e.g., .TXT, .DOCX).\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The API rejects the request.
+\item The API returns a structured error message (e.g., { "error": "Invalid file format. Please upload \item JPG, PNG, or DICOM." }).
+\end{itemize}
+\textbf{Actual Output:} The API correctly rejects invalid file formats and returns an appropriate error message.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.9 (Secure API for Model Inference)\\
+
+\subsection{Data Storage \& Management (FR.7)}
+\subsubsection{Secure Image and Result Storage (FRTC22 - Updated)}
+\textbf{Initial State:} A user has uploaded an X-ray image, and the system is ready to store the data.\\
+\textbf{Input:} A valid chest X-ray image is uploaded, and the CNN model returns predictions.\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The system stores the uploaded image in a secure storage location.
+\item The system stores prediction results in the database, linking them to the respective image.
+\item No unauthorized access to stored data occurs.
+\end{itemize}
+\textbf{Actual Output:} The system successfully stores images and results securely, ensuring accessibility for future retrieval.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.7 (Data Storage \& Management)
+
+\subsubsection{Retrieval of Stored Results (FRTC23 - Updated)}
+\textbf{Initial State:} The database contains stored images and results for a logged-in user.\\
+\textbf{Input:} A user navigates to the dashboard and requests to view past results.\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The system retrieves and displays stored images with associated predictions.
+\item Each entry includes timestamps and confidence scores for past analyses.
+\item The data retrieval process is efficient, ensuring a smooth user experience.
+\end{itemize}
+\textbf{Actual Output:} The system successfully retrieves and displays stored images and results on the dashboard.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.7 (Data Storage \& Management)
+
+\subsection{Error Handling \& Notifications (FR.9)}
+\subsubsection{Invalid Image Format Handling (FRTC24 - Updated)}
+\textbf{Initial State:} The system is awaiting an image upload.\\
+\textbf{Input:} A user attempts to upload an unsupported file format (e.g., TXT, DOCX, MP4).\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The system rejects the upload.
+\item An error message appears stating, “Invalid file format. Please upload a JPG, PNG, or DICOM file.”
+\item The user is prompted to try again with a valid file format.
+\end{itemize}
+\textbf{Actual Output:} The system correctly rejects invalid file formats and displays an appropriate error message.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.9 (Error Handling \& Notifications)
+
+\subsubsection{Corrupted Image Upload Handling (FRTC25 - Updated)}
+\textbf{Initial State:} The system is awaiting an image upload.\\
+\textbf{Input:} A user attempts to upload a corrupted chest X-ray image.\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The system detects that the file is corrupted and cannot be processed.
+\item An error message appears stating, “File appears to be corrupted. Please upload a valid image.”
+\item The system does not store or process the corrupted file.
+\end{itemize}
+\textbf{Actual Output:} The system successfully detects and rejects corrupted image files, displaying an appropriate error message.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.9 (Error Handling \& Notifications)
+
+\subsection{Multi-Disease Classification (FR.11)}
+\subsubsection{Multi-Disease Detection with Confidence Scores (FRTC26 - Updated)}
+\textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
+\textbf{Input:} A preprocessed chest X-ray image containing multiple known diseases (e.g., Pneumonia and Tuberculosis).\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The CNN model classifies the image and returns a list of detected diseases.
+\item The confidence scores for each predicted disease are displayed.
+\\textbf{item Example output:} Pneumonia: 85\%, Tuberculosis: 70\%.
+\end{itemize}
+\textbf{Actual Output:} The CNN model successfully detects multiple diseases in a single image and provides confidence scores.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.11 (Multi-Disease Classification)\\
+
+\subsubsection{No Multi-Disease Detection for Single Condition (FRTC27 - Updated)}
+\textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
+\textbf{Input:} A preprocessed chest X-ray image with only one known disease (e.g., Cardiomegaly).\\
+\textbf{Expected Output:}
+\begin{itemize}
+\item The CNN model classifies the image and returns a single disease label.
+\item Confidence scores for unrelated diseases remain low.
+\textbf{Example output:} Cardiomegaly: 92\%, No Finding: 8\%.
+\end{itemize}
+\textbf{Actual Output:} The system correctly identifies only one disease when multiple diseases are not present.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.11 (Multi-Disease Classification)\\
+
+\subsection{Model Confidence (FR.12)}
+\subsubsection{Low Confidence Warning for Uncertain Predictions (FRTC28 - Updated)}
+\textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
+\textbf{Input:} A preprocessed chest X-ray image that leads to low confidence predictions (e.g., all detected diseases have confidence scores below 50\%).
+\textbf{Expected Output:}
+\begin{itemize}
+\item The system returns disease classifications with confidence scores.
+\item If the highest confidence score is below 50\%, the system displays a warning: “Low confidence in prediction – consider consulting a radiologist.”
+\end{itemize}
+\textbf{Actual Output:} The system correctly identifies low-confidence cases and displays the warning message.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.12 (Model Confidence)\\
+
+\subsubsection{High Confidence Predictions Displayed Normally (FRTC29 - Updated)}
+\textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
+\textbf{Input:} A preprocessed chest X-ray image that leads to high-confidence predictions (e.g., Pneumonia: 85\%).
+\textbf{Expected Output:}
+\begin{itemize}
+\item The system returns disease classifications with confidence scores.
+\item If confidence scores are above 50\%, no warning is displayed.
+\end{itemize}
+\textbf{Actual Output:} The system correctly displays high-confidence predictions without unnecessary warnings.\\
+\textbf{Expected and Actual Output Match:} True\\
+\textbf{Relevant Functional Requirement(s):} FR.12 (Model Confidence)\\
+
 
 \section{Nonfunctional Requirements Evaluation}
 
