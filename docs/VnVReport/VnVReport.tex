@@ -4,6 +4,7 @@
 \usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{parskip}
+\usepackage{makecell}
 \usepackage{longtable}
 \hypersetup{
     colorlinks,
@@ -83,8 +84,8 @@ This document ...
 
 \section{Functional Requirements Evaluation}
 
-\subsection{User Authentication (FR 8)}
-\subsubsection{User Authentication (FRTC15)}
+\subsection{User Authentication (FR.8)}
+\subsubsection{User Authentication (FRTC11, 12, 15, 16, 17)}
 \textbf{Initial State:} The system is operational with user accounts created.\\
 \textbf{Input:} Valid login credentials for an authorized user.\\
 \textbf{Expected Output:} The system authenticates the user and grants access according to the user's role.\\
@@ -110,8 +111,8 @@ An appropriate error message is displayed, informing the user about supported fo
 \textbf{Actual Output:} The system correctly rejects invalid file formats and provides an error message.\\
 \textbf{Expected and Actual Output Match:} True\\
 
-\subsection{Image Preprocessing (FR.2)}
-\subsubsection{Image Preprocessing and Standardization (FRTC3)}
+\subsection{Image Preprocessing (FR.2 - Updated)}
+\subsubsection{Image Preprocessing and Standardization (FRTC3 - Completely Revised)}
 \textbf{Initial State:} A chest X-ray image has been uploaded and is ready for preprocessing.\\
 \textbf{Input:} A valid chest X-ray image in JPG, PNG, or DICOM format.\\
 \textbf{Expected Output:} The system resizes the image to match the CNN model’s required dimensions.\\
@@ -169,7 +170,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.6 (Display Results)\\
 
-\subsubsection{Display Prediction Results in Readable Format (FRTC19 - New)}
+\subsubsection{Display Prediction Results in Readable Format (FRTC18 - New)}
 \textbf{Initial State:} The system has completed model inference, and the user is accessing the results page.\\
 \textbf{Input:} The user opens the result page after an image has been analyzed.\\
 \textbf{Expected Output:} The predicted disease label(s) are prominently displayed. The corresponding confidence scores are formatted for clarity. No extraneous or misleading information is presented. Results are accessible within a reasonable timeframe (<5 seconds).\\
@@ -186,7 +187,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.7 (Heatmap Report)\\
 
-\subsubsection{Heatmap Generation Error Handling (FRTC20 - New)}
+\subsubsection{Heatmap Generation Error Handling (FRTC19 - New)}
 \textbf{Initial State:} The CNN model has completed analysis, but an error occurs in heatmap generation.\\
 \textbf{Input:} The system attempts to generate a heatmap but encounters an issue (e.g., missing heatmap data, computation error).\\
 \textbf{Expected Output:} The system displays a message indicating that the heatmap could not be generated. The rest of the diagnostic results (predictions and confidence scores) remain accessible.\\
@@ -195,7 +196,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Relevant Functional Requirement(s):} FR.7 (Heatmap Report)\\
 
 \subsection{User Dashboard (FR.9)}
-\subsubsection{Display User Dashboard with Past Uploads (FRTC21)}
+\subsubsection{Display User Dashboard with Past Uploads (FRTC20 - New)}
 \textbf{Initial State:} The user is logged in and has previously uploaded X-ray images.\\
 \textbf{Input:} The user navigates to the dashboard page.\\
 \textbf{Expected Output:} The system retrieves and displays a list of past uploaded X-ray images. Each entry includes the upload timestamp and corresponding diagnosis results.\\
@@ -204,7 +205,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Relevant Functional Requirement(s):} FR.9 (User Dashboard)\\
 
 \subsection{Secure API for Model Inference (FR.9)}
-\subsubsection{API Endpoint for Image Inference (FRTC22)}
+\subsubsection{API Endpoint for Image Inference (FRTC21 - New)}
 \textbf{Initial State:} No request is made, and the API is available.\\
 \textbf{Input:} A POST request containing a valid chest X-ray image.\\
 \textbf{Expected Output:}
@@ -217,7 +218,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.9 (Secure API for Model Inference)\\
 
-\subsubsection{API Handling of Invalid Image Format (FRTC23)}
+\subsubsection{API Handling of Invalid Image Format (FRTC22 - New)}
 \textbf{Initial State:} No request is made, and the API is available.\\
 \textbf{Input:} A POST request containing an invalid file format (e.g., .TXT, .DOCX).\\
 \textbf{Expected Output:}
@@ -230,7 +231,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Relevant Functional Requirement(s):} FR.9 (Secure API for Model Inference)\\
 
 \subsection{Data Storage \& Management (FR.7)}
-\subsubsection{Secure Image and Result Storage (FRTC22 - Updated)}
+\subsubsection{Secure Image and Result Storage (FRTC13 - Updated)}
 \textbf{Initial State:} A user has uploaded an X-ray image, and the system is ready to store the data.\\
 \textbf{Input:} A valid chest X-ray image is uploaded, and the CNN model returns predictions.\\
 \textbf{Expected Output:}
@@ -243,7 +244,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.7 (Data Storage \& Management)
 
-\subsubsection{Retrieval of Stored Results (FRTC23 - Updated)}
+\subsubsection{Retrieval of Stored Results (FRTC14 - Updated)}
 \textbf{Initial State:} The database contains stored images and results for a logged-in user.\\
 \textbf{Input:} A user navigates to the dashboard and requests to view past results.\\
 \textbf{Expected Output:}
@@ -257,7 +258,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Relevant Functional Requirement(s):} FR.7 (Data Storage \& Management)
 
 \subsection{Error Handling \& Notifications (FR.9)}
-\subsubsection{Invalid Image Format Handling (FRTC24 - Updated)}
+\subsubsection{Invalid Image Format Handling (FRTC2 - Updated)}
 \textbf{Initial State:} The system is awaiting an image upload.\\
 \textbf{Input:} A user attempts to upload an unsupported file format (e.g., TXT, DOCX, MP4).\\
 \textbf{Expected Output:}
@@ -270,7 +271,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.9 (Error Handling \& Notifications)
 
-\subsubsection{Corrupted Image Upload Handling (FRTC25 - Updated)}
+\subsubsection{Corrupted Image Upload Handling (FRTC4 - Updated)}
 \textbf{Initial State:} The system is awaiting an image upload.\\
 \textbf{Input:} A user attempts to upload a corrupted chest X-ray image.\\
 \textbf{Expected Output:}
@@ -284,7 +285,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Relevant Functional Requirement(s):} FR.9 (Error Handling \& Notifications)
 
 \subsection{Multi-Disease Classification (FR.11)}
-\subsubsection{Multi-Disease Detection with Confidence Scores (FRTC26 - Updated)}
+\subsubsection{Multi-Disease Detection with Confidence Scores (FRTC5 and 6 - Updated)}
 \textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
 \textbf{Input:} A preprocessed chest X-ray image containing multiple known diseases (e.g., Pneumonia and Tuberculosis).\\
 \textbf{Expected Output:}
@@ -297,7 +298,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.11 (Multi-Disease Classification)\\
 
-\subsubsection{No Multi-Disease Detection for Single Condition (FRTC27 - Updated)}
+\subsubsection{No Multi-Disease Detection for Single Condition (FRTC5 - Updated)}
 \textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
 \textbf{Input:} A preprocessed chest X-ray image with only one known disease (e.g., Cardiomegaly).\\
 \textbf{Expected Output:}
@@ -311,7 +312,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Relevant Functional Requirement(s):} FR.11 (Multi-Disease Classification)\\
 
 \subsection{Model Confidence (FR.12)}
-\subsubsection{Low Confidence Warning for Uncertain Predictions (FRTC28 - Updated)}
+\subsubsection{Low Confidence Warning for Uncertain Predictions (FRTC8 - Updated)}
 \textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
 \textbf{Input:} A preprocessed chest X-ray image that leads to low confidence predictions (e.g., all detected diseases have confidence scores below 50\%).
 \textbf{Expected Output:}
@@ -323,7 +324,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.12 (Model Confidence)\\
 
-\subsubsection{High Confidence Predictions Displayed Normally (FRTC29 - Updated)}
+\subsubsection{High Confidence Predictions Displayed Normally (FRTC7 - Updated)}
 \textbf{Initial State:} The system has preprocessed an uploaded image and is ready for analysis.\\
 \textbf{Input:} A preprocessed chest X-ray image that leads to high-confidence predictions (e.g., Pneumonia: 85\%).
 \textbf{Expected Output:}
@@ -346,7 +347,57 @@ The preprocessed image is saved and ready for inference.
 	
 \section{Comparison to Existing Implementation}	
 
-This section will not be appropriate for every project.
+\begin{table}[]
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  \textbf{Projects} & \textbf{Links} \\ \hline
+  This project & \url{https://github.com/harrisonchiu/xray} \\ \hline
+  CXR-Capstone & \url{https://github.com/RezaJodeiri/CXR-Capstone} \\ \hline
+  CXR-LLaVA & 
+  \makecell{\url{https://github.com/ECOFRI/CXR\_LLaVA} \\ \url{https://arxiv.org/abs/2310.18341}} \\ \hline
+  \end{tabular}
+\end{table}
+
+\subsection{CXR-LLaVA Comparison}
+CXR-LLaVA is an open-source multimodal large language model designed to interpret chest X-ray images and generate radiologic reports for those images. By integrating advanced vision transformers with large language models, it aims to emulate the diagnostic capabilities of human radiologists.
+
+Their model was trained on many open source CXR datasets. These include:
+\begin{itemize}
+\item BrixIA: A dataset focusing on COVID-19 pneumonia severity scoring.​
+\item CheXpert: A large dataset with labeled CXR images covering multiple pathologies.
+\item MIMIC-CXR: Comprises de-identified CXR images and corresponding radiology reports.​
+\item NIH Chest X-ray Dataset: Contains over 100,000 CXR images with annotations for 14 disease labels.
+\item PadChest: Offers a wide variety of thoracic disease labels and radiographic findings.​
+\item RSNA COVID-19 AI Detection Challenge: Provides CXR images related to COVID-19 cases.​
+\item VinDR-CXR: A dataset with annotations for various lung diseases.
+\end{itemize}
+
+Collectively, there are more than 500 000 different CXR images which is a lot of training data.
+
+CXR-LLaVA's architecture is made of:​
+\begin{itemize}
+\item Image Encoder: A Vision Transformer (ViT-L/16) processes CXR images at a resolution of 512x512 pixels in grayscale.​
+\item Language Model: LLAMA2-7B-CHAT serves as the foundational language model, facilitating the generation of coherent and contextually relevant radiologic reports.
+\end{itemize}
+
+Generally, CXR-LLaVA and our project share the common goal of analysing chest x-ray images to identify diseases. However, they still differ in several aspects.
+
+Our project focuses on detecting diseases in CXR images with a CNN in the backend. CXR-LLaVA on top of that, generates a comprehensive radiologic report from the CXR image, summarizing its findings in order to emulate a proper radiologist diagnosis. As a result, their model architecture is more complex, combining a Vision Transformer for the image encoder and a Llama language model to output a textual report based on the visual input from the vision transformer. Vision transformers and language models are very data hungry. So, they also use a lot more datasets, composed of over 500 000 different images.
+
+However, there is no front end. In order to use it, you must follow their instructions to load their trained model and then run it in the terminal.
+
+It is an advanced research project with its own research paper referencing it.
+
+\subsection{CXR-Capstone}
+The CXR-Capstone project is an open-source project that analyzes chest X-ray (CXR) images to predict potential diseases using a CNN model with multi-label prediction. It also uses demographic information such as race, age, and gender. In this way, it classifies images based on demographics as well for the intent of mitigating biases.
+
+The project is very similar to ours as it has a frontend running a backend model that takes in the user’s uploaded image and analyses if there are any diseases. On top of that, it also tracks the progression of conditions over time and generates a simple diagnostic report based on the image.
+
+Their project uses a newer model architecture of DETR (detection transformer). It is said to have higher accuracy and run time performance than traditional CNNs. Its architecture is based on a transformer which is typically more data hungry, so it also uses a much larger dataset, MIMIC-CXR, which has over 300 000 images.
+
+The end product is still similar to our project but has slightly more features of tracking progression (assuming the users continuously upload new images of themselves) and report generation.
+
 
 \section{Unit Testing}
 
@@ -358,6 +409,61 @@ the feedback from the Rev 0 demo to the supervisor (or to potential users)
 should be highlighted.}
 
 \section{Automated Testing}
+Automated testing for our project currently emphasizes maintaining high code quality through consistent linting and formatting checks. The existing automated tests ensure code quality, readability, and consistency across the entire codebase. Our project does not require extensive CI/CD automated testing because the team is small and focused. The codebase is also manageable and easily divided up in parts where each member could work on it separately.
+
+\subsection{Linting and Formatting}
+
+We utilize GitHub Actions workflows to automate linting and formatting checks for both frontend and backend components. These automated checks help maintain code consistency, improve readability, and minimize potential bugs.
+
+\subsection{Frontend (React.js / JavaScript)}
+
+We use two primary tools for frontend code quality:
+\begin{itemize}
+\item \textbf{ESLint:} ESLint analyzes JavaScript and React code, enforcing best practices and identifying errors or potential issues such as unused variables, improper imports, syntax errors, and inconsistent code patterns. Developers run ESLint locally before pushing code to identify and fix issues proactively. The ESLint configuration adheres to industry-standard rules optimized for React development, providing detailed error and warning messages to facilitate rapid fixes.
+\item \textbf{Prettier:} Prettier automatically formats JavaScript and React code, enforcing consistent indentation, spacing, bracket placement, and line lengths. This ensures that the frontend codebase remains uniform regardless of individual developer preferences. Automated checks verify adherence to the Prettier rules, failing commits or pull requests that do not comply.
+\end{itemize}
+
+\subsection{Backend (Python)}
+
+The backend uses robust automated checks using the following tools:
+\begin{itemize}
+\item \textbf{Flake8:} Flake8 enforces adherence to Python’s PEP 8 standards. It identifies potential syntax errors, unused imports or variables, and common coding pitfalls. By automating Flake8 checks, we ensure backend code quality remains consistently high, reducing manual code reviews and catching errors early in the development process.
+\item \textbf{Black:} Black automatically formats Python code to a unified and clear style, eliminating debates about formatting preferences. It handles line length, spacing, and structural formatting. Automated Black checks verify code conformity and clearly indicate any violations, ensuring readability and maintainability.
+\end{itemize}
+
+\subsection{Running Automated Tests Locally}
+Developers can perform these tests locally before committing changes, ensuring issues are addressed early:
+
+\subsubsection{JavaScript Checks:}
+\verb|npm run lint| and \verb|npm run format:check|
+\begin{itemize}
+\item This command runs ESLint and Prettier, respectively, highlighting or automatically fixing formatting and linting issues.
+\end{itemize}
+
+\verb|flake8 .| and \verb|black --check .|
+\begin{itemize}
+\item Running these commands validates backend Python code adherence to style and linting standards.
+\end{itemize}
+
+\subsection{GitHub Actions Integration}
+GitHub Actions workflows trigger these automated checks each time a developer makes a pull request or pushes code to the main branch. These workflows include:
+\begin{itemize}
+\item Linting Workflow: Runs ESLint (frontend) and Flake8 (backend). If linting errors are found, the workflow fails, clearly identifying issues that must be resolved before merging.
+\item Formatting Workflow: Checks formatting with Prettier (frontend) and Black (backend). Any deviations from the established formatting rules trigger a failed workflow, requiring immediate correction by developers.
+\end{itemize}
+
+These checks ensure only clean and consistently formatted code enters the main codebase.
+
+The GitHub Actions workflows are configured to trigger automatically whenever:
+\begin{itemize}
+\item A pull request is opened or updated.
+\item Code is pushed to critical branches (e.g., main or development).
+\end{itemize}
+
+If a workflow fails, GitHub clearly indicates the exact nature and location of errors, allowing developers to quickly identify and fix issues. This rapid feedback cycle helps team productivity and helps maintain a robust and error-free codebase
+
+
+
 		
 \section{Trace to Requirements}
 		
