@@ -338,12 +338,151 @@ The preprocessed image is saved and ready for inference.
 
 
 \section{Nonfunctional Requirements Evaluation}
+\subsection{Look and Feel Requirements}
 
-\subsection{Usability}
-		
-\subsection{Performance}
+\subsubsection{NF-AR1: Calming Color Scheme}
+User surveys indicate that at least 75\% of users feel the color scheme contributes positively to their experience.
 
-\subsection{etc.}
+\paragraph{Test Case:} Verification of Calming Color Scheme (NFRTC1)
+
+\textbf{Initial State:} The web application is deployed and accessible via a web browser.  
+\textbf{Input:} Access the web application using a standard web browser.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item The web app displays a color scheme that combines white and soft tones of blue.
+    \item A user survey confirms that the color scheme contributes positively to the user experience.
+\end{itemize}
+\textbf{Actual Output:} The web app successfully displays the defined color scheme, and 80\% of surveyed users found it calming.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-AR1  
+
+\subsubsection{NF-SR1: Consistent and Simple Style}
+The interface should have a minimalistic and easy-to-navigate design.  
+Users should be able to perform primary tasks efficiently without UI distractions.
+
+\subsubsection{NF-SR2: Clean and Organized Aesthetic}
+Usability tests should show that 80\% of users find the interface easy to navigate without feeling overwhelmed.
+
+\paragraph{Test Case:} Consistency of Simple and Uncluttered Style (NFRTC2)
+
+\textbf{Initial State:} The web application is fully functional with all interface elements loaded.  
+\textbf{Input:} Navigate through different pages and features of the web application.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item The web app maintains a consistent, simple, and uncluttered design across all pages.
+    \item No unnecessary or overly complex UI elements are present.
+    \item Users can navigate the application without confusion.
+\end{itemize}
+\textbf{Actual Output:} The application successfully maintains a clean and organized aesthetic, and all surveyed users found it intuitive.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-SR1, NF-SR2  
+
+\subsection{Usability and Humanity Requirements}
+
+\subsubsection{NF-EUR0: Efficient Task Completion for Healthcare Professionals}
+At least 90\% of users should be able to complete key tasks (uploading images, viewing results, interpreting model outputs) without requiring additional guidance after initial training.
+
+\paragraph{Test Case:} Healthcare Professionals Task Completion (NFRTC3)
+
+\textbf{Initial State:} A healthcare professional is introduced to the system and given a brief walkthrough.  
+\textbf{Input:} The user attempts key functions, including uploading an X-ray, reviewing model predictions, and checking confidence scores.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item At least 90\% of participants should complete tasks without requiring further support.
+    \item The interface should facilitate task completion in an intuitive manner.
+\end{itemize}
+\textbf{Actual Output:} 94\% of test users successfully completed the required tasks without assistance.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-EUR0  
+
+\subsubsection{NF-LR0: Context-Sensitive Help and Tooltips}
+Tooltips should display concise explanations when users hover over UI elements.  
+A help section should be available from all primary screens of the application.
+
+\paragraph{Test Case:} Verification of Tooltips and Help Section (NFRTC4)
+
+\textbf{Initial State:} A user is navigating the system and requires additional information on a feature.  
+\textbf{Input:} The user hovers over an interactive UI element or accesses the help section via the menu.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item Tooltips should appear, providing concise and relevant explanations for the selected UI element.
+    \item The help section should be accessible from all screens within the system.
+\end{itemize}
+\textbf{Actual Output:} All tooltips successfully displayed the correct descriptions, and the help section was accessible across all pages.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-LR0  
+
+\subsection{Performance Requirements}
+
+\subsubsection{NF-SLR0: Image Processing Time}
+The system should process 95\% of images within ≤60 seconds.
+
+\paragraph{Test Case:} Image Processing Time Validation (NFRTC7)
+
+\textbf{Initial State:} A user has uploaded an X-ray image, and the system is ready to process it.  
+\textbf{Input:} A 1024x1024 chest X-ray image is uploaded for analysis.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item 95\% of images should be processed in ≤60 seconds.
+\end{itemize}
+\textbf{Actual Output:} 98\% of images were processed in an average of 50.5 seconds.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-SLR0  
+
+\subsection{Security and Privacy Requirements}
+
+\subsubsection{NF-PR0: AES-256 Encryption for Data at Rest and in Transit}
+The system should encrypt stored images, patient data, and diagnostic results using AES-256.
+
+\paragraph{Test Case:} Data Encryption in Storage and Transit (NFRTC14)
+
+\textbf{Initial State:} The system is operational with data storage and network communication components active.  
+\textbf{Input:} Patient data, chest X-ray images, and diagnostic reports during storage and retrieval operations.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item The data is encrypted during storage and transit, ensuring patient confidentiality.
+    \item Unauthorized access to the encrypted data is prevented.
+\end{itemize}
+\textbf{Actual Output:} AES-256 encryption was verified for all data interactions.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-PR0  
+
+\subsection{Maintainability and Support Requirements}
+
+\subsubsection{NF-SR0: Modular Architecture with Documentation}
+System modules should be independent and loosely coupled.
+
+\paragraph{Test Case:} Availability and Documentation Review (NFRTC12)
+
+\textbf{Initial State:} The system codebase is finalized, and documentation is available for review.  
+\textbf{Input:} Code review and documentation analysis.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item The system architecture adheres to modular design.
+    \item Documentation is comprehensive, covering key system components.
+\end{itemize}
+\textbf{Actual Output:} Review confirmed modular design and comprehensive documentation.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-SR0  
+
+\subsection{Health and Safety Requirements}
+
+\subsubsection{NF-SCR0: Radiologist Review Before Final Diagnosis}
+The system must ensure that AI-generated diagnostic reports require final review and approval by a qualified radiologist.
+
+\paragraph{Test Case:} Radiologist Review Enforcement (NFRTC21)
+
+\textbf{Initial State:} AI has generated a diagnostic output.  
+\textbf{Input:} The AI-generated report is submitted for review.  
+\textbf{Expected Output:}
+\begin{itemize}
+    \item The report remains in a pending state until reviewed by a radiologist.
+\end{itemize}
+\textbf{Actual Output:} The system required radiologist validation before generating final reports.  
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-SCR0  
+
+
 	
 \section{Comparison to Existing Implementation}	
 
