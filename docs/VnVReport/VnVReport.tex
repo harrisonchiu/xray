@@ -1070,6 +1070,12 @@ graduate attribute of Reflection.
   Originally, in our VnV Plan, under non-functional requirements, we had stated that our website needed to be compliant with data security standards, particularly those related to patient data protection, including secure storage, access controls, and adherence to privacy regulations (e.g., HIPAA). However, as we progressed, we realized that storing uploaded CXR images was unnecessary. Users, most likely radiologists or researchers, would only be looking for short-term insights, meaning long-term data storage would not only be an unnecessary cost but also irrelevant to their needs. 
   
   Instead, we decided to use SHA encryption for user account details, ensuring that in future refactoring of the website, any data shared by users would also be SHA encrypted and only stored in temporary storage, such as Redis Cache, before being deleted. This was our key revision regarding security compliance verification.
+
+  For context, HIPAA (Health Insurance Portability and Accountability Act) is a U.S. law that governs the protection of sensitive patient health information. It ensures that personal health data is kept private and secure when stored, processed, or transmitted by healthcare providers, insurers, and associated service providers.
+
+  Key rules include limiting access to PHI (personal health info), securing electronic data (ePHI), and notifying patients of breaches. Patients also have the right to access and correct their data.
+
+  To implement HIPAA compliance, systems should encrypt data at rest and in transit, use access controls like role-based permissions, and maintain audit logs to track data access. Physical and network security measures must be in place, and staff should be trained in HIPAA policies. Any third-party services handling PHI must sign Business Associate Agreements (BAAs) to ensure compliance throughout the data chain.
   
   \subsection{Backend Testing and Unit Test Revisions}
   
