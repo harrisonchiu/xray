@@ -107,11 +107,11 @@ This section records information for easy reference.
 
 \section{Introduction}
 
-To build software systems that are reliable, easy to maintain, and adaptable to future changes, it’s important to break them down into smaller, manageable parts. This approach, known as modular design, ensures that each part of the system has a single responsibility and can be developed, tested, and updated independently of the others.
+To build software systems that are reliable, easy to maintain, and adaptable to future changes, it's important to break them down into smaller, manageable parts. This approach, known as modular design, ensures that each part of the system has a single responsibility and can be developed, tested, and updated independently of the others.
 
 This document outlines the structure of a modular system designed to support a machine learning model that performs multi-disease classification on chest X-ray images. The goal of this system is to take raw medical image data, prepare it for training, define a suitable neural network architecture, train the model using the prepared data, and then make the model accessible through a backend and user interface.
 
-Each module in the system was created with the idea that it should hide its internal details (or “secrets”) from other parts of the system. By doing this, the system becomes easier to understand and modify — for example, if we want to improve the model architecture or adjust how the data is preprocessed, we can do so without affecting unrelated parts of the project.
+Each module in the system was created with the idea that it should hide its internal details (or "secrets") from other parts of the system. By doing this, the system becomes easier to understand and modify - for example, if we want to improve the model architecture or adjust how the data is preprocessed, we can do so without affecting unrelated parts of the project.
 
 This document is intended to explain how the system is organized and how the modules interact. It is meant to help:
 
@@ -127,13 +127,13 @@ This design document aims to provide a structured and abstract explanation of th
 
 \section{Anticipated and Unlikely Changes}
 
-Anticipated changes are the areas of the system that are most likely to evolve and have been designed to accommodate future adjustments. These changes are encapsulated within specific modules to ensure the system’s flexibility.
+Anticipated changes are the areas of the system that are most likely to evolve and have been designed to accommodate future adjustments. These changes are encapsulated within specific modules to ensure the system's flexibility.
 
 \subsection{Anticipated Changes}
 
 \begin{itemize}
     \item \textbf{AC1: Model Architecture Upgrades} \\
-    As new multi-disease classification models are published or transfer learning methods improve, the current CNN model may need to be updated or replaced. The system’s modular architecture ensures that the model definition and training pipeline can be swapped or extended without major changes to the rest of the codebase.
+    As new multi-disease classification models are published or transfer learning methods improve, the current CNN model may need to be updated or replaced. The system's modular architecture ensures that the model definition and training pipeline can be swapped or extended without major changes to the rest of the codebase.
     
     \item \textbf{AC2: Dataset Expansion and Variation} \\
     The system currently uses the NIH Chest X-ray dataset. In the future, new datasets (e.g., CheXpert, MIMIC-CXR) may be added to improve performance or generalization. The DataRetrieval and DataPreparation modules are designed to accommodate multiple datasets and make it easy to plug in additional sources with minimal code changes.
@@ -155,26 +155,26 @@ Anticipated changes are the areas of the system that are most likely to evolve a
 
 \subsection{Unlikely Changes}
 
-Unlikely changes refer to parts of the system architecture that are not expected to require modification under typical usage or foreseeable project evolution. These areas have been designed with long-term stability in mind and are either foundational to the system’s operation or tightly coupled to domain-specific constraints.
+Unlikely changes refer to parts of the system architecture that are not expected to require modification under typical usage or foreseeable project evolution. These areas have been designed with long-term stability in mind and are either foundational to the system's operation or tightly coupled to domain-specific constraints.
 
 \begin{itemize}
     \item \textbf{UC1: Abandoning the Modular Architecture Design} \\
     The project is built around modularity and separation of concerns as core software engineering principles. Switching to a monolithic or less modular architecture would compromise maintainability and scalability. It is unlikely that this approach would be reconsidered unless the entire project is restructured, which contradicts its maintainability goals.
     
     \item \textbf{UC2: Removal of Machine Learning Components} \\
-    Since the core purpose of this project is multi-disease classification using machine learning, the removal of ML-related components such as ModelArchitecture, Training, or MLBackend would fundamentally alter the system’s purpose. These components are central to the system and are not expected to be deprecated.
+    Since the core purpose of this project is multi-disease classification using machine learning, the removal of ML-related components such as ModelArchitecture, Training, or MLBackend would fundamentally alter the system's purpose. These components are central to the system and are not expected to be deprecated.
     
     \item \textbf{UC3: Eliminating User Authentication} \\
     User authentication through modules like AuthClient and Authorization provides a necessary security layer for medical applications, especially in regulated environments. Removing authentication entirely is highly improbable, as it would expose the system to privacy and compliance risks, especially when deployed in real-world or clinical settings.
     
     \item \textbf{UC4: Switching Away from Medical Imaging} \\
-    The project is domain-specific to chest X-ray analysis, and every module — from data preparation to visualization — is aligned with this domain. A pivot to a completely different domain (e.g., non-medical computer vision tasks) would render large parts of the architecture obsolete and is not aligned with the system’s design objectives.
+    The project is domain-specific to chest X-ray analysis, and every module - from data preparation to visualization - is aligned with this domain. A pivot to a completely different domain (e.g., non-medical computer vision tasks) would render large parts of the architecture obsolete and is not aligned with the system's design objectives.
     
     \item \textbf{UC5: Replacing All Dataset Sources with Synthetic Data} \\
     Although synthetic datasets may be used for augmentation or research, replacing all real-world datasets like NIH Chest X-rays with synthetic data would limit clinical relevance and model generalizability. Therefore, it is unlikely that synthetic data would become the sole source for training and evaluation.
     
     \item \textbf{UC6: Discontinuation of User Interface} \\
-    The ModelInterface module provides crucial access to model predictions and results for users, whether they are clinicians, researchers, or students. Eliminating the UI layer in favor of purely API-based access would reduce usability and is not aligned with the system’s goal of providing a user-friendly diagnostic tool.
+    The ModelInterface module provides crucial access to model predictions and results for users, whether they are clinicians, researchers, or students. Eliminating the UI layer in favor of purely API-based access would reduce usability and is not aligned with the system's goal of providing a user-friendly diagnostic tool.
 \end{itemize}
 
 \section{Module Hierarchy} \label{SecMH}
@@ -366,7 +366,7 @@ Each functional requirement is addressed by one or more modules within the syste
     \item \textbf{FR10:} Delivered by the M1 (ModelInterface) module, which ensures that diagnostic details including prediction results, probabilities, and timestamps are clearly displayed to the user.
 \end{itemize}
 
-This mapping confirms that each functional requirement is appropriately addressed by one or more modules, reinforcing the system’s alignment with its design goals and intended functionality.
+This mapping confirms that each functional requirement is appropriately addressed by one or more modules, reinforcing the system's alignment with its design goals and intended functionality.
 
 \subsection{Traceability Between Anticipated Changes and Modules}
 
@@ -404,7 +404,8 @@ Anticipated changes are encapsulated within specific modules to ensure that evol
 
 This mapping ensures that each anticipated change has been carefully considered in the design and is isolated to a small number of modules. This contributes to a more maintainable, scalable, and future-ready software architecture.
 
-\caption{Traceability Matrix Between Anticipated Changes and Modules}
+\paragraph{Traceability Matrix Between Anticipated Changes and Modules}
+
 \newpage
 
 \section{Use Hierarchy Between Modules}
