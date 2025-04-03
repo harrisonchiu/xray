@@ -179,7 +179,7 @@ The preprocessed image is saved and ready for inference.
 \subsubsection{Display Prediction Results in Readable Format (FRTC18 - New)}
 \textbf{Initial State:} The system has completed model inference, and the user is accessing the results page.\\
 \textbf{Input:} The user opens the result page after an image has been analyzed.\\
-\textbf{Expected Output:} The predicted disease label(s) are prominently displayed. The corresponding confidence scores are formatted for clarity. No extraneous or misleading information is presented. Results are accessible within a reasonable timeframe (<5 seconds).\\
+\textbf{Expected Output:} The predicted disease label(s) are prominently displayed. The corresponding confidence scores are formatted for clarity. No extraneous or misleading information is presented. Misleading information includes wrong details or details that are not related to the specific context. Results are accessible within a reasonable timeframe (<5 seconds).\\
 \textbf{Actual Output:} The system successfully displays predictions in a structured and readable format.\\
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.6 (Display Results)\\
@@ -347,7 +347,7 @@ The preprocessed image is saved and ready for inference.
 \subsection{Look and Feel Requirements}
 
 \subsubsection{NF-AR1: Calming Color Scheme}
-User surveys indicate that at least 75\% of users feel the color scheme contributes positively to their experience.
+User surveys indicate that at least \verb|MAJORITY_USERS| of users feel the color scheme contributes positively to their experience.
 
 \paragraph{Test Case:} Verification of Calming Color Scheme (NFRTC1)
 
@@ -376,12 +376,12 @@ Users should be able to perform primary tasks efficiently without UI distraction
     \item Users can perform tasks without encountering distracting UI elements
     \item No confusing or redundant interactions
 \end{itemize}
-\textbf{Actual Output:} 66\% of users reported that the interface was simple and distraction-free.
+\textbf{Actual Output:} \verb|MAJORITY_USERS| of users reported that the interface was simple and distraction-free.
 \textbf{Expected and Actual Output Match:} True  
 \textbf{Relevant Nonfunctional Requirement(s):} NF-SR1, NF-SR2  
 
 \subsubsection{NF-SR2: Clean and Organized Aesthetic}
-Usability tests should show that 80\% of users find the interface easy to navigate without feeling overwhelmed.
+Usability tests should show that \verb|MAJORITY_USERS| of users find the interface easy to navigate without feeling overwhelmed.
 
 \paragraph{Test Case:} Consistency of Simple and Uncluttered Style (NFRTC2)
 
@@ -400,7 +400,7 @@ Usability tests should show that 80\% of users find the interface easy to naviga
 \subsection{Usability and Humanity Requirements}
 
 \subsubsection{NF-EUR0: Efficient Task Completion for Healthcare Professionals}
-At least 90\% of users should be able to complete key tasks (uploading images, viewing results, interpreting model outputs) without requiring additional guidance after initial training.
+At least \verb|ALMOST_ALL_USERS| of users should be able to complete key tasks (uploading images, viewing results, interpreting model outputs) without requiring additional guidance after initial training.
 
 \paragraph{Test Case:} Healthcare Professionals Task Completion (NFRTC3)
 
@@ -411,7 +411,7 @@ At least 90\% of users should be able to complete key tasks (uploading images, v
     \item At least 90\% of participants should complete tasks without requiring further support.
     \item The interface should facilitate task completion in an intuitive manner.
 \end{itemize}
-\textbf{Actual Output:} 94\% of test users successfully completed the required tasks without assistance.  
+\textbf{Actual Output:} \verb|ALMOST_ALL_USERS| of test users successfully completed the required tasks without assistance.  
 \textbf{Expected and Actual Output Match:} True  
 \textbf{Relevant Nonfunctional Requirement(s):} NF-EUR0  
 
@@ -445,7 +445,7 @@ The system should process 95\% of images within < 60 seconds.
 \begin{itemize}
     \item 95\% of images should be processed in <60 seconds.
 \end{itemize}
-\textbf{Actual Output:} 98\% of images were processed in an average of 50.5 seconds.  
+\textbf{Actual Output:} 98\% of images were each processed on average of 2.7 seconds.  
 \textbf{Expected and Actual Output Match:} True  
 \textbf{Relevant Nonfunctional Requirement(s):} NF-SLR0  
 
@@ -1083,7 +1083,7 @@ graduate attribute of Reflection.
   
   This approach would have ensured that the initial VnV plan remained useful even if the project evolved. However, there is also an argument that a verification plan that is too abstract could lose its usefulness. In hindsight, given the nature of our project, adopting a more flexible verification approach could have been a valuable revision.
   
-  \subsection{What Went Well?}
+  \subsection{What Went Well}
   
   \textbf{Gurnoor:} As a team, we distributed our roles across the document optimally. No one person was exclusive to a particular section, although each of us was primarily responsible for one section. We were all involved across different sections, helping each other and discussing any questions or confusion that arose.
   
