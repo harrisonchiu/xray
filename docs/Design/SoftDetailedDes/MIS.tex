@@ -2,7 +2,7 @@
 
 \usepackage{amsmath, mathtools}
 
-\usepackage[round]{natbib}
+% \usepackage[round]{natbib}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -135,8 +135,7 @@ Complementary documents include the System Requirement Specifications and Module
 
 \section{Notation}
 
-\wss{You should describe your notation. You can use what is below as a starting point. ---SS}
-The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995}, with the addition that template modules have been adapted from \cite{GhezziEtAl2003}. The mathematical notation comes from Chapter 3 of \citet{HoffmanAndStrooper1995}. For instance, the symbol := is used for a multiple assignment statement, and conditional rules follow the form $(c_1 \Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
+The structure of the MIS for modules comes from \cite{Hoffman1995}, with the addition that template modules have been adapted from \cite{Ghezzi2003}. The mathematical notation comes from Chapter 3 of \cite{Hoffman1995}. For instance, the symbol := is used for a multiple assignment statement, and conditional rules follow the form $(c_1 \Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
 
 The following table summarizes the primitive data types used by Chest Scan.
 
@@ -209,7 +208,7 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
     \hline
     \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
     \hline
@@ -290,7 +289,7 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
     \hline
     \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
     \hline
@@ -367,7 +366,7 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
     \hline
     \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
     \hline
@@ -573,7 +572,7 @@ getUsername & String (JWT) & Username & APIException \\
 \subsubsection{Assumptions}
 \begin{itemize}
     \item Usernames and emails are unique and validated at registration.
-    \item Valid roles (ROLE_USER, ROLE_ADMIN, etc.) are seeded or pre-created in the system.
+    \item Valid roles (\verb|ROLE_USER|, \verb|ROLE_ADMIN|, etc.) are seeded or pre-created in the system.
     \item Spring Security is enabled and properly configured (refer to \texttt{SecurityConfig} module).
     \item The secret key and expiration time are defined in the application properties.
 \end{itemize}
@@ -803,7 +802,7 @@ predict               & Image Bytes           & Diagnoses, Class Probabilities &
 
 \begin{itemize}
     \item \textbf{Transition:} Accepts an image file via POST request. Runs prediction pipeline and returns disease list and class probabilities.
-    \item \textbf{Output:} \texttt{\{"predictions": \{[diagnoses], [class\_probabilities]\}}}
+    \item \textbf{Output:} \texttt{"predictions": \{[diagnoses], [class\_probabilities]\}}
     \item \textbf{Exceptions:} 
     \begin{itemize}
         \item Returns status 400 if no file is provided.
@@ -1033,22 +1032,11 @@ None.
 \begin{thebibliography}{9}
 
 \bibitem{Ghezzi2003} 
-Ghezzi, C., Jazayeri, M., \& Mandrioli, D. (2003). 
+Ghezzi, C., Jazayeri, M., \& Mandrioli, D. (2003).
 \textit{Fundamentals of Software Engineering} (2nd ed.). 
 Prentice Hall, Upper Saddle River, NJ.
 
 \bibitem{Hoffman1995} 
-Hoffman, D. M., \& Strooper, P. A. (1995). 
-\textit{Software Design, Automated Testing, and Maintenance: A Practical Approach}. 
-International Thomson Computer Press, New York, NY. 
-URL: \url{http://citeseer.ist.psu.edu/428727.html}
-
-\bibitem{Ghezzi2003a} 
-Ghezzi, C., Jazayeri, M., \& Mandrioli, D. (2003). 
-\textit{Fundamentals of Software Engineering} (2nd ed.). 
-Prentice Hall, Upper Saddle River, NJ.
-
-\bibitem{Hoffman1995a} 
 Hoffman, D. M., \& Strooper, P. A. (1995). 
 \textit{Software Design, Automated Testing, and Maintenance: A Practical Approach}. 
 International Thomson Computer Press, New York, NY. 
@@ -1133,7 +1121,7 @@ Several design decisions stemmed from discussions with peers and client feedback
 
 We considered several design approaches before choosing our final architecture. A monolithic design was simpler and easier to build, but it would have made future changes harder due to its tightly connected components. Microservices were another option that would allow us to separate different parts of the system (like the model, preprocessing, and UI), but this added unnecessary complexity for our current needs.
 
-We also looked at different types of models. Vision Transformers were appealing because they can capture patterns across the entire image, but they require more computing power and are not yet widely used in medical imaging. U-Net was considered for its ability to show where abnormalities appear in the image, but it requires detailed annotations, which we didn’t have. Diffusion models were also explored for their strengths in uncertainty estimation and image generation, but they were slower and not focused on classification tasks.
+We also looked at different types of models. Vision Transformers were appealing because they can capture patterns across the entire image, but they require more computing power and are not yet widely used in medical imaging. U-Net was considered for its ability to show where abnormalities appear in the image, but it requires detailed annotations, which we didn't have. Diffusion models were also explored for their strengths in uncertainty estimation and image generation, but they were slower and not focused on classification tasks.
 
 In the end, we chose a modular CNN-based classifier because it was fast, reliable, and well-supported in medical AI research. It allowed us to build a clean pipeline that can be maintained and expanded easily while keeping the model efficient and practical for our dataset and use case.
 
