@@ -9,6 +9,9 @@
 \usepackage{float}
 \usepackage{parskip}
 \usepackage{xcolor} 
+\usepackage{ltablex}
+\keepXColumns
+
 
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -108,7 +111,7 @@ Potential clients include:
     \item \textbf{Healthcare Administrators:} Oversee implementation in clinical settings and ensure compliance with medical standards and regulations.
     \item \textbf{Biomedical and AI Researchers:} Benefit from new research insights and conduct studies based on this project.
     \item \textbf{Hospitals and Medical Centers:} Deploy the system for improved diagnostic efficiency.
-    \item \textbf{Regulatory Bodies:} Ensure compliance with standards such as HIPAA, GDPR, and FDA guidelines.
+    \item \textbf{Regulatory Bodies:} Ensure compliance with standards such as HIPAA\cite{hipaa}, GDPR, and FDA guidelines.
     \item \textbf{Software Engineers and AI Developers:} Responsible for system development, model training, and maintenance.
     \item \textbf{Hospital IT Teams:} Handle system deployment, integration, and ongoing technical support.
 \end{itemize}
@@ -128,7 +131,7 @@ Potential clients include:
 \begin{itemize}
     \item \textbf{User Role:} Manage imaging hardware and data preparation pipelines.
     \item \textbf{Expertise:} Knowledgeable in radiation safety, image acquisition protocols, patient positioning, and quality assurance.
-    \item \textbf{Technological Experience:} Regular users of imaging consoles and image management platforms; comfortable with high-resolution medical file handling (DICOM).
+    \item \textbf{Technological Experience:} Regular users of imaging consoles and image management platforms; comfortable with high-resolution medical file handling (DICOM)\cite{dicom}.
     \item \textbf{Needs:} A system that allows quick upload of scans, easy correction of metadata, and tracking of processed scans across patients.
 \end{itemize}
 
@@ -207,7 +210,7 @@ MC2: The product shall integrate publicly available chest X-ray datasets (NIH Ch
 
 Rationale: Using public datasets will ensure that the project has access to a broad range of chest X-ray images needed for training and testing the neural network without violating patient privacy laws.
 
-Fit Criterion: The solution will successfully use the CheXpert and MIMIC datasets for model training, with scripts to download and preprocess these datasets for CNN usage. It will comply with healthcare privacy standards, including the Health Insurance Portability and Accountability Act (HIPAA).
+Fit Criterion: The solution will successfully use the CheXpert and MIMIC datasets for model training, with scripts to download and preprocess these datasets for CNN usage. It will comply with healthcare privacy standards, including the Health Insurance Portability and Accountability Act (HIPAA)\cite{hipaa}.
 
 \indent
 MC3: The system shall provide a structured classification output with confidence scores and visual explanations (heatmaps using Grad-CAM).
@@ -234,7 +237,7 @@ MC5: The product shall integrate with external healthcare information systems
 
 Rationale: These systems are essential for accessing and managing patient data, facilitating seamless communication between the product and existing infrastructures. Integrating with these systems will enhance the product's ability to deliver accurate results within the clinical workflow.
 
-Fit Criterion: The product will support integration with healthcare systems through standardized interfaces and protocols such as HL7 and FHIR.
+Fit Criterion: The product will support integration with healthcare systems through standardized interfaces and protocols such as HL7 and FHIR\cite{fhir}.
 
 \indent
 MC6: The system shall support external research platforms (e.g., PhysioNet, NIH Data Commons)
@@ -275,7 +278,7 @@ MC10: The product is intended for use in healthcare settings
 
 Rationale: Working in healthcare environments imposes strict regulations and standards for data security and patient privacy, which must be considered in the product design.
 
-Fit Criterion: The product will implement robust security measures, including encryption and access controls, to ensure compliance with healthcare regulations such as HIPAA.
+Fit Criterion: The product will implement robust security measures, including encryption and access controls, to ensure compliance with healthcare regulations such as HIPAA\cite{hipaa}.
 
 \subsection{Schedule Constraints}
 This section outlines the critical timelines and deadlines associated with the project's development phases. Establishing a clear schedule is essential for managing resources, coordinating team efforts, and ensuring that all project components are delivered on time. These constraints help prioritize tasks and guide decision-making throughout the project lifecycle, ultimately contributing to the successful implementation of the proposed solution. By identifying key milestones, this section clarifies the expectations for progress and accountability, enabling the team to meet operational and stakeholder requirements efficiently.
@@ -401,13 +404,13 @@ These relevant facts provide essential background information to stakeholders an
 \textbf{Content:}\\
 The following business rules have been identified that may impact the project related to chest X-ray analysis and the development of the proposed solution:
 
-Patient Data Privacy: All patient data used for training and analysis must comply with HIPAA regulations, ensuring confidentiality and security in handling personal health information.\\
+Patient Data Privacy: All patient data used for training and analysis must comply with HIPAA regulations\cite{hipaa}, ensuring confidentiality and security in handling personal health information.\\
 Reason for the Rule: To protect patient privacy and maintain legal compliance in the handling of sensitive information.\\
-Authority for the Rule: Health Insurance Portability and Accountability Act (HIPAA), enforced by the U.S. Department of Health and Human Services (HHS).
+Authority for the Rule: Health Insurance Portability and Accountability Act (HIPAA)\cite{hipaa}, enforced by the U.S. Department of Health and Human Services (HHS).
 
 Integration with EHR Systems: The solution must integrate seamlessly with existing Electronic Health Record (EHR) systems used by healthcare facilities.\\
 Reason for the Rule: To facilitate workflow efficiency and ensure accurate patient record-keeping.\\
-Authority for the Rule: Institutional healthcare IT policies and HL7/FHIR standards.
+Authority for the Rule: Institutional healthcare IT policies and HL7/FHIR\cite{fhir} standards.
 
 \textbf{Motivation:}\\
 These business rules play a critical role in shaping the requirements for the proposed solution. By documenting and understanding these rules, the project team can ensure compliance and identify relevant requirements throughout the development process. Revisiting these rules as the project progresses will help maintain alignment with organizational and regulatory expectations.
@@ -445,7 +448,7 @@ The current process can be modeled using a swimlane diagram that outlines the ro
 \subsection{The Context of the Work}
 The work context diagram shows the interactions between the AI-driven chest X-ray diagnostic tool and other adjacent systems. Key external systems include the hospital's radiology information system (RIS), the picture archiving and communication system (PACS), and medical imaging databases like CheXpert or MIMIC. The product will take input from chest X-ray datasets or directly from hospital systems and provide diagnostic outputs to radiologists via a user interface.
 
-Defining the work context helps ensure the AI diagnostic tool integrates seamlessly with existing hospital systems, avoiding any disruptions to current workflows. Without understanding these systems, the product might fail to meet critical requirements, such as compatibility with existing image formats or HIPAA compliance.
+Defining the work context helps ensure the AI diagnostic tool integrates seamlessly with existing hospital systems, avoiding any disruptions to current workflows. Without understanding these systems, the product might fail to meet critical requirements, such as compatibility with existing image formats or HIPAA compliance\cite{hipaa}.
 
 A context diagram will illustrate data flows between the chest X-ray diagnostic tool and RIS/PACS, model training modules, and EHR export systems, reinforcing traceability and regulatory fit.
 
@@ -454,7 +457,7 @@ The work can be divided into the following key business events, each representin
 
 Image Upload and Preprocessing
 \begin{itemize}
-    \item Input: Chest X-ray images in DICOM/JPG/PNG format
+    \item Input: Chest X-ray images in DICOM\cite{dicom}/JPG/PNG format
     \item Output: Normalized, resized images ready for model inference
     \item BUC Summary: The system prepares images for classification by ensuring format consistency and proper scaling.
 \end{itemize}
@@ -547,7 +550,7 @@ This BUC could be represented in multiple ways:
 
     \item \textbf{Diagnosis}: A composite entity containing results derived from AI inference and human validation.
     \begin{itemize}
-        \item \textbf{CXR Images}: Raw uploaded chest X-rays in DICOM, PNG, or JPG format.\newline
+        \item \textbf{CXR Images}: Raw uploaded chest X-rays in DICOM\cite{dicom}, PNG, or JPG format.\newline
         Description: Original medical images uploaded for diagnostic processing.
 
         \item \textbf{Heatmaps}: Grad-CAM visual overlays highlighting salient features.\newline
@@ -611,7 +614,7 @@ The following are the individual product use cases (PUCs), with a description, l
     \item \textbf{PUC1: Process a chest X-ray image and prepare it for classification}
     \begin{description}
         \item[Actors:] XRayImage, Preprocessing Pipeline
-        \item[Precondition(s):] Image is uploaded in supported format (DICOM, JPG, PNG)
+        \item[Precondition(s):] Image is uploaded in supported format (DICOM\cite{dicom}, JPG, PNG)
         \item[Postcondition(s):] Output is normalized and resized, stored for model input
     \end{description}
 
@@ -670,7 +673,7 @@ The following are the individual product use cases (PUCs), with a description, l
 \subsection{Functional Requirements}
 
 \begin{itemize}
-    \item \textbf{FR1: The system must allow users to upload chest X-ray images in supported formats (DICOM, JPG, PNG).}
+    \item \textbf{FR1: The system must allow users to upload chest X-ray images in supported formats (DICOM\cite{dicom}, JPG, PNG).}
     \begin{itemize}
         \item \textbf{Rationale:} Enables ingestion of input data into the diagnostic pipeline. This is the initial interaction between the user and the system and is essential for enabling AI-driven analysis.
         \item \textbf{Fit Criterion:} Image upload is successful, accepted by backend, and stored for further processing. System rejects unsupported formats and provides descriptive error messages.
@@ -729,7 +732,7 @@ The following are the individual product use cases (PUCs), with a description, l
     \item \textbf{FR9: The system must offer a secure API endpoint to receive image inputs and return JSON predictions.}
     \begin{itemize}
         \item \textbf{Rationale:} Enables hospital systems and external tools to interface with the backend service securely.
-        \item \textbf{Fit Criterion:} API accepts JPG, PNG, DICOM; returns JSON with labels and confidence scores; unauthorized or malformed requests are rejected with informative errors.
+        \item \textbf{Fit Criterion:} API accepts JPG, PNG, DICOM\cite{dicom}; returns JSON with labels and confidence scores; unauthorized or malformed requests are rejected with informative errors.
         \item \textbf{Product Use Case(s):} PUC1, PUC2
     \end{itemize}
 
@@ -947,7 +950,7 @@ N/A
 \textbf{NF-RIAS0:} The system shall integrate with hospital PACS and EHR systems via secure APIs.
 \begin{itemize}
     \item \textbf{Rationale:} Interoperability with radiology workflows and patient health records is critical for clinical deployment.
-    \item \textbf{Fit Criterion:} JSON responses follow HL7 FHIR standards and can be pulled by external systems without manual conversion.
+    \item \textbf{Fit Criterion:} JSON responses follow HL7 FHIR standards\cite{fhir} and can be pulled by external systems without manual conversion.
     \item \textbf{Traceability:} Traces to FR9.
 \end{itemize}
 
@@ -1100,19 +1103,97 @@ N/A
 
 \textbf{NF-LR0:} Compliance with HIPAA and PIPEDA
 \begin{itemize}
-    \item \textbf{Rationale:} Compliance with legal and regulatory frameworks is necessary to protect patient confidentiality and prevent unauthorized access to sensitive medical data. Ensuring adherence to HIPAA and PIPEDA helps avoid legal consequences and builds trust with users.
-    \item \textbf{Fit Criterion:} The system must implement security and privacy measures that meet HIPAA and PIPEDA standards. A documented compliance review must confirm adherence to required regulations. All data handling, storage, and transmission processes must align with the legal frameworks.
+    \item \textbf{Rationale:} Compliance with legal and regulatory frameworks is necessary to protect patient confidentiality and prevent unauthorized access to sensitive medical data. Ensuring adherence to HIPAA\cite{hipaa} and PIPEDA\cite{pipeda} helps avoid legal consequences and builds trust with users.
+    \item \textbf{Fit Criterion:} The system must implement security and privacy measures that meet HIPAA\cite{hipaa} and PIPEDA\cite{pipeda} standards. A documented compliance review must confirm adherence to required regulations. All data handling, storage, and transmission processes must align with the legal frameworks.
     \item \textbf{Traceability:} Traces to FR7, FR8, NF-PR0.
 \end{itemize}
 
 \subsection{Standards Compliance Requirements}
 
-\textbf{NF-SCR0:} The system shall comply with medical imaging standards and HL7 FHIR specifications.
+\textbf{NF-SCR0:} The system shall comply with medical imaging standards and HL7 FHIR\cite{fhir} specifications.
 \begin{itemize}
     \item \textbf{Rationale:} Diagnostic image outputs and structured medical data must follow established standards for interoperability with hospital systems and for training clinical models.
-    \item \textbf{Fit Criterion:} Outputs must meet DICOM formatting and diagnostic reports must be mappable to FHIR-compatible JSON structures. Compliance is verified during integration and system validation.
+    \item \textbf{Fit Criterion:} Outputs must meet DICOM\cite{dicom} formatting and diagnostic reports must be mappable to FHIR-compatible JSON structures\cite{fhir}. Compliance is verified during integration and system validation.
     \item \textbf{Traceability:} Traces to FR4, FR5, FR9.
 \end{itemize}
+
+
+\renewcommand{\arraystretch}{1.2}
+
+\section{Requirement Traceability}
+
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{NFR ID} & \textbf{Related FR(s)} & \textbf{Rationale} \\
+\hline
+NF-SLR0 & FR1, FR3 & Uses \texttt{MAX\_IMAGE\_GEN\_TIME} instead of the magic number ``60 seconds'' to define timely image processing for 95\% of cases. \\
+\hline
+NF-SCR0 & FR4, FR6, FR8 & Radiologist approval tied to reporting, display, and access. \\
+\hline
+NF-PAR0 & FR3 & Uses \texttt{MIN\_ACCURACY\_REQUIREMENT} instead of ``65\%'' to enforce accuracy across primary disease labels. \\
+\hline
+NF-PAR1 & FR3, FR5 & Uses \texttt{CONFIDENCE\_WARNING\_THRESHOLD} instead of ``50\%'' to trigger UI warnings for low-confidence predictions. \\
+\hline
+NF-RFTR0 & FR1 & Invalid files blocked at upload stage. \\
+\hline
+NF-CR0 & FR1, FR3 & Concurrent processing in upload + classifier. \\
+\hline
+NF-SER0 & FR1, FR3, FR7 & Modular data flow enables extensions. \\
+\hline
+NF-LR0 & FR1, FR6, FR7 & Uptime depends on core services. \\
+\hline
+NF-AR1 & FR5 & UI appearance affects readability. \\
+\hline
+NF-AR2 & FR5 & Layout consistency for usability. \\
+\hline
+NF-SR1 & FR5, FR6 & Minimal design helps diagnosis. \\
+\hline
+NF-SR2 & FR5, FR6 & Layout clarity aids interpretation. \\
+\hline
+NF-EUR0 & FR1, FR3, FR4, FR5, FR6 & End-to-end task completion required. \\
+\hline
+NF-EU2 & FR5 & Users should remember operation. \\
+\hline
+NF-UPR0 & FR5, FR4 & Output must resemble clinical norms. \\
+\hline
+NF-EPE0 & FR1, FR6 & Accessible via typical hospital workstations. \\
+\hline
+NF-RIAS0 & FR9 & Needs integration with hospital systems. \\
+\hline
+NF-RIAS1 & FR1, FR3 & Training on external datasets. \\
+\hline
+NF-PR0 & FR1, FR6, FR7 & Portable, deployable product required. \\
+\hline
+NF-REL0 & FR1, FR4, FR5, FR6, FR8 & MVP must demonstrate key features. \\
+\hline
+NF-REL1 & FR6, FR7, FR9 & Configurable deployment settings. \\
+\hline
+NF-MR0 & FR1, FR3, FR6 & Modular design supports updates. \\
+\hline
+NF-MR1 & FR6, FR7 & Git-based change tracking. \\
+\hline
+NF-SR0 & FR3, FR6 & Tests verify key paths. \\
+\hline
+NF-SR1 & FR6, FR7 & Dev guide for deployment. \\
+\hline
+NF-AR0 & FR8, FR9 & Block unauthorized access. \\
+\hline
+NF-IR0 & FR7, FR8 & Only authorized users see data. \\
+\hline
+NF-PR0 & FR7, FR8, NF-WER0 & AES encryption protects privacy. \\
+\hline
+NF-AUR0 & FR8, NF-AR0, NF-IR0 & All sensitive actions logged. \\
+\hline
+NF-CR0 & FR5, FR6 & Interface in English only. \\
+\hline
+NF-LR0 & FR7, FR8, NF-PR0 & Compliance with HIPAA, PIPEDA. \\
+\hline
+NF-SCR0 & FR4, FR5, FR9 & Standards compliance via FHIR/DICOM. \\
+\hline
+\end{tabularx}
+\normalsize
 
 \section{Open Issues}
 \begin{itemize}
@@ -1359,5 +1440,44 @@ graduate attribute of Lifelong Learning. Please answer the following questions:
 
   The AI/ML developer will take specialized online courses on CNNs (e.g., fast.ai or DeepLearning.AI on Coursera) and study open-source implementations on GitHub to learn practical model optimization strategies. The data scientist will review Kaggle notebooks involving CheXpert preprocessing and also consult documentation for radiology-specific datasets. The frontend developer will follow the official React and Tailwind CSS documentation alongside YouTube walkthroughs to gain rapid prototyping skills. The backend developer plans to build small API services locally for practice and study role-based access controls via tutorials and open-source Flask/Django projects. The project manager will study Agile project workflows through platforms like Atlassian and supplement this with hands-on scheduling in shared tools like Trello and Slack. This multifaceted learning strategy enables both foundational understanding and immediate project application.
 \end{enumerate}
+
+\subsection*{What went well while writing this deliverable?}
+The team developed a much stronger understanding of how to formalize and structure software requirements clearly and thoroughly. Collaborating on the functional and non-functional requirements brought clarity to system expectations and use cases. Using symbolic constants also helped us eliminate ambiguity from our testable metrics. Additionally, cross-referencing requirements with traceability links improved our ability to write modular, maintainable specifications.
+
+\subsection*{What pain points did you experience during this deliverable, and how did you resolve them?}
+Aligning our functional requirements with non-functional requirements while preserving clarity was initially challenging. We often discovered vague phrasing or redundant requirements during peer reviews. To resolve this, we did multiple revision cycles focused on rewriting, scoping, and clearly labeling each requirement. Creating traceability mappings and symbolic constants also required restructuring our LaTeX file, which we resolved by distributing editing tasks by section.
+
+\subsection*{How many of your requirements were inspired by speaking to your client(s) or their proxies (e.g. your peers, stakeholders, potential users)?}
+Approximately 70–80\% of our requirements were directly inspired by user needs communicated by stakeholders and informed by proxy conversations with peers and domain experts. Features such as uploading diagnostic images, displaying confidence scores, and visualizing heatmaps originated from feedback during elicitation. Others—like security and audit logging—emerged from inferred expectations around clinical deployment.
+
+\subsection*{Which of the courses you have taken, or are currently taking, will help your team to be successful with your capstone project?}
+- \textbf{SFWRENG 3XA3 (Software Requirements)} – Directly influenced the structure and rigor of this deliverable.
+- \textbf{SFWRENG 4G06 (Capstone Project)} – Provides end-to-end guidance and iterative planning methodology.
+- \textbf{Machine Learning} – Helped us define accuracy, precision, and confidence requirements.
+- \textbf{Human-Computer Interaction} – Influenced UI/UX related requirements like clarity, layout, and usability.
+- \textbf{Web Programming and Databases} – Enabled us to shape the backend and deployment-related requirements with real-world feasibility in mind.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+\bibitem{hipaa}
+U.S. Department of Health and Human Services. \emph{Health Insurance Portability and Accountability Act of 1996 (HIPAA)}. Available at: \url{https://www.hhs.gov/hipaa/}
+
+\bibitem{pipeda}
+Office of the Privacy Commissioner of Canada. \emph{Personal Information Protection and Electronic Documents Act (PIPEDA)}. Available at: \url{https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/}
+
+\bibitem{dicom}
+National Electrical Manufacturers Association. \emph{Digital Imaging and Communications in Medicine (DICOM) Standard}. Available at: \url{https://www.dicomstandard.org/}
+
+\bibitem{fhir}
+HL7 International. \emph{FHIR - Fast Healthcare Interoperability Resources}. Available at: \url{https://www.hl7.org/fhir/}
+
+\end{thebibliography}
+
+
+\end{thebibliography}
 
 \end{document}
