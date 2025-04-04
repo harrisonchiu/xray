@@ -847,7 +847,9 @@ N/A
 
 \subsection{Speed and Latency Requirements}
 
-\textbf{NF-SLR0:} The system shall process and return classification results within 60 seconds for 95\% of uploaded chest X-ray images.
+\textbf{NF-SLR0:} The system shall process and return classification results within \texttt{MAX\_IMAGE\_GEN\_TIME} (\texttt{MAX\_IMAGE\_GEN\_TIME} = 60 seconds) for 95\% of uploaded chest X-ray images.
+
+
 \begin{itemize}
     \item \textbf{Rationale:} Healthcare professionals require timely insights for clinical decisions. Delays beyond one minute may hinder usability.
     \item \textbf{Fit Criterion:} System shall be tested with 1024x1024 pixel images and meet the threshold under standard conditions.
@@ -865,7 +867,10 @@ N/A
 
 \subsection{Precision or Accuracy Requirements}
 
-\textbf{NF-PAR0:} The CNN model shall achieve at least 65\% average accuracy across primary disease labels.
+\textbf{NF-PAR0:} The CNN model shall achieve at least \texttt{MIN\_ACCURACY\_REQUIREMENT} (\texttt{MIN\_ACCURACY\_REQUIREMENT} = 65\%) average accuracy across primary disease labels.
+
+\textbf{NF-PAR1:} The system shall provide confidence scores for all predictions and display a warning for low-confidence cases (\texttt{CONFIDENCE\_WARNING\_THRESHOLD} = 50\%).
+
 \begin{itemize}
     \item \textbf{Rationale:} Reliable accuracy is essential for medical applications to ensure trust in AI-assisted diagnostics.
     \item \textbf{Fit Criterion:} Accuracy to be verified against a labeled validation dataset during testing and VnV evaluation.
@@ -900,6 +905,7 @@ N/A
 \subsection{Scalability or Extensibility Requirements}
 
 \textbf{NF-SER0:} The system shall be designed with a modular architecture to allow future model upgrades and dataset expansions.
+
 \begin{itemize}
     \item \textbf{Rationale:} Scalability ensures the system remains useful as new diseases or imaging formats are introduced.
     \item \textbf{Fit Criterion:} New models can be integrated without refactoring the entire application structure.
