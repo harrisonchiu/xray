@@ -7,6 +7,13 @@
 \usepackage{makecell}
 \usepackage{longtable}
 \usepackage{graphicx}
+\usepackage[a4paper,
+            bindingoffset=0.2in,
+            left=1in,
+            right=1in,
+            top=1in,
+            bottom=1in,
+            footskip=.25in]{geometry}
 
 
 \graphicspath{ {./} }
@@ -34,11 +41,15 @@
 
 \section{Revision History}
 
+% Feedback addressed: Update revision table
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-10 March & 1.0 & Gurnoor and Harrison add section 3\\
-2 April & 1.1 & Gurnoor, Harrison, Jared, Hamza, Ahmad add extra sections and details to address Github issues feedback\\
+10 March & 1.0 & Gurnoor and Harrison: Add section 3\\
+10 March & 1.1 & Gurnoor, Harrison, Jared, Hamza, Ahmad Finish all sections\\
+2 April & 1.2 & Gurnoor, Harrison, Jared, Hamza, Ahmad add extra sections and details to address Github issues feedback\\
+4 April & 1.3 & Harrison add CI/CD code to address feedback \\
+4 April & 1.4 & Harrison address TA feedback: fix formatting and add some NFR to traceability matrix\\
 \bottomrule
 \end{tabularx}
 
@@ -112,8 +123,8 @@ No error messages or system anomalies occur.\\
 Invalid Chest X-ray Image Format Rejection (FRTC2)
 \textbf{Initial State:} The system is ready to receive an image file.\\
 \textbf{Input:} A sample image in an invalid format (e.g., .TXT, .DOCX).\\
-\textbf{Expected Output:} The system rejects the invalid image input.\\
-An appropriate error message is displayed, informing the user about supported formats.
+\textbf{Expected Output:} The system rejects the invalid image input.
+An appropriate error message is displayed, informing the user about supported formats.\\
 \textbf{Actual Output:} The system correctly rejects invalid file formats and provides an error message.\\
 \textbf{Expected and Actual Output Match:} True\\
 
@@ -121,9 +132,9 @@ An appropriate error message is displayed, informing the user about supported fo
 \subsubsection{Image Preprocessing and Standardization (FRTC3 - Completely Revised)}
 \textbf{Initial State:} A chest X-ray image has been uploaded and is ready for preprocessing.\\
 \textbf{Input:} A valid chest X-ray image in JPG, PNG, or DICOM format.\\
-\textbf{Expected Output:} The system resizes the image to match the CNN model's required dimensions.\\
+\textbf{Expected Output:} The system resizes the image to match the CNN model's required dimensions.
 Pixel intensity values are normalized to enhance consistency.
-The preprocessed image is saved and ready for inference.
+The preprocessed image is saved and ready for inference.\\
 \textbf{Actual Output:} The system successfully resizes and normalizes images, preparing them for model analysis.\\
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.2 (Image Preprocessing)\\
@@ -362,6 +373,7 @@ User surveys indicate that at least \verb|MAJORITY_USERS| of users feel the colo
 \textbf{Expected and Actual Output Match:} True
 \textbf{Relevant Nonfunctional Requirement(s):} NF-AR1
 
+% Feedback addressed: Add missing test case
 \subsubsection{NF-SR1: Consistent and Simple Style}
 The interface should have a minimalistic and easy-to-navigate design.  
 Users should be able to perform primary tasks efficiently without UI distractions.
@@ -675,6 +687,75 @@ Output mean: 0.011
 ok
 \end{verbatim}
 
+\pagebreak
+% Feedback addressed: Add table for unit testing outputs
+The following table summarizes the results of unit testing for key components:
+
+
+\begin{table}[h!]
+\begin{scriptsize}
+\centering
+\begin{tabular}{|p{4cm}|p{6cm}|p{6cm}|}
+\hline
+\textbf{Test Name} & \textbf{Expected Output} & \textbf{Actual Output} \\
+\hline
+\texttt{test\_dataset\_getitem} & 
+\begin{itemize}
+    \item Image shape: (3, 224, 224)
+    \item Labels: [1.0, 0.0, 1.0]
+    \item Image normalization bounds: [0.074, 0.426]
+\end{itemize} & 
+\begin{itemize}
+    \item Image shape: (3, 224, 224)
+    \item Labels: [1.0, 0.0, 1.0]
+    \item Image normalization bounds: [0.074, 0.426]
+\end{itemize} \\
+\hline
+\texttt{test\_dataset\_initialization} & 
+\begin{itemize}
+    \item Dataset size: 1
+    \item Number of classes: 3
+    \item Class labels: ['Atelectasis', 'Mass', 'Nodule']
+\end{itemize} & 
+\begin{itemize}
+    \item Dataset size: 1
+    \item Number of classes: 3
+    \item Class labels: ['Atelectasis', 'Mass', 'Nodule']
+\end{itemize} \\
+\hline
+\texttt{test\_create\_binary\_matrix} & 
+\begin{itemize}
+    \item Binary matrix file exists
+    \item Number of rows: 3
+    \item Columns: ['Image Index', 'Atelectasis', 'Effusion', 'Mass', 'Nodule']
+    \item Binary values for first image: Atelectasis: 1, Effusion: 1, Mass: 0, Nodule: 0
+\end{itemize} & 
+\begin{itemize}
+    \item Binary matrix file exists
+    \item Number of rows: 3
+    \item Columns: ['Image Index', 'Atelectasis', 'Effusion', 'Mass', 'Nodule']
+    \item Binary values for first image: Atelectasis: 1, Effusion: 1, Mass: 0, Nodule: 0
+\end{itemize} \\
+\hline
+\texttt{test\_forward\_pass} & 
+\begin{itemize}
+    \item Output shape: (4, 14)
+    \item Output range: [-1.456, 1.686]
+    \item Output mean: 0.011
+\end{itemize} & 
+\begin{itemize}
+    \item Output shape: (4, 14)
+    \item Output range: [-1.456, 1.686]
+    \item Output mean: 0.011
+\end{itemize} \\
+\hline
+\end{tabular}
+\caption{Summary of Unit Test Outputs}
+\label{tab:unit-test-outputs}
+\end{scriptsize}
+\end{table}
+
+
 \section{Frontend Unit Testing and Coverage Analysis}
 
 \subsection{Overview}
@@ -855,7 +936,44 @@ The GitHub Actions workflows are configured to trigger automatically whenever:
 
 If a workflow fails, GitHub clearly indicates the exact nature and location of errors, allowing developers to quickly identify and fix issues. This rapid feedback cycle helps team productivity and helps maintain a robust and error-free codebase
 
-
+% Feedback addressed: add CI/CD code
+Here is the CI/CD code that runs on every commit push that involves Python code. The CI/CD does the automatic linting and formatting checks described above.
+\begin{scriptsize}
+    \begin{verbatim}
+    # This is a basic workflow to help you get started with Actions
+    
+    name: Python Check
+    
+    # Controls when the workflow will run
+    on:
+      # Triggers the workflow on push or pull request events but only for the "main" branch
+      push:
+        branches: [ "main" ]
+      pull_request:
+        branches: [ "main" ]
+    
+      # Allows you to run this workflow manually from the Actions tab
+      workflow_dispatch:
+    
+    # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    jobs:
+      python-check:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - name: Python Linting
+            uses: programmingwithalex/pylinter@main
+            with:
+              python-root: '.'
+              flake8-flags: '--max-line-length=100 --ignore=E128'
+              skip-mypy: true
+              fail-on-isort: true
+          - name: Python Black Formatter
+            uses: jpetrucciani/black-check@master
+            with:
+              black_flags: '--exclude ./docs/'
+    \end{verbatim}
+\end{scriptsize}
 
 		
 \section{Trace to Requirements}
@@ -955,6 +1073,19 @@ NFR13 - Automated Testing Coverage >80\% &  &  &  &  &  & X \\ \hline
         \end{table}
 
 
+\begin{table}[h!]
+    \centering
+\begin{tabular}{|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{NFR \textbackslash TC} & \multicolumn{1}{c|}{NFRTC1} & \multicolumn{1}{c|}{NFRTC2} \\ \hline
+NFR-SR1 - Consistent and Simple Style & & X    \\ \hline
+NFR-SR2 - Clean and Organized Aesthetic & & X    \\ \hline
+NFR-AR1 - Calming Color Scheme & X & \\ \hline
+
+
+\end{tabular}%
+\end{table}
+
 \pagebreak
 
 \section{Trace to Modules}		
@@ -1012,8 +1143,6 @@ Increasing test coverage for API services, form validation, and error handling w
 \bibliography{../../refs/References}
 
 \newpage{}
-
-
 
 
 \section{Failed Test Cases and Debugging Actions}
