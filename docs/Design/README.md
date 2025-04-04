@@ -1,5 +1,7 @@
-# Design Documentation
+# Design Documents
 
-The folders and files for this folder are as follows:
+This folder contains design-related documentation for the Chest X-ray project. It includes both high-level architectural designs and detailed module specifications.
 
-Describe ...
+## Subdirectories
+- **SoftArchitecture**: High-level software architecture documents (MG).
+- **SoftDetailedDes**: Detailed design specifications for individual modules (MIS)

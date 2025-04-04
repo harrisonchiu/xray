@@ -1,5 +1,6 @@
-# Test Report
+# Validation and Verification Report
 
-The folders and files for this folder are as follows:
+This folder contains the Validation and Verification (VnV) Report, summarizing the results of the testing process.
 
-Describe ...
+## Key Files
+- **VnVReport.tex**: The main VnV Report document.

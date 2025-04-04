@@ -1,5 +1,6 @@
-# Verification and Validation Plan
+# Validation and Verification Plan
 
-The folders and files for this folder are as follows:
+This folder contains the Validation and Verification (VnV) Plan for the project, outlining the testing strategy and test cases.
 
-Describe ...
+## Key Files
+- **VnVPlan.tex**: The main VnV Plan document.

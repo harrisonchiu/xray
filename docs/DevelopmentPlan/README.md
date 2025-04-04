@@ -1,5 +1,6 @@
 # Development Plan
 
-The folders and files for this folder are as follows:
+This folder contains the development plan for the project, outlining the workflow, team roles, schedules, and tools used.
 
-Describe ...
+## Key Files
+- **DevelopmentPlan.tex**: The main development plan document.
