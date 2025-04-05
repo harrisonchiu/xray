@@ -4,7 +4,6 @@ This folder contains the reflection and traceability documentation for the Chest
 
 ## Key Files
 - **ReflectAndTrace.tex**: The main LaTeX document for reflection and traceability.
-- **Makefile**: Automates the compilation of the document.
 
 ## Purpose
 The reflection and traceability document:

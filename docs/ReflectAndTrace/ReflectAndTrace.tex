@@ -26,7 +26,7 @@
 
 This section summarizes the changes we have made in regards to the feedback we received from TAs, our project supervisor, peer reviewers, and during usability testing. The changes made can be found in the table below and are linked to the associated GitHub issues.
 
-To improve traceability, we have categorized issues into milestones such as ‘TA Feedback Issues,’ ‘Peer Review,’ and ‘Final Doc Updates.’ can be found in \href{https://github.com/harrisonchiu/xray}{Team-16’s Capstone Deliverables Project}.
+To improve traceability, we have categorized issues into milestones such as 'TA Feedback Issues,' 'Peer Review,' and 'Final Doc Updates.' can be found in \href{https://github.com/harrisonchiu/xray}{Team-16's Capstone Deliverables Project}.
 
 \subsection{SRS and Hazard Analysis}
 Changes to SRS and Hazard Analysis along with the feedback, response, and associated issues can
@@ -53,27 +53,27 @@ providing regulatory context. However, no direct URL or official legal citation 
  & \href{https://github.com/harrisonchiu/xray/issues/66}{\#SRS-66} \\
 \hline
 
-TA & Document Organization: Doesn't describe the template or changes. & The document now includes a statement in the introduction identifying the template followed. Specifically, this SRS adheres to the Volare SRS template used in McMaster’s capstone course. Structural changes and customizations are clearly documented, such as the removal of placeholder sections, the integration of symbolic constants, and the alignment of requirement identifiers (e.g., NF-SLR0) to support traceability.  & \href{https://github.com/harrisonchiu/xray/issues/67}{\#SRS-67} \\
+TA & Document Organization: Doesn't describe the template or changes. & The document now includes a statement in the introduction identifying the template followed. Specifically, this SRS adheres to the Volare SRS template used in McMaster's capstone course. Structural changes and customizations are clearly documented, such as the removal of placeholder sections, the integration of symbolic constants, and the alignment of requirement identifiers (e.g., NF-SLR0) to support traceability.  & \href{https://github.com/harrisonchiu/xray/issues/67}{\#SRS-67} \\
 \hline
 
 TA & Complete, Correct and Unambiguous: No irrelevant features" (NF-EUR0) is ambiguous. Also, you seem to imply that this should be true for 100 percent of users, which is never necessarily a good assumption. There may be some incapable of doing the tasks asked, so it's best to use a number like 80 percent or 90 percent as you have in other requirements. Check other requirements for this problem too, like NF-LR0. & Symbolic constants have now been introduced directly in the Non-Functional Requirements section (Section 12) to replace previously hardcoded values. Specific updates include: \textbf{NF-SLR0} now uses \texttt{MAX\_IMAGE\_GEN\_TIME} instead of the magic number ``60 seconds''; \textbf{NF-PAR0} uses \texttt{MIN\_ACCURACY\_REQUIREMENT} instead of ``65\%''; and \textbf{NF-PAR1} uses \texttt{CONFIDENCE\_WARNING\_THRESHOLD} instead of ``50\%''.
 &\href{https://github.com/harrisonchiu/xray/issues/68}{\#SRS-68} \\
 \hline
 
-TA & Traceable Requirements: No real traceability among requirements; no traceability table provided. & A comprehensive Requirement Traceability Table has been added as Section (BLANK), listing all non-functional requirements (NFRs) alongside the functional requirements (FRs) that satisfy them, with rationale. Additionally, inline traceability annotations (e.g., “Traces to: FRx”) have been included directly within each NFR in Section 12.
-All FRs and NFRs now follow a bidirectional mapping system that supports navigation and impact analysis — fulfilling the Level 4 rubric standard for traceability. &\href{https://github.com/harrisonchiu/xray/issues/69}{\#SRS-69} \\
+TA & Traceable Requirements: No real traceability among requirements; no traceability table provided. & A comprehensive Requirement Traceability Table has been added as Section (BLANK), listing all non-functional requirements (NFRs) alongside the functional requirements (FRs) that satisfy them, with rationale. Additionally, inline traceability annotations (e.g., 'Traces to: FRx') have been included directly within each NFR in Section 12.
+All FRs and NFRs now follow a bidirectional mapping system that supports navigation and impact analysis - fulfilling the Level 4 rubric standard for traceability. &\href{https://github.com/harrisonchiu/xray/issues/69}{\#SRS-69} \\
 \hline
 
-TA & Verifiable Requirements: Some requirements are ambiguous even with their fit criteria, since they are also ambiguous. & NF-EUR0 has a verifiable benchmark: “At least 90 percent of users should be able to complete key tasks without additional guidance.”
+TA & Verifiable Requirements: Some requirements are ambiguous even with their fit criteria, since they are also ambiguous. & NF-EUR0 has a verifiable benchmark: "At least 90 percent of users should be able to complete key tasks without additional guidance."
 
-NF-LR0 quantifies uptime: “99.9 percent uptime over a one-week period, measured by automated tools.”
+NF-LR0 quantifies uptime: "99.9 percent uptime over a one-week period, measured by automated tools."
 
 Requirements like NF-UPR0, NF-AR1, and NF-SR2 include user study metrics or acceptance thresholds to confirm usability goals. This ensures that each requirement can be tested objectively, fulfilling the Level 4 rubric for verifiability. &\href{https://github.com/harrisonchiu/xray/issues/70}{\#SRS-70} \\
 \hline
 
 TA & Phase In Plan: You have a phase-in plan, but do not trace that back to requirements. & The SRS now includes a direct trace from requirements to their planned implementation order. The plan:
 
-Identifies priority requirements (e.g., FR1–FR3 for core pipeline)
+Identifies priority requirements (e.g., FR1-FR3 for core pipeline)
 
 Links those priorities to corresponding Functional/Non-Functional Requirements
 
@@ -100,7 +100,7 @@ TA & (L0 Reflect):Good answers, but missing some questions. The rubric stated wh
 TA & (LOExtKnowledge): Instead of just saying "Applicable privacy laws", research the ones that would apply, and cite them. & External knowledge has been integrated through references to CheXpert, Grad-CAM, and practices from Kaggle and GitHub. These informed model design, data preprocessing, and explainability. The Self-Directed Learning Plan also incorporates literature-based strategies tailored to radiology datasets, frontend tools, and backend design. While not formally cited, these sources significantly influenced the system architecture and requirements. &\href{https://github.com/harrisonchiu/xray/issues/74}{\#SRS-74} \\
 \hline
 
-TA & Basis For Design: Good issues. One suggestion is to put a bit more detail in the issue title, instead of just e.g. "Functional Requirement 8" & Requirement titles have been expanded to include clear descriptions of functionality (e.g., “Upload chest X-ray images in supported formats” instead of “FR8”). All requirements include rationale, fit criteria, and defined inputs/outputs to support external implementation. The document identifies stable release priorities via NF-REL0 and includes justification where requirements are unlikely to change. &\href{https://github.com/harrisonchiu/xray/issues/75}{\#SRS-75} \\
+TA & Basis For Design: Good issues. One suggestion is to put a bit more detail in the issue title, instead of just e.g. "Functional Requirement 8" & Requirement titles have been expanded to include clear descriptions of functionality (e.g., "Upload chest X-ray images in supported formats" instead of "FR8"). All requirements include rationale, fit criteria, and defined inputs/outputs to support external implementation. The document identifies stable release priorities via NF-REL0 and includes justification where requirements are unlikely to change. &\href{https://github.com/harrisonchiu/xray/issues/75}{\#SRS-75} \\
 \hline
 
 \end{longtable}
@@ -130,11 +130,11 @@ TA & Boundary, Scope, Definitions and Assumptions: Which pieces of the project a
 &\href{https://github.com/harrisonchiu/xray/issues/78}{\#HA-78}\\
 \hline
 
-TA & Method and its application: "Cyberattacks" seems too general of a failure mode. & The failure mode labeled “Cyberattacks” has been replaced with more specific risks such as “Unauthorized Access by Outsiders” and “Broad Internal Access.” Each is given a distinct hazard ID (e.g., H1.2, H7.2) and linked to precise causes and mitigation strategies, such as multi-factor authentication or access tiering.
+TA & Method and its application: "Cyberattacks" seems too general of a failure mode. & The failure mode labeled "Cyberattacks" has been replaced with more specific risks such as "Unauthorized Access by Outsiders" and "Broad Internal Access." Each is given a distinct hazard ID (e.g., H1.2, H7.2) and linked to precise causes and mitigation strategies, such as multi-factor authentication or access tiering.
 &\href{https://github.com/harrisonchiu/xray/issues/79}{\#HA-79}\\
 \hline
 
-TA & Recommended Actions: Some actions are a bit generic and should be more specific, e.g. "Improve cybersecurity" & Generic recommended actions like “Improve cybersecurity” have been replaced with specific, actionable controls such as “enforce IP whitelisting,” “rotate API keys regularly,” and “enable end-to-end hash checks on uploads.” These changes are reflected in the Risk and Recommended Action columns of the FMEA tables.
+TA & Recommended Actions: Some actions are a bit generic and should be more specific, e.g. "Improve cybersecurity" & Generic recommended actions like "Improve cybersecurity" have been replaced with specific, actionable controls such as "enforce IP whitelisting," "rotate API keys regularly," and "enable end-to-end hash checks on uploads." These changes are reflected in the Risk and Recommended Action columns of the FMEA tables.
 &\href{https://github.com/harrisonchiu/xray/issues/80}{\#HA-80}\\
 \hline
 
@@ -160,7 +160,7 @@ TA & SoftArchitec: Timeline: Very un-detailed: no dates, etc. & A revised timeli
 \hline
 \hline
 
-TA & SoftArchitec: Quality Information: "Explanation of program name" was left instead of filling in that placeholder text.Great anticipated changes!UC1 is obviously out of date now, as I'm sure a lot of stuff is. No marks lost, but this is a reminder to change all of this before Rev1!. & All placeholder content has been removed, and the anticipated changes section has been fully rewritten to reflect the system’s actual architecture — including CNN updates, dataset expansion, frontend improvements, and API integration. These are encapsulated within modules based on design-for-change principles. &\href{https://github.com/harrisonchiu/xray/issues/94}{\#DES-94}\\
+TA & SoftArchitec: Quality Information: "Explanation of program name" was left instead of filling in that placeholder text.Great anticipated changes!UC1 is obviously out of date now, as I'm sure a lot of stuff is. No marks lost, but this is a reminder to change all of this before Rev1!. & All placeholder content has been removed, and the anticipated changes section has been fully rewritten to reflect the system's actual architecture - including CNN updates, dataset expansion, frontend improvements, and API integration. These are encapsulated within modules based on design-for-change principles. &\href{https://github.com/harrisonchiu/xray/issues/94}{\#DES-94}\\
 \hline
 
 TA & SoftArchitec: Presentation: Some non-Canadian spellings like behavior.
@@ -200,13 +200,13 @@ found in the table below:
 \hline
 \endhead
 
-TA & Content: Timeline — be sure to use symbolic constants instead of ``magic numbers'' like 90 percent. Note: as indicated in the comment, unit tests are not required yet as you have not done your design. But you can hopefully reuse some of these later! & All numerical thresholds used in unit and system tests were replaced with clear symbolic constants (e.g., \texttt{MIN\_CLASSIFICATION\_ACCURACY}, \texttt{USER\_SUCCESS\_THRESHOLD}). These constants are documented in Section 7.1 (Symbolic Parameters). While unit tests were not initially required, they were completed after the design was finalized, and symbolic parameters were also applied throughout. & \href{https://github.com/harrisonchiu/xray/issues/89}{\#VnV-89} \\
+TA & Content: Timeline - be sure to use symbolic constants instead of ``magic numbers'' like 90 percent. Note: as indicated in the comment, unit tests are not required yet as you have not done your design. But you can hopefully reuse some of these later! & All numerical thresholds used in unit and system tests were replaced with clear symbolic constants (e.g., \texttt{MIN\_CLASSIFICATION\_ACCURACY}, \texttt{USER\_SUCCESS\_THRESHOLD}). These constants are documented in Section 7.1 (Symbolic Parameters). While unit tests were not initially required, they were completed after the design was finalized, and symbolic parameters were also applied throughout. & \href{https://github.com/harrisonchiu/xray/issues/89}{\#VnV-89} \\
 \hline
 
-TA & Spelling and grammar and style: Be sure to use `` and '' for quotation marks. Should remove ? from usability survey questions section title, since you have them.. & All quotation marks were corrected to proper LaTeX smart quotes (“ ”). The section title containing a question mark (“Usability Survey Questions?”) was updated to “Usability Survey Questions” to reflect finalized content and eliminate ambiguity. &\href{https://github.com/harrisonchiu/xray/issues/90}{\#VnV-90}\\
+TA & Spelling and grammar and style: Be sure to use `` and '' for quotation marks. Should remove ? from usability survey questions section title, since you have them.. & All quotation marks were corrected to proper LaTeX smart quotes (" "). The section title containing a question mark ("Usability Survey Questions?") was updated to "Usability Survey Questions" to reflect finalized content and eliminate ambiguity. &\href{https://github.com/harrisonchiu/xray/issues/90}{\#VnV-90}\\
 \hline
 
-TA & System Tests for Functional Requirements are specific: Be specific. Some terms, like "produce misleading information" are not clear. & System test derivations were rewritten to be precise and measurable. Vague terms such as “produce misleading information” were removed. Each test now defines observable outputs with thresholded conditions (e.g., rendering within a specific duration or prediction scores exceeding a symbolic constant).&\href{https://github.com/harrisonchiu/xray/issues/91}{\#VnV-91}\\
+TA & System Tests for Functional Requirements are specific: Be specific. Some terms, like "produce misleading information" are not clear. & System test derivations were rewritten to be precise and measurable. Vague terms such as "produce misleading information" were removed. Each test now defines observable outputs with thresholded conditions (e.g., rendering within a specific duration or prediction scores exceeding a symbolic constant).&\href{https://github.com/harrisonchiu/xray/issues/91}{\#VnV-91}\\
 \hline
 
 TA & Tests for Nonfunctional Requirements are specific: You mention HIPAA but provide no information about what its requirements or about how you plan to implement it. & Security-related tests were added to validate HIPAA-relevant behavior: JWT-based authentication, AES-256 encrypted report storage, role-based access restrictions, and verification of no personal data collection. Each nonfunctional test is tied to a clear outcome and test method.&\href{https://github.com/harrisonchiu/xray/issues/92}{\#VnV-92}\\
@@ -265,7 +265,7 @@ TA & Missing NFR tests & Added NFR test cases to the traceability matrix to show
 
 This project was classified as an \textbf{advanced} challenge level capstone, as agreed upon with both the course instructor and teaching assistants. The advanced designation stems from the research-heavy scope of the project, the use of real-world medical data, and the goal of extending state-of-the-art methods in chest X-ray classification through both experimentation and academic synthesis.
 
-In contrast to implementation-focused projects, this work demanded a combination of deep technical insight, data-driven experimentation, and clinical relevance. Our team not only developed a working system using a convolutional neural network (CNN) for multi-label classification but also documented our contributions in a full research paper. This paper benchmarks our model against existing approaches and introduces strategies like class balancing, margin-based loss functions, and dynamic thresholding — all essential in handling medical datasets like ChestXray14.
+In contrast to implementation-focused projects, this work demanded a combination of deep technical insight, data-driven experimentation, and clinical relevance. Our team not only developed a working system using a convolutional neural network (CNN) for multi-label classification but also documented our contributions in a full research paper. This paper benchmarks our model against existing approaches and introduces strategies like class balancing, margin-based loss functions, and dynamic thresholding - all essential in handling medical datasets like ChestXray14.
 
 Additionally, the project included development of a usable MVP web interface to support radiologist-facing interactions. The mix of cutting-edge research and stakeholder-centered software design strongly aligned with the expectations for an advanced challenge level.
 
@@ -277,7 +277,7 @@ Several extras were incorporated into the project beyond the core requirements, 
 A major extra for this capstone was the development of a formal research paper that documents our model design, tuning strategies, experimental comparisons, and clinical implications. This paper builds on recent work in chest X-ray AI and proposes a lightweight CNN-based solution optimized for real-world clinical use, with detailed performance evaluations using recall, accuracy, and AUC-ROC. The inclusion of this paper elevates the academic impact of the project.
 
 \textbf{Usability Testing Survey (Planned):}
-We designed a usability survey for potential end-users, including healthcare researchers or students familiar with diagnostic imaging. The survey aims to collect qualitative feedback on how intuitive and interpretable our interface and model outputs are. The testing is limited in scope due to deployment constraints but represents our intent to consider real-world human factors — a valuable extra rarely explored in research-heavy projects.
+We designed a usability survey for potential end-users, including healthcare researchers or students familiar with diagnostic imaging. The survey aims to collect qualitative feedback on how intuitive and interpretable our interface and model outputs are. The testing is limited in scope due to deployment constraints but represents our intent to consider real-world human factors - a valuable extra rarely explored in research-heavy projects.
 
 \textbf{Bonus Features in MVP:}
 Two ``bonus'' features were added to the MVP interface to enhance its practical value and demonstrate added functionality beyond baseline classification:
@@ -290,15 +290,15 @@ Two ``bonus'' features were added to the MVP interface to enhance its practical 
     This feature bridges the gap between raw model output and clinically meaningful interpretation, emulating the structured format used in real radiology workflows.
 \end{itemize}
 
-Together, these extras demonstrate an effort to go beyond technical success — adding usability, explainability, and clinical framing to a research-focused tool.
+Together, these extras demonstrate an effort to go beyond technical success - adding usability, explainability, and clinical framing to a research-focused tool.
 
-\section{Design Iteration (LO11 – PrototypeIterate)}
+\section{Design Iteration (LO11 - PrototypeIterate)}
 
-Our project's design evolved significantly throughout the capstone lifecycle. Initially, we planned to build a hybrid system using a diffusion model to generate synthetic chest X-rays and a CNN classifier to detect disease signatures. The idea was to explore generative modeling as a tool for augmenting datasets and improving classification robustness — a promising direction we identified during early literature review.
+Our project's design evolved significantly throughout the capstone lifecycle. Initially, we planned to build a hybrid system using a diffusion model to generate synthetic chest X-rays and a CNN classifier to detect disease signatures. The idea was to explore generative modeling as a tool for augmenting datasets and improving classification robustness - a promising direction we identified during early literature review.
 
-However, as we began developing our first prototype, we encountered major implementation challenges. Diffusion models are computationally expensive, requiring extensive GPU resources and long training times. Additionally, integrating them meaningfully into a medical diagnostic pipeline — especially one focused on classification and reporting — proved too ambitious for our timeline. Our first set of model tests yielded limited results, and the team began to reassess the feasibility of maintaining the diffusion pipeline while meeting our MVP goals.
+However, as we began developing our first prototype, we encountered major implementation challenges. Diffusion models are computationally expensive, requiring extensive GPU resources and long training times. Additionally, integrating them meaningfully into a medical diagnostic pipeline - especially one focused on classification and reporting - proved too ambitious for our timeline. Our first set of model tests yielded limited results, and the team began to reassess the feasibility of maintaining the diffusion pipeline while meeting our MVP goals.
 
-After discussion with our TA and instructor, and in alignment with the research-first scope of our project, we made the decision to pivot away from image generation and focus fully on building a lightweight, interpretable, multi-label CNN classifier. This pivot allowed us to redirect effort into areas where we could still innovate — particularly on model optimization, class imbalance, confidence calibration, and report generation.
+After discussion with our TA and instructor, and in alignment with the research-first scope of our project, we made the decision to pivot away from image generation and focus fully on building a lightweight, interpretable, multi-label CNN classifier. This pivot allowed us to redirect effort into areas where we could still innovate - particularly on model optimization, class imbalance, confidence calibration, and report generation.
 
 Once we shifted focus, we began iterating on various CNN backbones. We started with ResNet18, then tried DenseNet121, but both models performed poorly on recall, especially with underrepresented conditions. Based on insights from our experimental data, we selected MobileNetV2 as a more suitable alternative. Its lightweight nature aligned with deployment needs in resource-constrained environments and enabled faster training and experimentation.
 
@@ -308,10 +308,10 @@ From there, our design continued to evolve:
     \item We removed extremely imbalanced or noisy classes (like ``No Finding'' and ``Hernia'') after they were shown to distort model learning.
     \item We added class-aware rebalancing and margin-based loss functions to address recall on rare diseases.
     \item We introduced dynamic thresholding, moving away from static 0.5 cutoffs to improve per-class decision boundaries.
-    \item We redesigned the MVP front end to be simplified and focused, ensuring users could upload an image, see predictions, and receive a structured report — without navigating a complex UI.
+    \item We redesigned the MVP front end to be simplified and focused, ensuring users could upload an image, see predictions, and receive a structured report - without navigating a complex UI.
 \end{itemize}
 
-The final design is the result of multiple iterations driven by technical feasibility, empirical model results, and user needs. We remained aligned with our original research goal — to improve the reliability and accessibility of automated chest X-ray interpretation — while adjusting our path to ensure the outcomes were both realistic and impactful.
+The final design is the result of multiple iterations driven by technical feasibility, empirical model results, and user needs. We remained aligned with our original research goal - to improve the reliability and accessibility of automated chest X-ray interpretation - while adjusting our path to ensure the outcomes were both realistic and impactful.
 
 \section{Design Decisions (LO12)}
 
@@ -319,19 +319,19 @@ Throughout the course of this project, our design decisions were influenced heav
 
 \subsection*{Limitations}
 
-\textbf{Computational Resources:} One of the earliest limitations we encountered was our limited access to high-performance GPUs. Our original design — which included training a diffusion model for synthetic X-ray generation — was quickly identified as infeasible under our available hardware constraints. Diffusion models require prolonged training and large memory allocation, which wasn’t possible on the machines we had access to. This limitation led us to abandon the generative modeling pipeline and focus instead on optimizing a lightweight CNN.
+\textbf{Computational Resources:} One of the earliest limitations we encountered was our limited access to high-performance GPUs. Our original design - which included training a diffusion model for synthetic X-ray generation - was quickly identified as infeasible under our available hardware constraints. Diffusion models require prolonged training and large memory allocation, which wasn't possible on the machines we had access to. This limitation led us to abandon the generative modeling pipeline and focus instead on optimizing a lightweight CNN.
 
 \textbf{Data Quality and Balance:} We used the NIH ChestX-ray14 dataset, which, while large and publicly available, has significant label imbalance and some noisy annotations due to automated NLP-based label extraction. These issues limited our ability to train a reliable classifier across all disease classes. To manage this, we made the design decision to drop problematic classes like ``Hernia'' and ``No Finding,'' and applied techniques like oversampling and margin-based loss to address the imbalance.
 
-\textbf{No Direct Radiologist Feedback:} Although radiologists were identified as key stakeholders, we were unable to conduct formal usability interviews or testing due to privacy, access, and time limitations. As a result, many user-facing design choices — such as confidence score displays and report formatting — were guided by secondary research and informal peer feedback instead of expert interviews.
+\textbf{No Direct Radiologist Feedback:} Although radiologists were identified as key stakeholders, we were unable to conduct formal usability interviews or testing due to privacy, access, and time limitations. As a result, many user-facing design choices - such as confidence score displays and report formatting - were guided by secondary research and informal peer feedback instead of expert interviews.
 
 \subsection*{Assumptions}
 
 \textbf{Sufficient Research Value Without Generation:} After pivoting away from the diffusion model, we assumed that the research value of our project would still be significant if we focused on improving classification and explainability. This assumption was validated as we developed and evaluated our lightweight MobileNetV2 pipeline, and confirmed by feedback from our TA and course instructor.
 
-\textbf{Simplified Interface Meets Stakeholder Needs:} We assumed that end-users (radiologists, researchers) would prioritize accessibility and transparency over customization. Based on this, we simplified the MVP’s design, keeping it limited to image upload, output visualization, and structured reporting. We did not implement role-based access or configuration controls, as those were deemed nonessential.
+\textbf{Simplified Interface Meets Stakeholder Needs:} We assumed that end-users (radiologists, researchers) would prioritize accessibility and transparency over customization. Based on this, we simplified the MVP's design, keeping it limited to image upload, output visualization, and structured reporting. We did not implement role-based access or configuration controls, as those were deemed nonessential.
 
-\textbf{Pretrained Models Provide Sufficient Generalization:} We assumed that using pretrained weights from ImageNet for MobileNetV2 would provide enough generalizable features for effective fine-tuning on chest X-rays. This held true across our experiments — pretrained models outperformed models trained from scratch consistently.
+\textbf{Pretrained Models Provide Sufficient Generalization:} We assumed that using pretrained weights from ImageNet for MobileNetV2 would provide enough generalizable features for effective fine-tuning on chest X-rays. This held true across our experiments - pretrained models outperformed models trained from scratch consistently.
 
 \subsection*{Constraints}
 
@@ -351,7 +351,7 @@ Our chest X-ray classification system was designed primarily as a research-drive
 
 \textbf{Market Potential:} The system could serve as a support tool in resource-constrained healthcare environments, such as rural clinics or international outreach settings where access to radiologists is limited. Its lightweight architecture makes it feasible to deploy on modest hardware, further increasing its suitability for these contexts.
 
-\textbf{Cost to Develop a Product Version:} To convert our MVP into a production-grade system, further work would be needed in areas like security, robustness testing, regulatory approval, and UI/UX refinement. These improvements would require collaboration with medical professionals, legal advisors, and possibly clinical institutions. Based on preliminary estimates, this could require a small team and a budget in the range of \$100,000–\$250,000 CAD for full development, validation, and pilot testing.
+\textbf{Cost to Develop a Product Version:} To convert our MVP into a production-grade system, further work would be needed in areas like security, robustness testing, regulatory approval, and UI/UX refinement. These improvements would require collaboration with medical professionals, legal advisors, and possibly clinical institutions. Based on preliminary estimates, this could require a small team and a budget in the range of \$100,000-\$250,000 CAD for full development, validation, and pilot testing.
 
 \textbf{Revenue Model:} If developed into a commercial product, the system could be offered as:
 \begin{itemize}
@@ -360,11 +360,11 @@ Our chest X-ray classification system was designed primarily as a research-drive
     \item An open-source tool supported by paid services (e.g., integration, support, or training).
 \end{itemize}
 
-\textbf{Pricing and Break-Even Considerations:} Assuming a subscription model priced at \$100/month per clinic, the break-even point could be reached after onboarding 100–200 customers, depending on development and operational costs. Larger-scale adoption would require regulatory compliance and potential integration with PACS (Picture Archiving and Communication Systems).
+\textbf{Pricing and Break-Even Considerations:} Assuming a subscription model priced at \$100/month per clinic, the break-even point could be reached after onboarding 100-200 customers, depending on development and operational costs. Larger-scale adoption would require regulatory compliance and potential integration with PACS (Picture Archiving and Communication Systems).
 
 \textbf{Non-Profit and Open Source Value:} Alternatively, the tool could be released under an open-source license to support global health initiatives. In this case, impact would be measured in adoption, usage, and improvements to clinical workflows rather than revenue.
 
-Overall, while our current system is not yet ready for commercialization, it lays the foundation for a deployable, low-cost diagnostic aid — especially valuable in under-resourced regions or educational settings.
+Overall, while our current system is not yet ready for commercialization, it lays the foundation for a deployable, low-cost diagnostic aid - especially valuable in under-resourced regions or educational settings.
 
 
 \section{Reflection on Project Management (LO24)}
@@ -373,7 +373,7 @@ This section outlines our reflections on the project management approach taken t
 
 \subsection{How Does Your Project Management Compare to Your Development Plan}
 
-Overall, we followed the spirit of our Development Plan, although certain details evolved based on team dynamics and project realities. We held weekly team meetings as planned, maintained active communication through Discord, and used GitHub Projects for task tracking and deliverable progress. Roles shifted slightly throughout the semester as priorities changed — for example, one member initially focused on data preprocessing later took on responsibility for documentation and presentation work.
+Overall, we followed the spirit of our Development Plan, although certain details evolved based on team dynamics and project realities. We held weekly team meetings as planned, maintained active communication through Discord, and used GitHub Projects for task tracking and deliverable progress. Roles shifted slightly throughout the semester as priorities changed - for example, one member initially focused on data preprocessing later took on responsibility for documentation and presentation work.
 
 We adhered to our selected technologies: PyTorch for model development, React for the web interface, Flask for serving the model backend, and GitHub for version control. Our workflow plan involving branching, code reviews, and issue tracking was largely maintained, particularly in the latter half of the project.
 
@@ -399,7 +399,7 @@ We adhered to our selected technologies: PyTorch for model development, React fo
 If we were to begin this project again, we would:
 \begin{itemize}
     \item Schedule formal checkpoints for model evaluation earlier in the term to catch issues sooner.
-    \item Refine our scope earlier based on feasibility — starting with a simpler system and layering complexity as time allows.
+    \item Refine our scope earlier based on feasibility - starting with a simpler system and layering complexity as time allows.
     \item Attempt to secure expert interviews during the first month to ensure user-facing design decisions are grounded in stakeholder needs.
     \item Consider modular delegation from the start (e.g., separate backend, frontend, and modeling branches), which would allow for clearer parallel development.
 \end{itemize}
@@ -410,9 +410,9 @@ Overall, our project management evolved to meet the demands of a complex researc
 
 \section{Reflection on Capstone}
 
-The capstone experience was a deep dive into both research-driven development and real-world engineering tradeoffs. It allowed us to apply what we’ve learned across our undergraduate studies while also highlighting where academic preparation ends and practical, self-guided learning begins. We experienced firsthand the challenge of navigating uncertain outcomes, rapidly evolving technical decisions, and the pressure to balance innovation with feasibility.
+The capstone experience was a deep dive into both research-driven development and real-world engineering tradeoffs. It allowed us to apply what we've learned across our undergraduate studies while also highlighting where academic preparation ends and practical, self-guided learning begins. We experienced firsthand the challenge of navigating uncertain outcomes, rapidly evolving technical decisions, and the pressure to balance innovation with feasibility.
 
-This project demanded more than just technical output — it pushed us to think critically, justify our decisions in writing, and communicate effectively as a team. Ultimately, it simulated a professional research and development environment, giving us a clearer understanding of what it takes to build something meaningful from scratch.
+This project demanded more than just technical output - it pushed us to think critically, justify our decisions in writing, and communicate effectively as a team. Ultimately, it simulated a professional research and development environment, giving us a clearer understanding of what it takes to build something meaningful from scratch.
 
 \subsection{Which Courses Were Relevant}
 
@@ -427,7 +427,7 @@ Several of our upper-year and core courses directly contributed to the success o
     
     \item \textbf{Databases 3DB3:} While our backend data storage was simple, our familiarity with data schemas and interactions between APIs and databases came directly from this course.
     
-    \item \textbf{Capstone I (SFWRENG 4G06 – Term 1):} The first half of capstone was essential for learning how to scope, research, write formal documents (like the SRS and Design Doc), and organize weekly deliverables.
+    \item \textbf{Capstone I (SFWRENG 4G06 - Term 1):} The first half of capstone was essential for learning how to scope, research, write formal documents (like the SRS and Design Doc), and organize weekly deliverables.
 \end{itemize}
 
 \subsection{Knowledge/Skills Outside of Courses}
@@ -435,7 +435,7 @@ Several of our upper-year and core courses directly contributed to the success o
 Despite our strong academic foundation, the project demanded new knowledge and skillsets not directly covered in our coursework:
 
 \begin{itemize}
-    \item \textbf{Advanced CNN Techniques:} We had to explore methods like margin-based loss functions, dynamic thresholding, and class-aware rebalancing — topics that weren’t deeply explored in our ML course but proved critical for multi-label classification on imbalanced medical datasets.
+    \item \textbf{Advanced CNN Techniques:} We had to explore methods like margin-based loss functions, dynamic thresholding, and class-aware rebalancing - topics that weren't deeply explored in our ML course but proved critical for multi-label classification on imbalanced medical datasets.
     
     \item \textbf{Medical Imaging Context:} Understanding radiological conditions, clinical terminology, and dataset annotation methods (e.g., NLP-based label extraction) required extra reading and domain-specific learning.
     
@@ -443,7 +443,7 @@ Despite our strong academic foundation, the project demanded new knowledge and s
     
     \item \textbf{Cloud and GPU Performance Constraints:} Navigating the limitations of free-tier GPUs and optimizing training performance for our experiments led us to learn more about hardware bottlenecks, runtime logging, and batch processing.
     
-    \item \textbf{Team Documentation Habits:} While documentation was emphasized in classes, this project taught us the importance of maintaining consistent internal and external documentation — especially for shared APIs and preprocessing pipelines.
+    \item \textbf{Team Documentation Habits:} While documentation was emphasized in classes, this project taught us the importance of maintaining consistent internal and external documentation - especially for shared APIs and preprocessing pipelines.
 \end{itemize}
 
 This project challenged us to bridge the gap between theory and application, and in doing so, it prepared us for both industry roles and academic research paths. It was one of the most demanding and rewarding experiences of our undergraduate career.
