@@ -18,7 +18,6 @@
 \usepackage[margin=1in,footskip=0.25in]{geometry}
 \usepackage[round]{natbib}
 
-%\input{../Comments}
 \input{../Common}
 
 \begin{document}
@@ -41,6 +40,7 @@
   4 November 2024 & Gurnoor & Section 1-3 \\
   4 November 2024 & Jared & Section 3, 5 \\
   4 November 2024 & Ahmad & Section 5 \\
+  4 April 2024 & Jared, Harrison & Update VnVPlan to address feedback from Github Issues and TA feedback \\
   \bottomrule
 \end{tabularx}
 
@@ -114,7 +114,7 @@ It lists the VnV team members and describes the process for verifying the SRS, d
 % - [HIPAA Implementation] Expanded on compliance procedures, not just references.
 
 \subsection{Summary}
-The software being developed is the \textbf{Chest Scan} AI diagnostic tool, designed to assist radiologists by automating the classification of chest X-ray images and generating structured diagnostic reports. The system leverages convolutional neural networks (CNNs) to detect and classify multiple thoracic diseases---including pneumonia, cardiomegaly, and effusions---within a single scan. This multi-class classification capability enhances diagnostic efficiency and helps radiologists manage large volumes of medical imaging. The tool will include user authentication, heatmap visualization (via Grad-CAM), confidence scoring, and PDF reporting through a web interface.
+The software being developed is the \textbf{Chest Scan} AI diagnostic tool, designed to assist radiologists by automating the classification of chest X-ray images and generating structured diagnostic reports. The system leverages convolutional neural networks (CNNs) to detect and classify multiple thoracic diseases including pneumonia, cardiomegaly, and effusions within a single scan. This multi-class classification capability enhances diagnostic efficiency and helps radiologists manage large volumes of medical imaging. The tool will include user authentication, heatmap visualization, confidence scoring, and a diagnostic report through a web interface.
 
 \subsection{Objectives}
 The V\&V Plan for the Chest Scan system targets three major goals: diagnostic reliability across disease categories, secure handling of sensitive clinical data, and intuitive system usability. Each objective is measurable and traceable to the system's core requirements. They guide testing for both functional correctness and compliance with healthcare regulations.
@@ -162,7 +162,7 @@ This project is considered high challenge due to its simultaneous emphasis on me
 If project capacity permits, the team will pursue the following enhancements:
 
 \begin{itemize}
-  \item \textbf{Usability Testing with Radiologists:} Targeted sessions will be held to assess interface clarity and diagnostic report interpretation speed.
+  \item \textbf{Usability Survey \& feedback Report:} Designed and conducted a usability survey to gather user feedback on our website, then compiled and analyzed the responses in a structured report for deeper insights.  
   \item \textbf{Research Paper and Documentation:} Full technical documentation and a research summary will be published detailing model design, architecture, training pipeline, and V\&V outcomes.
 \end{itemize}
 
@@ -225,7 +225,7 @@ In this section, we will lay out the roadmap for ensuring each part of the proje
 % Feedback Addressed:
 % - [Content]: Aligned with new project scope (multi-class CNN); added emphasis on model interpretability, FP/FN detection, and confidence scoring.
 % - [NFR]: Expanded security section to refer to specific HIPAA obligations and mitigation strategies.
-% - [Spelling/Style]: Avoided use of hard-coded "magic numbers" like 90%, using symbolic metrics instead.
+% - [Spelling/Style]: Avoided use of hard-coded "magic numbers" like \CONFIDENCE_THRESHOLD, using symbolic metrics instead.
 % - [Traceability]: Highlighted test-case linkage via traceability matrix construction.
 
 The SRS Verification Plan for the "Chest Scan" diagnostic tool ensures that all specified requirements are complete, accurate, and verifiable, particularly in the context of multi-label disease classification. This section outlines the approach to confirm that the SRS document meets quality standards, providing a solid foundation for subsequent design, implementation, and testing phases.
@@ -233,7 +233,7 @@ The SRS Verification Plan for the "Chest Scan" diagnostic tool ensures that all 
 \subsubsection{Objectives}
 The objectives of this SRS Verification Plan are to:
 \begin{enumerate}
-  \item \textbf{Ensure Requirement Completeness:} Confirm that all essential functionalities, such as multi-class image classification, model confidence estimation, Grad-CAM visualizations, and diagnostic report generation, are fully and clearly specified in the SRS.
+  \item \textbf{Ensure Requirement Completeness:} Confirm that all essential functionalities, such as multi-class image classification, model confidence estimation, heatmap visualizations, and diagnostic report generation, are fully and clearly specified in the SRS.
   \item \textbf{Validate Requirement Clarity:} Verify that each requirement, including classification performance metrics (e.g., precision, recall, F1-score), is unambiguous and testable.
   \item \textbf{Check Requirement Feasibility:} Assess that all technical features-especially those related to deep learning models-are realistically achievable given dataset availability and system constraints.
   \item \textbf{Verify Traceability:} Ensure that each requirement can be traced through to design modules, test cases, and validation outputs.
@@ -342,7 +342,7 @@ The following checklist covers key design aspects to be verified based on the MG
     \end{itemize}
   \item \textbf{User Interface Design (if applicable)}
     \begin{itemize}
-      \item Image upload UI and Grad-CAM overlay visualizations are verified for compatibility with backend output format.
+      \item Image upload UI and heatmap visualizations are verified for compatibility with backend output format.
       \item Diagnostic report UI tested for multi-class display layout (i.e., stacked or tabular outputs for multiple disease labels).
     \end{itemize}
 \end{enumerate}
@@ -587,7 +587,7 @@ This validation plan ensures the tool's real-world readiness through comprehensi
 % Feedback addressed:
 % - Expanded test cases to cover multi-class classification accuracy and robustness (System Test for Functional Requirements)
 % - Removed outdated diffusion model-related tests (FRTC3, FRTC4) (Project Scope Alignment)
-% - Replaced hardcoded '90%' with symbolic constant \ACCURACYTHRESHOLD{} (Content Quality)
+% - Replaced hardcoded '\CONFIDENCE_THRESHOLD' with symbolic constant \ACCURACYTHRESHOLD{} (Content Quality)
 % - Kept test case labeling and format identical to original VnV Plan (Formatting Consistency)
 
 \newcommand{\ACCURACYTHRESHOLD}{90\%}  % Symbolic constant replacing magic number
@@ -604,7 +604,7 @@ This subsection presents the system test cases categorized by areas of functiona
 \textbf{Initial State:} The system is initialized and ready to receive input through the web interface.\\
 \textbf{Input:} A valid chest X-ray image in supported formats (DICOM, JPEG, or PNG).\\
 \textbf{Output:} The image is successfully accepted, read, and queued for analysis with no errors or crashes.\\
-\textbf{Test Case Derivation:} Derived from FR1 (The system shall accept and read chest X-ray images as input).\\
+\textbf{Test Case Derivation:} The test confirms the system meets baseline input handling by successfully accepting valid file types. The expected output validates the upload and queuing logic for correctly formatted chest X-ray images without backend or UI errors.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
   \item Launch the system and ensure it's ready to receive inputs.
@@ -621,7 +621,7 @@ This subsection presents the system test cases categorized by areas of functiona
 \textbf{Initial State:} The system is initialized and awaiting file upload.\\
 \textbf{Input:} A file in an unsupported or corrupted format (e.g., .txt, .docx, or corrupted .jpg).\\
 \textbf{Output:} The system rejects the file with a descriptive error message and logs the failure.\\
-\textbf{Test Case Derivation:} Derived from FR1.\\
+\textbf{Test Case Derivation:} The test ensures the system handles invalid or malformed inputs gracefully by displaying clear user-facing errors and suppressing unintended backend behavior. The expected output confirms validation safeguards are enforced to block non-image files or corrupted uploads.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
   \item Attempt to upload invalid image files.
@@ -632,42 +632,47 @@ This subsection presents the system test cases categorized by areas of functiona
 
 \vspace{1em}
 
-\subsubsection{Disease Identification and Classification}
+
+\subsubsection{FR2}
 
 \textbf{FRTC3}\\
-\textbf{Title:} Correct Multi-Class Disease Classification\\
-\textbf{Control:} Automatic (with manual verification)\\
-\textbf{Initial State:} The multi-label classification model is deployed and active.\\
-\textbf{Input:} Chest X-ray images with expert-annotated ground truth for multiple diseases.\\
-\textbf{Output:} The model correctly identifies each disease label per image with per-class accuracy above \ACCURACYTHRESHOLD{}.\\
-\textbf{Test Case Derivation:} Based on FR2.\\
+\textbf{Title:} Image Preprocessing Enforcement for CNN Compatibility\\
+\textbf{Control:} Manual\\
+\textbf{Initial State:} System is running and ready for image upload.\\
+\textbf{Input:} A raw chest X-ray image with incorrect resolution and color format.\\
+\textbf{Output:} The system resizes to MODEL\_INPUT\_DIMENSIONS, normalizes pixel values, converts to grayscale if needed, and logs errors for failures.\\
+\textbf{Test Case Derivation:} The expected output is justified by the CNN model's strict input requirements-ensuring valid data improves model accuracy and prevents runtime errors.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Load test dataset with known multi-disease labels (e.g., pneumonia + effusion).
-  \item Run the classification model and log predicted outputs.
-  \item For each disease class, compute accuracy = TP / (TP + FN + FP).
-  \item Check that every class's accuracy \( \geq \) \ACCURACYTHRESHOLD{}.
+  \item Upload an unprocessed color X-ray image.
+  \item Confirm the system performs resizing, normalization, and grayscale conversion.
+  \item Upload a malformed image to verify error logging and halt in processing.
 \end{enumerate}
 
 \vspace{1em}
+
+\subsubsection{FR3}
+
+
 
 \textbf{FRTC4}\\
-\textbf{Title:} Disease Absence Correct Classification\\
-\textbf{Control:} Automatic\\
-\textbf{Initial State:} Model is deployed and ready.\\
-\textbf{Input:} Chest X-ray images from healthy individuals with no labeled abnormalities.\\
-\textbf{Output:} Model confirms absence of disease with accuracy above \ACCURACYTHRESHOLD{}.\\
-\textbf{Test Case Derivation:} From FR2.\\
+\textbf{Title:} Disease Classification with Confidence Scores\\
+\textbf{Control:} Automatic (with manual verification)\\
+\textbf{Initial State:} CNN model is deployed and active.\\
+\textbf{Input:} Chest X-ray images from the validation dataset.\\
+\textbf{Output:} For each image, the system returns disease predictions with confidence scores greater than 0 and less than 1; per-class accuracy meets or exceeds 60\%.\\
+\textbf{Test Case Derivation:} Predictions must include both labels and confidence scores to meet the fit criterion, while model accuracy above 60\% ensures diagnostic reliability.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Submit a set of verified normal chest X-ray images.
-  \item Record model outputs across all disease labels.
-  \item Confirm that no disease is incorrectly marked as present.
-  \item Compute false positive rate and verify it remains below tolerance.
+  \item Load a labeled validation dataset.
+  \item Run the CNN model to obtain disease predictions and confidence scores.
+  \item Verify the format and range of confidence scores.
+  \item Compare predictions against ground truth labels.
+  \item Calculate accuracy and confirm it meets or exceeds 60\%.
 \end{enumerate}
 
 \vspace{1em}
-
+\subsubsection{FR4}
 \textbf{FRTC5}\\
 \textbf{Title:} Ambiguous Image Classification (Multi-Label)\\
 \textbf{Control:} Automatic (verified manually)\\
@@ -680,233 +685,142 @@ This subsection presents the system test cases categorized by areas of functiona
   \item Use an ambiguous image with verified multiple diagnoses.
   \item Run the classifier and extract all predicted labels.
   \item Calculate precision, recall, and F1 for each label.
-  \item Ensure metrics meet performance thresholds \( \geq 0.80 \).
+  \item Ensure metrics meet performance thresholds \( \geq ACCURACY\_THRESHOLD \).
 \end{enumerate}
-
 \vspace{1em}
 
+\subsubsection{FR5}
 \textbf{FRTC6}\\
-\textbf{Title:} Robustness on Poor-Quality Images\\
-\textbf{Control:} Automatic\\
-\textbf{Initial State:} Model deployed.\\
-\textbf{Input:} Noisy, low-contrast, or partially occluded chest X-ray image.\\
-\textbf{Output:} Model attempts classification with degradation in accuracy within acceptable bounds (e.g., \( \geq 70\% \) per-class precision).\\
-\textbf{Test Case Derivation:} From FR5 robustness requirement.\\
+\textbf{Title:} Display of Predictions and Heatmaps\\
+\textbf{Control:} Manual\\
+\textbf{Initial State:} System has completed classification for an uploaded image.\\
+\textbf{Input:} A classified chest X-ray image.\\
+\textbf{Output:} The interface displays disease labels, confidence scores, and heatmaps clearly within MAX\_RENDER\_TIME.\\
+\textbf{Test Case Derivation:} Ensures readability and timeliness of visual outputs, matching fit criterion for interpretability.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Preprocess a test image with simulated noise or blur.
-  \item Submit image to system.
-  \item Record predictions and calculate performance degradation.
-  \item Confirm outputs remain within expected precision thresholds.
+  \item Upload an image and wait for classification to complete.
+  \item Observe the rendered output on the results screen.
+  \item Confirm labels, scores, and heatmaps are visible and rendered within MAX\_RENDER\_TIME.
+  \item Manually assess layout and readability.
 \end{enumerate}
 
 \vspace{1em}
-
+\subsubsection{FR6}
 \textbf{FRTC7}\\
-\textbf{Title:} Grad-CAM Heatmap Generation for Predictions\\
-\textbf{Control:} Manual review\\
-\textbf{Initial State:} A prediction with positive classification has been generated.\\
-\textbf{Input:} Processed chest X-ray image with positive disease label (e.g., pneumonia).\\
-\textbf{Output:} Grad-CAM heatmap is generated and highlights anatomical regions relevant to the classification.\\
-\textbf{Test Case Derivation:} Interpretability requirement from FR3.\\
+\textbf{Title:} Diagnostic Report Download\\
+\textbf{Control:} Manual\\
+\textbf{Initial State:} A user is logged in and has a classified image result.\\
+\textbf{Input:} User clicks "Download Report".\\
+\textbf{Output:} Report file downloads with prediction, heatmap, and findings.\\
+\textbf{Test Case Derivation:} Confirms output includes required contents in a retrievable format, supporting traceability.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Trigger heatmap generation post-inference.
-  \item Display Grad-CAM overlay to user.
-  \item Have medical reviewer confirm region aligns with pathology location.
-  \item Record alignment feedback to validate model transparency.
+  \item Log in and upload an image.
+  \item Wait for predictions and visuals.
+  \item Click "Download Report".
+  \item Open file and verify it contains predictions, heatmap, and text summary.
 \end{enumerate}
 
 \vspace{1em}
-
-\subsubsection{Report Generation}
-
+\subsubsection{FR6}
 \textbf{FRTC8}\\
-\textbf{Title:} Report Generation Error Handling\\
-\textbf{Control:} Automatic\\
-\textbf{Initial State:} Disease identification partially fails or returns incomplete results.\\
-\textbf{Input:} A chest X-ray image where disease classification returns incomplete or no output.\\
-\textbf{Output:} The system generates a report that clearly marks the failure, e.g., "Unable to determine finding for Region X." No system crash occurs.\\
-\textbf{Test Case Derivation:} Derived from FR4 - Robust reporting under partial failure.\\
-% Feedback addressed: Clarified what constitutes "misleading information" and verified graceful handling with visible warnings.
+\textbf{Title:} Report Storage Security and Retrieval\\
+\textbf{Control:} Manual\\
+\textbf{Initial State:} A previous diagnostic session has been completed.\\
+\textbf{Input:} User accesses dashboard and attempts to retrieve prior report.\\
+\textbf{Output:} Report is retrieved from encrypted storage (AES-256) and associated with the session.\\
+\textbf{Test Case Derivation:} Validates backend compliance with encryption and user-based indexing for secure access.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Simulate failure in the disease identification model (e.g., forcibly bypass model return).
-  \item Attempt to generate the report.
-  \item Verify the report explicitly communicates which findings could not be produced.
-  \item Ensure formatting, layout, and system performance are unaffected.
+  \item Upload an image, generate a report, and log out.
+  \item Log back in using the same account/session.
+  \item Navigate to dashboard and access stored report.
+  \item Verify successful decryption and session-specific access.
 \end{enumerate}
 
 \vspace{1em}
-
-\subsubsection{Display of Heatmaps and Reports}
-
+\subsubsection{FR7}
 \textbf{FRTC9}\\
-\textbf{Title:} Heatmap Display on Chest X-ray Images\\
+\textbf{Title:} Authentication with Valid and Invalid Credentials\\
 \textbf{Control:} Manual\\
-\textbf{Initial State:} Heatmaps are generated successfully by Grad-CAM.\\
-\textbf{Input:} A set of X-ray images with corresponding heatmaps.\\
-\textbf{Output:} The UI overlays the correct heatmap aligned with the anatomical region corresponding to the diagnosis.\\
-\textbf{Test Case Derivation:} Derived from FR3 - Visual explainability.\\
-% Feedback addressed: Clarified use of Grad-CAM and the standard color intensity mapping for medical interpretability.
+\textbf{Initial State:} Login screen is presented.\\
+\textbf{Input:} Correct and incorrect username/password combinations.\\
+\textbf{Output:} Access granted for valid credentials; access denied and logged for invalid attempts.\\
+\textbf{Test Case Derivation:} Ensures only authorized users gain entry and failed logins are audited.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Upload a verified test image with known labels.
-  \item View the generated heatmap overlay on the web interface.
-  \item Compare heatmap to radiologist-provided annotation.
-  \item Confirm localization and interpretability are accurate.
+  \item Enter valid credentials and confirm access.
+  \item Log out and enter incorrect credentials.
+  \item Confirm access is denied.
+  \item Check backend logs for authentication failure entry.
 \end{enumerate}
 
 \vspace{1em}
-
+\subsubsection{FR7}
 \textbf{FRTC10}\\
-\textbf{Title:} Diagnostic Report and Heatmap Access via Web Interface\\
+\textbf{Title:} Role-Based Access to Restricted Features\\
 \textbf{Control:} Manual\\
-\textbf{Initial State:} The system has generated and stored reports and heatmaps.\\
-\textbf{Input:} Authenticated user request via the frontend dashboard.\\
-\textbf{Output:} Interface displays both diagnostic report and heatmap in structured, accessible format.\\
-\textbf{Test Case Derivation:} Derived from FR6 - User report accessibility.\\
-% Feedback addressed: Defined layout expectations and downloadability to meet clinical usability.
+\textbf{Initial State:} User is logged in.\\
+\textbf{Input:} User with limited permissions attempts to access restricted modules.\\
+\textbf{Output:} Features are hidden or blocked based on user role.\\
+\textbf{Test Case Derivation:} Verifies that sensitive functions are only accessible by users with appropriate permissions.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Log in to the application.
-  \item Navigate to patient case history.
-  \item Open a diagnostic report entry and inspect the associated heatmap.
-  \item Ensure both are visible, scrollable, and downloadable.
+  \item Log in with a basic user role.
+  \item Attempt to access admin-only dashboard or reports.
+  \item Confirm UI hides or disables access.
+  \item Attempt direct URL access and verify rejection.
 \end{enumerate}
 
 \vspace{1em}
-
-\subsubsection{User Interface Access}
-
+\subsubsection{FR8}
 \textbf{FRTC11}\\
-\textbf{Title:} Authorized User Access to Diagnostic Results\\
+\textbf{Title:} Secure API Image Classification Request\\
+\textbf{Control:} Automatic (via script or client request)\\
+\textbf{Initial State:} API endpoint is live and accepting requests.\\
+\textbf{Input:} A valid POST request with a DICOM image and valid token.\\
+\textbf{Output:} Returns JSON with disease labels and confidence scores.\\
+\textbf{Test Case Derivation:} Confirms API behaves as expected for compliant clients, providing structured output.\\
+\textbf{How the test will be performed:}
+\begin{enumerate}
+  \item Send POST request with valid token and image.
+  \item Capture response payload.
+  \item Confirm JSON structure includes disease names and score values.
+  \item Validate response format and token usage.
+\end{enumerate}
+
+\vspace{1em}
+\subsubsection{FR9}
+\textbf{FRTC9}\\
+\textbf{Title:} Invalid Upload Error Handling\\
 \textbf{Control:} Manual\\
-\textbf{Initial State:} The system is online, with at least one authorized user and patient report in the database.\\
-\textbf{Input:} Valid login credentials (radiologist account).\\
-\textbf{Output:} Full access granted to diagnostic results through the UI.\\
-\textbf{Test Case Derivation:} Derived from FR7 - Role-based access to diagnostic data.\\
-% Feedback addressed: Clarified the login preconditions and the scope of access verification.
+\textbf{Initial State:} Upload form is visible to the user.\\
+\textbf{Input:} Unsupported or corrupted image file.\\
+\textbf{Output:} System displays clear error message and allows retry.\\
+\textbf{Test Case Derivation:} Ensures graceful error handling and user guidance on failure.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Log in using a valid radiologist account.
-  \item Navigate to patient records.
-  \item Confirm ability to view diagnostic reports and overlays.
-  \item Confirm UI responsiveness and secure data retrieval.
+  \item Attempt to upload a .txt or corrupted .jpg file.
+  \item Observe UI for error message.
+  \item Confirm message explains the issue and retry option is presented.
 \end{enumerate}
 
 \vspace{1em}
-
-\textbf{FRTC12}\\
-\textbf{Title:} Unauthorized User Access Denied\\
+\subsubsection{FR10}
+\textbf{FRTC10}\\
+\textbf{Title:} Diagnostic Result Timestamp Logging\\
 \textbf{Control:} Manual\\
-\textbf{Initial State:} The system has a record of authorized users.\\
-\textbf{Input:} Invalid or unauthorized user login attempt.\\
-\textbf{Output:} Access is denied with an informative error message.\\
-\textbf{Test Case Derivation:} Derived from FR7 - Access restrictions for non-privileged users.\\
-% Feedback addressed: Added clarity around testing edge cases for login attempts.
+\textbf{Initial State:} User has completed multiple uploads.\\
+\textbf{Input:} User opens dashboard to view past results.\\
+\textbf{Output:} Each entry shows image, prediction, probability, timestamp, and links.\\
+\textbf{Test Case Derivation:} Verifies historical tracking and completeness of displayed diagnostic data.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Attempt login using a non-registered email.
-  \item Attempt login using a correct email but wrong password.
-  \item Confirm access is denied and appropriate errors are shown (e.g., "Invalid credentials").
-  \item Validate system logs failed access attempts.
+  \item Upload multiple images and generate predictions.
+  \item Open dashboard view.
+  \item Confirm each result includes timestamp, score, image, and report/heatmap link.
 \end{enumerate}
-
-\vspace{1em}
-
-\subsubsection{Data Storage and Security}
-
-\textbf{FRTC13}\\
-\textbf{Title:} Secure Storage of Patient Data and Diagnostic Results\\
-\textbf{Control:} Manual and Automatic\\
-\textbf{Initial State:} Database is populated with sample X-ray cases and diagnostic reports.\\
-\textbf{Input:} Backend request to access, write, and update stored data.\\
-\textbf{Output:} Data is retrieved/stored securely, with encryption and access logs verified.\\
-\textbf{Test Case Derivation:} Derived from FR8 - Data security and patient confidentiality.\\
-% Feedback addressed: Defined scope of verification for encryption, access control, and audit trail.
-\textbf{How the test will be performed:}
-\begin{enumerate}
-  \item Insert mock patient records into the database.
-  \item Run access queries through both backend services and simulated UI sessions.
-  \item Confirm proper handling and encryption (check DB layer and storage).
-  \item Verify access logs for each retrieval.
-\end{enumerate}
-
-\vspace{1em}
-
-\textbf{FRTC14}\\
-\textbf{Title:} Data Encryption in Storage and Transit\\
-\textbf{Control:} Automatic\\
-\textbf{Initial State:} System uses TLS/HTTPS and encrypted storage backend.\\
-\textbf{Input:} User uploads and retrieves sensitive patient data.\\
-\textbf{Output:} Data is encrypted end-to-end with no exposure of plaintext during transmission or at rest.\\
-\textbf{Test Case Derivation:} Derived from FR9 - HIPAA-compliant encryption.\\
-% Feedback addressed: Specified use of TLS and encryption schemes (e.g., AES-256).
-\textbf{How the test will be performed:}
-\begin{enumerate}
-  \item Upload patient files via UI or backend.
-  \item Monitor network traffic using Wireshark - confirm HTTPS is used.
-  \item Query stored files and inspect encryption state on disk.
-  \item Validate that no part of the patient data exists unencrypted.
-\end{enumerate}
-
-\vspace{1em}
-
-\subsubsection{Authentication and Authorization}
-
-\textbf{FRTC15}\\
-\textbf{Title:} User Authentication with Valid Credentials\\
-\textbf{Control:} Manual\\
-\textbf{Initial State:} System has at least one registered user.\\
-\textbf{Input:} Valid username and password.\\
-\textbf{Output:} User is authenticated and redirected to dashboard.\\
-\textbf{Test Case Derivation:} Derived from FR7 - User authentication.\\
-% Feedback addressed: Added dashboard redirection and session token check.
-\textbf{How the test will be performed:}
-\begin{enumerate}
-  \item Submit correct credentials on login form.
-  \item Confirm successful authentication.
-  \item Verify user lands on dashboard.
-  \item Check that a session token or cookie is generated.
-\end{enumerate}
-
-\vspace{1em}
-
-\textbf{FRTC16}\\
-\textbf{Title:} User Authentication with Invalid Credentials\\
-\textbf{Control:} Manual\\
-\textbf{Initial State:} System is live with authentication services running.\\
-\textbf{Input:} Invalid login credentials.\\
-\textbf{Output:} Authentication fails, and an error message is shown.\\
-\textbf{Test Case Derivation:} Derived from FR7 - Authentication security.\\
-% Feedback addressed: Expanded test to include lockout policy and brute-force prevention.
-\textbf{How the test will be performed:}
-\begin{enumerate}
-  \item Enter wrong credentials repeatedly.
-  \item Confirm failure response (e.g., "Wrong username or password").
-  \item Observe system behavior on multiple attempts - check if lockout or CAPTCHA is triggered.
-\end{enumerate}
-
-\vspace{1em}
-
-\textbf{FRTC17}\\
-\textbf{Title:} Role-Based Access Control Enforcement\\
-\textbf{Control:} Manual\\
-\textbf{Initial State:} System has multiple users with defined roles (e.g., admin, radiologist, technician).\\
-\textbf{Input:} Role-specific actions performed under different user accounts.\\
-\textbf{Output:} System permits only actions within the role scope.\\
-\textbf{Test Case Derivation:} Derived from FR7 - Role-based access enforcement.\\
-% Feedback addressed: Specified role-action matrix and extended coverage across user types.
-\textbf{How the test will be performed:}
-\begin{enumerate}
-  \item Log in as different user types.
-  \item Attempt actions outside their allowed scope (e.g., technician viewing admin panel).
-  \item Verify access is denied and system logs the attempt.
-  \item Confirm actions within role scope are permitted.
-\end{enumerate}
-
-\vspace{1em}
 
 \subsection{Tests for Nonfunctional Requirements}
 
@@ -926,32 +840,31 @@ This subsection includes test cases that evaluate the system's appearance, usabi
 \textbf{Initial State:} The web application is deployed and accessible from a browser.\\
 \textbf{Input:} A user accesses the live system on a browser under default theme settings.\\
 \textbf{Output:} The UI displays a cool and calming color palette, primarily using white and soft blue tones.\\
-\textbf{Test Case Derivation:} Derived from NF-AR1 - The application shall use a calming color scheme to support clinician usability and reduce eye strain.\\
-% Feedback addressed: Added validation criteria involving stakeholder feedback and environmental lighting conditions.
+\textbf{Test Case Derivation:} A calming palette enhances usability by improving visual comfort and reducing fatigue, making it easier to interpret outputs.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
   \item Open the application in a modern browser under standard lighting.
   \item Review the color palette used across login, dashboard, and report views.
   \item Record the dominant background and highlight colors.
-  \item Conduct a brief evaluation with radiologists and designers, using a 5-point scale to rate visual comfort and clarity.
+  \item Ask general users to rate visual comfort and clarity on a 5-point scale.
   \item Pass criteria: At least 80\% of users rate visual experience 4 or higher.
 \end{enumerate}
 
 \vspace{1em}
 
+\vspace{1em}
 \textbf{NFRTC2}\\
 \textbf{Title:} Consistency of Simple and Uncluttered Style\\
 \textbf{Control:} Manual\\
 \textbf{Initial State:} Web app is operational and fully loaded with all components.\\
 \textbf{Input:} Navigation across multiple interface modules (login, dashboard, image viewer, report viewer).\\
 \textbf{Output:} UI layout remains consistent and free of clutter; visual hierarchy is preserved.\\
-\textbf{Test Case Derivation:} Derived from NF-SR1 and NF-SR2 - The software must present a clean interface with consistent layout and spacing across all pages.\\
-% Feedback addressed: Included user walkthroughs, navigation efficiency metrics, and identification of visual noise or misalignment.
+\textbf{Test Case Derivation:} Consistency in layout and spacing ensures users can navigate the app without confusion, improving overall usability.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
   \item Access each core module of the UI as a user.
   \item Evaluate font styles, spacing, element alignment, and visual consistency across modules.
-  \item Perform a walkthrough with 3 representative users (radiologist, admin, technician).
+  \item Perform a walkthrough with 3 representative users.
   \item Track time taken to locate a core function (e.g., report viewer).
   \item Confirm no modules exhibit layout shifts, overlap, or off-brand UI elements.
   \item Success metric: All users navigate without confusion and UI passes visual QA checklist.
@@ -965,20 +878,21 @@ This subsection includes test cases that evaluate the system's appearance, usabi
 \textbf{Control:} Manual\\
 \textbf{Initial State:} The web application is deployed and accessible via a browser; users are interacting with it for the first time.\\
 \textbf{Input:} Untrained users attempt to upload a chest X-ray and request classification using the tool.\\
-\textbf{Output:} At least 80\% of users complete the task within 1 minute without requiring assistance.\\
-\textbf{Test Case Derivation:} Derived from NF-EUR0 - Core functionality should be self-evident and uncluttered for new users.\\
-% Feedback addressed: Added quantifiable metric (success threshold), usability protocol, and stakeholder insights.
+\textbf{Output:} At least 80\% of users complete the task within MAX\_TASK\_DURATION without requiring assistance.\\
+\textbf{Test Case Derivation:} The test confirms that intuitive UI design enables users to perform core functions with minimal learning.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Recruit 5-7 first-time users (non-developers, preferably clinicians or technicians).
+  \item Recruit 5-7 first-time users (not involved in design).
   \item Instruct them to upload a chest X-ray image and trigger the diagnosis feature without guidance or tutorial.
   \item Time the task and record completion success/failure.
   \item Observe confusion points or UI obstacles.
-  \item Validate success if at least 80\% complete the task in under 1 minute unaided.
+  \item Validate success if at least 80\% complete the task in under MAX\_TASK\_DURATION unaided.
   \item Collect optional feedback via Likert-scale survey (e.g., "The task was easy to complete.").
 \end{enumerate}
 
 \vspace{1em}
+
+\subsubsection{Usability and Humanity Requirements}
 
 \textbf{NFRTC4}\\
 \textbf{Title:} Intuitiveness and Memorability of the Software\\
@@ -986,11 +900,10 @@ This subsection includes test cases that evaluate the system's appearance, usabi
 \textbf{Initial State:} A cohort of users has completed 1-2 guided sessions with the software.\\
 \textbf{Input:} Users attempt to navigate and use the system independently after a one-month break.\\
 \textbf{Output:} Users are able to recall navigation and perform core actions (e.g., upload, view report) with no external aid.\\
-\textbf{Test Case Derivation:} Based on NF-EU2 - The tool must be intuitive enough that users retain task workflows post-training.\\
-% Feedback addressed: Increased emphasis on longitudinal testing and memory recall metrics.
+\textbf{Test Case Derivation:} The output reflects long-term usability, as users who remember workflows are less likely to rely on retraining or support.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Provide 1-2 structured walkthroughs of the app to a test group (e.g., radiology trainees).
+  \item Provide 1-2 structured walkthroughs of the app to a test group.
   \item Wait 4 weeks without further exposure.
   \item Ask users to independently upload an image and access the report dashboard.
   \item Observe interactions and task success.
@@ -1004,87 +917,69 @@ This subsection includes test cases that evaluate the system's appearance, usabi
 \textbf{Title:} Learning Curve Assessment\\
 \textbf{Control:} Manual\\
 \textbf{Initial State:} System is deployed with a functional user interface, and no help prompts are enabled.\\
-\textbf{Input:} First-time users (not involved in design) try to perform a full diagnosis cycle (upload, classify, view result).\\
-\textbf{Output:} Users complete the cycle independently within 1 minute, with high confidence.\\
-\textbf{Test Case Derivation:} Derived from NF-LR0 - The learning curve should be short enough to allow effective tool usage with minimal instruction.\\
-% Feedback addressed: Added observer logging, performance threshold, and emotional confidence metric.
+\textbf{Input:} First-time users try to perform a full diagnosis cycle (upload, classify, view result).\\
+\textbf{Output:} Users complete the cycle independently within MAX\_TASK\_DURATION, with high confidence.\\
+\textbf{Test Case Derivation:} Successful completion without help demonstrates that minimal training is required to use the system effectively.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
   \item Introduce new users to the platform without providing any tutorials or hints.
   \item Ask them to diagnose a chest X-ray image.
   \item Record time taken and whether they required external help.
   \item Collect post-task confidence ratings (e.g., "How confident were you in your actions?" on a 5-point scale).
-  \item Define success if majority complete within 1 minute and rate confidence $\geq$ 4.
+  \item Define success if majority complete within MAX\_TASK\_DURATION and rate confidence $\geq$ 4.
 \end{enumerate}
 
 \vspace{1em}
-
-\subsubsection{Usability and Humanity Requirements}
 
 \textbf{NFRTC6}\\
 \textbf{Title:} Realism of Generated Chest X-Ray Images\\
-\textbf{Control:} Manual (with expert evaluation)\\
-\textbf{Initial State:} The diffusion model is operational and capable of generating synthetic chest X-ray images with disease signatures.\\
+\textbf{Control:} Manual (with user evaluation)\\
+\textbf{Initial State:} The diffusion model is operational and capable of generating synthetic chest X-ray images.\\
 \textbf{Input:} A set of generated chest X-ray images using the trained model.\\
-\textbf{Output:} Medical professionals (e.g., radiologists) are unable to consistently distinguish between real and generated images, indicating high visual realism.\\
-\textbf{Test Case Derivation:} Based on NF-UPR0 - Generated images should resemble real-world clinical X-rays.\\
-% Feedback addressed: Clarified methodology (blinded assessment), expert role involvement, and outcome measurement threshold.
+\textbf{Output:} Users are unable to consistently distinguish between real and generated images, indicating high visual realism.\\
+\textbf{Test Case Derivation:} Accurate visual mimicry ensures synthetic images serve as valid training or testing inputs, making the system trustworthy for downstream tasks.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Generate a dataset of at least 20 chest X-ray images using the diffusion model.
-  \item Mix the generated images with an equal number of real chest X-ray images from public datasets (e.g., MIMIC-CXR, CheXpert).
-  \item Recruit at least 3 medical experts (radiologists or trained physicians) to review the images in a blinded fashion.
-  \item Ask experts to classify each image as either "Real" or "Generated."
-  \item Compute the classification accuracy of experts in identifying the image source.
-  \item If experts perform at or below random guessing threshold $\leq$ 60\% accuracy, the realism of generated images is considered acceptable.
-  \item Collect qualitative feedback on visual quality, artifacts, or abnormalities for further refinement.
+  \item Generate a dataset of at least 20 synthetic chest X-ray images.
+  \item Mix with 20 real images from public datasets.
+  \item Ask 3 or more users to label each image as "Real" or "Generated."
+  \item Compute accuracy of identifying source.
+  \item Success if correct classification rate $\leq$ 60\%.
 \end{enumerate}
 
 \vspace{1em}
-
-
 \subsubsection{Performance Requirements}
 
-\newcommand{\LATENCYTHRESHOLD}{60 seconds}
 \textbf{NFRTC7}\\
 \textbf{Title:} Image Generation Speed Test\\
 \textbf{Control:} Automatic\\
-\textbf{Initial State:} The system is running in its production environment with backend and inference services available.\\
-\textbf{Input:} A request to generate a synthetic chest X-ray image via the frontend interface.\\
-\textbf{Output:} The image is generated and rendered in the interface within \LATENCYTHRESHOLD{} of the request submission.\\
-\textbf{Test Case Derivation:} Based on NF-SLR0 - The system must respond within clinically reasonable time frames for end users.\\
-% Feedback addressed: Converted "1 minute" to symbolic constant \LATENCYTHRESHOLD{}, clarified environmental assumptions and timing methodology.
-
+\textbf{Initial State:} The system is running in its production environment.\\
+\textbf{Input:} A request to generate a synthetic chest X-ray image.\\
+\textbf{Output:} The image is rendered in the interface within \verb|LATENCYTHRESHOLD| of request submission.\\
+\textbf{Test Case Derivation:} Quick output ensures user efficiency and supports timely review during clinical workflows.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Initiate an image generation request using the web interface.
-  \item Programmatically log the timestamp when the request is submitted.
-  \item Record the timestamp when the generated image is fully rendered in the UI.
-  \item Compute the total latency (end timestamp - start timestamp).
-  \item Verify that the latency does not exceed \LATENCYTHRESHOLD{}.
-  \item Repeat the process 20 times under varying system loads and average the results.
+  \item Initiate an image generation request.
+  \item Log start and end timestamps.
+  \item Compute total latency.
+  \item Confirm it does not exceed \verb|LATENCYTHRESHOLD|.
+  \item Repeat 20 times and average.
 \end{enumerate}
 
 \vspace{1em}
 
-\newcommand{\UPTIMETHRESHOLD}{99\% uptime}
-\newcommand{\MAXDOWNTIME}{1 hour downtime/week}
 \textbf{NFRTC8}\\
 \textbf{Title:} System Stability and Uptime Monitoring\\
 \textbf{Control:} Automatic (Continuous)\\
-\textbf{Initial State:} The application is deployed and accessible on a remote server with uptime tracking enabled.\\
-\textbf{Input:} Continuous automated health check pings at fixed intervals (e.g., every 5 minutes).\\
-\textbf{Output:} Uptime exceeds \UPTIMETHRESHOLD{} with no more than \MAXDOWNTIME{} in any rolling 7-day window.\\
-\textbf{Test Case Derivation:} Based on NF-RFTR0 - System should be available to clinicians with high reliability.\\
-% Feedback addressed: Defined \UPTIMETHRESHOLD{} and \MAXDOWNTIME{} symbolically; clarified monitoring cadence.
-
+\textbf{Initial State:} The system is deployed and uptime tracking enabled.\\
+\textbf{Input:} Continuous automated health checks.\\
+\textbf{Output:} Uptime exceeds \verb|UPTIMETHRESHOLD| with no more than \verb|MAXDOWNTIME| per week.\\
+\textbf{Test Case Derivation:} System must remain online reliably to support consistent user access.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Deploy an automated health check tool (e.g., UptimeRobot, Prometheus, or custom script) to ping the server every 5 minutes.
-  \item Log all successful responses and any failed pings over a 30-day period.
-  \item Calculate uptime as a percentage of total ping attempts.
-  \item Flag any weeks where downtime exceeds \MAXDOWNTIME{}.
-  \item Validate logs and alerts to ensure appropriate fault recovery mechanisms were triggered.
+  \item Ping the system every 5 minutes for 30 days.
+  \item Log successes and failures.
+  \item Calculate uptime and flag excessive downtime.
 \end{enumerate}
 
 \vspace{1em}
@@ -1093,17 +988,15 @@ This subsection includes test cases that evaluate the system's appearance, usabi
 \textbf{Title:} Single Image Generation Capacity Enforcement\\
 \textbf{Control:} Manual and Automatic\\
 \textbf{Initial State:} The system is processing an image generation request.\\
-\textbf{Input:} One user submits a valid request; another user (or same user in a new session) submits a second request simultaneously.\\
-\textbf{Output:} The system rejects the second request with a clear message: "Only one generation job allowed at a time."\\
-\textbf{Test Case Derivation:} Based on NF-CR0 - System must serialize image generation to preserve resource integrity.\\
-% Feedback addressed: Reworded input scenario for clarity, verified message standardization and load management expectation.
+\textbf{Input:} Two image generation requests submitted concurrently.\\
+\textbf{Output:} The second request is rejected with a message: "Only one generation job allowed at a time."\\
+\textbf{Test Case Derivation:} Concurrency limits preserve backend stability and ensure fairness in usage.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Begin image generation request A from one browser session.
-  \item Before the process completes, attempt a second generation request (B) from another tab or user.
-  \item Observe the system behavior and confirm that request B is rejected with an explanatory message.
-  \item Ensure that request A proceeds unaffected and completes successfully.
-  \item Repeat with high concurrency (e.g., simulate 5 users) to test queue or blocking mechanisms.
+  \item Submit Request A and wait.
+  \item Submit Request B before A completes.
+  \item Verify B is rejected with a clear message.
+  \item Ensure A completes successfully.
 \end{enumerate}
 
 \vspace{1em}
@@ -1112,80 +1005,68 @@ This subsection includes test cases that evaluate the system's appearance, usabi
 \textbf{NFRTC10}\\
 \textbf{Title:} Public Accessibility Without Authentication\\
 \textbf{Control:} Manual\\
-\textbf{Initial State:} The web application is deployed on a publicly accessible domain.\\
-\textbf{Input:} Attempt to access the site from multiple devices and IP addresses without entering credentials.\\
-\textbf{Output:} The application loads successfully and allows users to interact with its core features without requiring login or authentication.\\
-\textbf{Test Case Derivation:} Derived from NF-AR0 - The system must be accessible without user registration or login.\\
-% Feedback addressed: Clarified scope to include various devices, locations, and authentication-bypass verification.
+\textbf{Initial State:} The web application is deployed publicly.\\
+\textbf{Input:} Access the app from multiple devices/IPs without logging in.\\
+\textbf{Output:} Core features remain accessible without login prompts.\\
+\textbf{Test Case Derivation:} Unauthenticated access supports quick demo/testing and avoids blocking users behind credentials.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Open the web application in incognito/private browsing mode from multiple devices (e.g., laptop, tablet, mobile phone).
-  \item Attempt to load the homepage and initiate core functionalities (e.g., image generation, report viewing).
-  \item Repeat the above from different network locations (e.g., home, campus, mobile data).
-  \item Confirm that at no point is the user prompted to sign in, register, or provide personal information.
-  \item Verify functionality remains consistent across devices and locations.
+  \item Open the app in incognito mode on multiple devices.
+  \item Try all core features without logging in.
+  \item Confirm consistent, unrestricted access.
 \end{enumerate}
+
 \vspace{1em}
 
 \textbf{NFRTC11}\\
 \textbf{Title:} Verification of Non-Collection of Personal Data\\
 \textbf{Control:} Manual and Automatic\\
-\textbf{Initial State:} The application is operational and capable of logging user actions and traffic.\\
-\textbf{Input:} Conduct varied user interactions across multiple sessions.\\
-\textbf{Output:} The system performs all operations without collecting, requesting, or storing personally identifiable information (PII).\\
-\textbf{Test Case Derivation:} Derived from NF-PR0 - The app must not collect any personal information.\\
-% Feedback addressed: Combined static and dynamic analysis of data flows and clearly defined what constitutes PII.
+\textbf{Initial State:} Application is live and traffic can be monitored.\\
+\textbf{Input:} User actions across sessions.\\
+\textbf{Output:} No personally identifiable information (PII) is collected or stored.\\
+\textbf{Test Case Derivation:} No collection of PII ensures compliance with privacy regulations and avoids legal risk.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Interact with all available features of the application over several sessions.
-  \item Use browser developer tools and proxy monitoring software (e.g., Fiddler, Wireshark) to observe all network requests.
-  \item Look for requests transmitting any PII (e.g., name, email, IP address, device ID).
-  \item Examine local and session storage for any retained user data.
-  \item Review backend logs and database content for evidence of personal data storage.
-  \item Confirm that neither frontend nor backend components request or store PII under any usage flow.
+  \item Perform user interactions and monitor requests.
+  \item Check network traffic for PII.
+  \item Verify logs, local storage, and databases for any user-specific data.
 \end{enumerate}
+
 \vspace{1em}
 \subsubsection{Supportability Requirements}
 
 \textbf{NFRTC12}\\
 \textbf{Title:} Availability and Sufficiency of User Documentation\\
 \textbf{Control:} Manual\\
-\textbf{Initial State:} The system is deployed with embedded or linked documentation accessible from the interface.\\
-\textbf{Input:} Navigate to the user documentation and attempt to follow instructions to operate core features.\\
-\textbf{Output:} Users can understand system functionality (e.g., image generation) and successfully perform tasks without additional training.\\
-\textbf{Test Case Derivation:} Derived from NF-SR0 - The tool must be self-sufficient with adequate instructions for experimentation.\\
-% Feedback addressed: Clarified target audience (end-users), scope of documentation, and usability assessment metrics.
+\textbf{Initial State:} Application includes user-facing documentation.\\
+\textbf{Input:} Users attempt tasks using only documentation.\\
+\textbf{Output:} At least 80\% complete core workflows without extra support.\\
+\textbf{Test Case Derivation:} Complete, clear documentation enables users to operate the system independently.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Access the user documentation through the web app or external documentation link.
-  \item Read through sections related to system setup, core usage (image generation), and any adjustable parameters (if applicable).
-  \item Follow the documentation to perform a core task (e.g., generating a chest X-ray image).
-  \item Measure the number of steps taken and note any ambiguity or missing information.
-  \item Conduct a brief user study where 3-5 users follow the documentation unaided and report clarity, gaps, or confusion.
-  \item Success is measured by at least 80\% of users completing a task without needing further help.
+  \item Provide only the documentation to test users.
+  \item Ask them to complete image generation and viewing.
+  \item Track completion rates and clarity feedback.
 \end{enumerate}
-\vspace{1em}
 
+\vspace{1em}
 \subsubsection{Cultural Requirements}
 
 \textbf{NFRTC13}\\
 \textbf{Title:} Functionality of Browser-Based Language Translation\\
 \textbf{Control:} Manual\\
-\textbf{Initial State:} The application frontend is built in English and available online.\\
-\textbf{Input:} Use a modern browser to translate the UI to multiple other languages.\\
-\textbf{Output:} The web app renders correctly and all core features function identically after translation.\\
-\textbf{Test Case Derivation:} Derived from NF-CR0 - The tool should support global usability without region-locking or linguistic barriers.\\
-% Feedback addressed: Verified cultural accessibility via modern browser tools and clarified validation of interface integrity post-translation.
+\textbf{Initial State:} App UI is in English and live.\\
+\textbf{Input:} Use browser translation to switch to other languages.\\
+\textbf{Output:} UI renders properly and all features remain functional.\\
+\textbf{Test Case Derivation:} Translation compatibility ensures global usability and avoids UI issues during localization.\\
 \textbf{How the test will be performed:}
 \begin{enumerate}
-  \item Open the web app in a browser like Google Chrome or Edge.
-  \item Enable the browser's built-in translation feature and choose a language (e.g., Spanish, French, Hindi).
-  \item Observe how the interface text updates across menus, buttons, and messages.
-  \item Perform several core tasks (e.g., generate image, view heatmap) and ensure no UI breakage or functional errors.
-  \item Repeat with at least two other languages and browsers.
-  \item Document any untranslated content or layout inconsistencies that occur.
+  \item Open the app in Chrome or Edge.
+  \item Activate built-in translation and switch languages.
+  \item Verify UI updates and core functions work.
+  \item Repeat for at least 3 languages.
 \end{enumerate}
-\vspace{1em}
+
 
 \subsection{Untested Non-Functional Requirements}
 
@@ -1232,34 +1113,29 @@ Some non-functional requirements are acknowledged but excluded from validation d
     \hline
     \textbf{Functional Requirement} & \textbf{Test Cases} \\
     \hline
-    FR1: The system must allow users to upload chest X-ray images in supported formats (DICOM, JPG, PNG). & FRTC1, FRTC2 \\
+    FR1: Upload supported chest X-ray images & FRTC1 \\
     \hline
-    FR2: The system must preprocess images by resizing, normalizing, and converting to grayscale if required. & FRTC2 \\
+    FR2: Preprocess images (resize, normalize, grayscale) & FRTC2 \\
     \hline
-    FR3: The system must classify diseases using a CNN model and return predictions with confidence scores. & FRTC3, FRTC4 \\
+    FR3: CNN classification with confidence scores & FRTC3 \\
     \hline
-    FR4: The system must support multi-disease classification for a single image. & FRTC5, FRTC6 \\
+    FR4: Multi-disease classification per image & FRTC5 \\
     \hline
-    FR5: The system must display predicted labels, confidence scores, and heatmaps in a readable format. & FRTC10 \\
+    FR5: Display predicted labels, confidence scores, and heatmaps & FRTC6 \\
     \hline
-    FR6: The system must generate Grad-CAM heatmaps and overlay them on the original image. & FRTC9 \\
+    FR6: Downloadable diagnostic report with visuals & FRTC4 \\
     \hline
-    FR7: The system must store image, prediction, heatmap, and report securely for user access. & FRTC13, FRTC14 \\
+    FR7: Role-based access control & FRTC7, FRTC8 \\
     \hline
-    FR8: The system must authenticate users and implement role-based access control. & FRTC11, FRTC12, FRTC15, FRTC16, FRTC17 \\
+    FR8: Secure API endpoint for classification & FRTC11 \\
     \hline
-    FR9: The system must offer a secure API endpoint to receive image inputs and return JSON predictions. & \textit{Not directly tested in current plan} \\
+    FR9: Handle invalid uploads with error messaging & FRTC9 \\
     \hline
-    FR10: The system must gracefully handle errors such as invalid uploads and display informative notifications. & FRTC8 \\
-    \hline
-    FR11: The system must provide a user dashboard to view past uploads and diagnostic results with timestamps. & FRTC10, FRTC11 \\
-    \hline
-    FR12: The system must notify users when model confidence is low ($\leq$ 50\%) and suggest radiologist review. & FRTC6 \\
+    FR10: Dashboard view of predictions with timestamps & FRTC10 \\
     \hline
   \end{tabular}
-  \caption{Traceability Matrix - Functional Requirements to Test Cases}
+  \caption{Traceability Matrix - Functional Requirements to System Test Cases}
 \end{table}
-
 \pagebreak
 
 
@@ -1273,64 +1149,73 @@ Some non-functional requirements are acknowledged but excluded from validation d
     \hline
     \textbf{Non-Functional Requirement} & \textbf{Test Cases} \\
     \hline
-    NF-AR0: Unauthorized User Access Prevention & FRTC12, FRTC16, NFRTC10 \\
+    NF-AR1: Calming and professional color scheme & NFRTC1 \\
     \hline
-    NF-AR1: Calming and Professional Color Scheme & NFRTC1 \\
+    NF-SR1: Minimalistic and functional design & NFRTC2 \\
     \hline
-    NF-AR2: Consistent Fonts and Layout & NFRTC2 \\
+    NF-SR2: Clean, organized layout & NFRTC2 \\
     \hline
-    NF-SR0: Documentation Guide and Self-Sufficiency & NFRTC2, NFRTC12 \\
+    NF-EUR0: Efficient task completion & NFRTC3 \\
     \hline
-    NF-SR1: Minimalistic and Functional Design & NFRTC2 \\
+    NF-EU2: Intuitive post-training use & NFRTC4 \\
     \hline
-    NF-SR2: Clean, Organized Layout & NFRTC2 \\
+    NF-LR0: Learnability and uptime expectations & NFRTC5, NFRTC8 \\
     \hline
-    NF-EUR0: Efficient Task Completion Without Distractions & NFRTC3 \\
+    NF-UPR0: Realism of synthetic images & NFRTC6 \\
     \hline
-    NF-EU2: Intuitive After Minimal Training & NFRTC4 \\
+    NF-SLR0: Latency under 60 seconds & NFRTC7 \\
     \hline
-    NF-LR0: Learnability and Uptime Expectation & NFRTC5, NFRTC8 \\
+    NF-RFTR0: Fault tolerance for corrupted uploads & FRTC9 \\
     \hline
-    NF-UPR0: Realism of Generated Chest X-Rays & NFRTC6 \\
+    NF-CR0: One-at-a-time image generation capacity & NFRTC9 \\
     \hline
-    NF-SLR0: 60-second Image Generation Time & NFRTC7 \\
+    NF-CR1: Cultural and language support via translation & NFRTC13 \\
     \hline
-    NF-RFTR0: Robustness and Availability & NFRTC8 \\
+    NF-PR0: No personal data collection & NFRTC11 \\
     \hline
-    NF-CR0: Image Generation One-at-a-Time & NFRTC9 \\
+    NF-IR0: Access limited to authenticated sessions & FRTC7, NFRTC11 \\
     \hline
-    NF-CR1: Cultural and Language Flexibility & NFRTC13 \\
+    NF-AUR0: Logs of access and configuration & FRTC8 \\
     \hline
-    NF-PR0: No Personal Data Collected & FRTC13, FRTC14, NFRTC11 \\
+    NF-RIAS0: Integration with PACS/EHR & \textit{Untested in this version} \\
     \hline
-    NF-IR0: Data Integrity and Access Limits & FRTC13, NFRTC11 \\
+    NF-REL0: MVP feature delivery & FRTC1, FRTC3, FRTC4 \\
     \hline
-    NF-AUR0: Audit Logging and Role Restrictions & FRTC16, FRTC17 \\
+    NF-REL1: Logging and API configuration options & FRTC11 \\
     \hline
-    NF-RIAS0: PACS/EHR Integration & FRTC13 \\
+    NF-MR0: Modular architecture & \textit{Documented, not tested} \\
     \hline
-    NF-RIAS1: Importing Public Medical Datasets & FRTC1 \\
+    NF-MR1: Git-based version control & \textit{Documented, not tested} \\
     \hline
-    NF-REL0: Rev 1 Core Feature Validation & FRTC1, FRTC3, FRTC4, FRTC5 \\
+    NF-SCR0: Compliance with HL7/FHIR/DICOM & \textit{Reviewed, not tested} \\
     \hline
-    NF-REL1: Configurable Logging and API Controls & FRTC13 \\
-    \hline
-    NF-MR0: Modular System Architecture & FRTC13, FRTC14 \\
-    \hline
-    NF-MR1: Git-Based Version Control & NFRTC12 \\
-    \hline
-    NF-SCR0: HL7/DICOM/FHIR Compliance & FRTC4, FRTC5 \\
-    \hline
-    NF-SER0: Scalability for Future Revisions & Untested \\
-    \hline
-    NF-LR1: HIPAA and PIPEDA Compliance & FRTC13, FRTC14 \\
+    NF-SER0: Scalability and modularity & \textit{Untested in this version} \\
     \hline
   \end{tabularx}
 \end{table}
 
 
-\section{Unit Test Description}
 
+% ----------------------------- Symbolic Constants -----------------------------
+\newcommand{\SUCCESSRATE}{80\%}
+\newcommand{\CONFIDENCERATING}{4}
+% -------------------------------------------------------------------------------
+
+
+% Reviewer Feedback Incorporated:
+% - Avoided magic numbers (used D for number of diseases)
+% - Enhanced traceability and specificity
+% - Used inline documentation-style comments for maintainability
+% [Feedback] Be sure to use symbolic constants instead of magic numbers like 90\%.
+% [Change] For unit tests that evaluate accuracy thresholds, constants such as \texttt{\ACCURACYTHRESHOLD{}} are defined within the testing configuration.
+
+% [Feedback] Traceability to Requirements.
+% [Change] All unit test mappings will be documented inline using symbolic constants and meaningful test names. Traceability tables for each module-to-requirement mapping appear in Section 4.4.
+
+% [Feedback] Unit tests are not required yet since the design is still pending.
+% [Change] This section outlines the unit test scope conceptually so that tests can be reused and implemented post-design without major revision.
+
+\section{Unit Test Description}
 
 This section outlines the approach and rationale for the unit tests designed to verify each module within the chest X-ray diagnostic application. The overall philosophy for test case selection centers on ensuring each module functions correctly in isolation, covering both standard functionality and potential edge cases. This approach provides a robust foundation to identify and address any issues at the unit level before integrating modules into the broader system.
 
@@ -1347,412 +1232,349 @@ For efficiency, test cases prioritize high-risk functions and core functionaliti
 
 Where possible, detailed input/output descriptions are omitted in favor of referring to well-documented unit testing code, which maintains readable and meaningful test names. This approach not only saves space but also facilitates future maintenance and expansion, as new edge cases can be added to the codebase directly.
 
-
-% [Feedback] Unit test summary added to VnV plan. The changes are clearly and completely documented. Traceability between change and reason for the change.
-% [Change] Inline comments have been added to capture change reasoning and traceability to feedback.
-
 \subsection{Unit Testing Scope}
-
-% Reviewer Feedback: Ensure traceability and clarity; expand scope explanation per Level 4 rubric.
 
 Unit testing for this project targets the core components of the chest X-ray diagnostic pipeline, ensuring correctness, resilience, and modularity of each individual module. The scope explicitly addresses all critical stages from data ingestion and transformation to model training and persistence, aligned with the architecture described in the updated SRS and design documents.
 
 Each module is tested in isolation under both standard and edge-case conditions. These unit tests are critical for identifying logic flaws, integration risks, and regressions early in the development lifecycle. By verifying core functionalities before system-wide testing, we ensure each module behaves predictably and performs as expected across varied dataset conditions, such as missing files, malformed inputs, and irregular class distributions.
 
 Unit tests span the following core components:
-
 \begin{itemize}
-  \item \textbf{Data Preprocessing Module} - This module handles the transformation of raw dataset metadata into structured inputs for modeling. Tests focus on:
+  \item \textbf{DataPreparation Module} - Handles transformation of raw dataset metadata into structured model inputs. Tests verify:
     \begin{itemize}
-      \item Conversion of disease labels into binary one-hot encoded matrices, ensuring alignment with $D$ disease categories (e.g., \verb|test_create_binary_matrix|).
-      \item Preservation of patient/image count during training-validation splitting (\verb|test_split_train_val_data|), even in imbalanced or stratified subsets.
-      \item Proper directory creation and file organization into train/val folders to support reproducible training (\verb|test_organize_images|).
+      \item Label binarization and class alignment (e.g., \texttt{test\_binarize\_labels}).
+      \item Stratified data splitting and sample preservation (\texttt{test\_split\_data}).
+      \item Transformation pipeline integrity for data augmentation and normalization.
     \end{itemize}
 
-  \item \textbf{ChestXrayDataset Module} - This PyTorch-compatible dataset loader encapsulates image preprocessing, label loading, and transformation logic.
+  \item \textbf{DataRetrieval Module} - Automates NIH dataset download and extraction. Unit tests confirm:
     \begin{itemize}
-      \item \verb|test_dataset_initialization| ensures correct parsing of image paths, label matrices, and class names.
-      \item \verb|test_dataset_getitem| verifies image size normalization, transformation pipeline output, and label consistency across samples.
+      \item Archive integrity and target directory structure (\texttt{test\_extract\_dataset}).
+      \item Network download stability and file caching (\texttt{test\_download\_dataset}).
     \end{itemize}
 
-  \item \textbf{Model Architecture Module} - Defines the neural architecture used for disease classification, currently based on a ResNet variant.
+  \item \textbf{ModelArchitecture Module} - Encapsulates CNN layer definitions and model assembly:
     \begin{itemize}
-      \item \verb|test_model_structure| validates the number of trainable parameters, output dimensions, and layer names (e.g., whether final FC layer is $(D)$-dimensional).
-      \item \verb|test_layer_freezing| confirms transfer learning setup, i.e., initial layers are frozen, later layers are fine-tuned.
-      \item \verb|test_forward_pass| confirms the output shape from a forward pass and checks for NaN/Inf values in logits.
+      \item Validation of model structure and final output layer shape.
+      \item Confirmation of feature extractor freezing behavior.
+      \item Forward pass shape and range correctness.
     \end{itemize}
 
-  \item \textbf{Training and Inference Module} - This module oversees training loop logic and real-time predictions.
+  \item \textbf{Training Module} - Manages training loop, early stopping, and model saving:
     \begin{itemize}
-      \item \verb|test_training_step| runs a minimal 1-epoch training simulation to detect any early training exceptions or convergence issues.
-      \item \verb|test_prediction| evaluates output softmax/logit distributions on a validation sample, ensuring valid probabilities or class indices are returned.
+      \item Training loop correctness and early error detection (\texttt{test\_train\_step}).
+      \item Prediction output distribution and confidence scoring (\texttt{test\_prediction}).
     \end{itemize}
 
-  \item \textbf{Model Persistence Module} - Verifies model saving and loading logic using torch serialization.
+  \item \textbf{MLBackend Module} - Provides inference API and model loading:
     \begin{itemize}
-      \item \verb|test_save_and_load_model| ensures model weights and architecture are preserved after being saved and reloaded, confirming byte-level equivalence.
+      \item Connectivity test and response latency (\texttt{test\_connection}).
+      \item Inference error handling and JSON format validation.
     \end{itemize}
 
-  \item \textbf{Data Download and Extraction Module} - Assesses the project's automated data fetching pipeline.
+  \item \textbf{ModelInterface Module} - UI-triggered logic for uploads, predictions, and report export:
     \begin{itemize}
-      \item \verb|test_data_extraction| checks whether ZIP archives containing image-label data are extracted with proper folder structure.
-      \item \verb|test_data_download| simulates retrieval from remote servers and verifies final dataset integrity and organization.
+      \item Verification of image format validation and preview rendering.
+      \item Confirmation that prediction and confidence outputs are rendered correctly.
+      \item Robustness of report generation and download functionality.
+    \end{itemize}
+
+  \item \textbf{AuthClient and Authorization Modules} - Implements frontend and backend login logic:
+    \begin{itemize}
+      \item Token creation and validation for protected API routes.
+      \item Error handling for failed logins and permission mismatches.
+    \end{itemize}
+
+  \item \textbf{Config Module} - Backend boot configuration including JWT and CORS:
+    \begin{itemize}
+      \item Test security filter chain setup.
+      \item Validate backend-to-backend communication setup.
     \end{itemize}
 \end{itemize}
 
-% Reviewer Feedback Incorporated:
-% - Avoided magic numbers (used D for number of diseases)
-% -Enhanced traceability and specificity
-% -Used inline documentation-style comments for maintainability
-
-
-
-Modules that are not included in the unit testing scope are:
+Modules not included in this unit testing scope:
 \begin{itemize}
-  \item \textbf{Third-Party Libraries and External APIs} - Any external libraries or APIs used in the system are assumed to have been verified by their respective developers. These components are not unit-tested here but are included in system and integration testing.
+  \item \textbf{Third-party libraries or frameworks} (e.g., Flask, Spring Security, PyTorch): These are assumed to be externally validated and are only tested through integration points.
+  \item \textbf{Static assets} such as UI CSS or icon libraries, which do not affect logic.
 \end{itemize}
 
-% [Feedback] Be sure to use symbolic constants instead of magic numbers like 90%.
-% [Change] For unit tests that evaluate accuracy thresholds, constants such as \texttt{ACCURACY\_THRESHOLD = 0.90} are defined within the testing configuration.
-
-% [Feedback] Traceability to Requirements.
-% [Change] All unit test mappings will be documented inline using symbolic constants and meaningful test names. Traceability tables for each module-to-requirement mapping appear in Section 4.4.
-
-% [Feedback] Unit tests are not required yet since the design is still pending.
-% [Change] This section outlines the unit test scope conceptually so that tests can be reused and implemented post-design without major revision.
 
 
 \subsection{Tests for Functional Requirements}
-This section lists representative unit tests grouped by module, highlighting both standard and edge case coverage.
 
-\subsubsection{Data Preprocessing Module}
-\begin{enumerate}
-  \item \textbf{Test Name:} Create Binary Label Matrix\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Dataset with labeled pathology classes\\
-  \textbf{Function Tested:} \verb|create_binary_matrix|\\
-  \textbf{Input:} List of image samples and associated disease labels\\
-  \textbf{Expected Output:} Binary matrix of shape \verb|(N, D)| where \verb|D| is the number of disease classes\\
-  \textbf{Test Case Derivation:} Validates multilabel one-hot encoding behavior; important for classifier input compatibility.\\
-  \textbf{How test will be performed:} Feed known label sets and verify matrix content and shape.\\
-  \textbf{Edge Case:} Image samples with null/missing disease fields\\
-  \textbf{Expected Output for Edge Case:} Rows with all-zero encoding; handled without exception\\
+\section{Unit Test Description}
+\label{sec:unit-tests}
 
-  \item \textbf{Test Name:} Split Dataset for Training and Validation\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Complete dataset with labeled examples\\
-  \textbf{Function Tested:} \verb|split_train_val_data|\\
-  \textbf{Input:} Dataset of N samples\\
-  \textbf{Expected Output:} Approximately 80/20 split, preserving label distribution\\
-  \textbf{Test Case Derivation:} Ensures stratified random splitting without class imbalance.\\
-  \textbf{How test will be performed:} Compare label distributions before and after split.\\
-  \textbf{Edge Case:} Datasets with <10 samples\\
-  \textbf{Expected Output for Edge Case:} Fallback logic maintains at least one validation sample with warning logged.\\
+\subsection{Unit Testing Scope}
+All internal modules developed by the team are within the scope of unit testing. External libraries (e.g., PyTorch, Albumentations, JWT libraries) are considered out of scope and tested via integration. Priority is given to \texttt{ModelInterface}, \texttt{DataPreparation}, \texttt{MLBackend}, and \texttt{Training} due to their centrality in image processing and prediction.
 
-  \item \textbf{Test Name:} Organize Image Directory Structure\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Image files located in flat directory\\
-  \textbf{Function Tested:} \verb|organize_images|\\
-  \textbf{Input:} Path to unsorted image directory\\
-  \textbf{Expected Output:} Images moved to \verb|train/| and \verb|val/| folders based on metadata\\
-  \textbf{Test Case Derivation:} Confirms file-level reorganization matches label splits.\\
-  \textbf{How test will be performed:} Track moved file paths and match with metadata index.\\
-  \textbf{Edge Case:} Directory write permissions denied\\
-  \textbf{Expected Output for Edge Case:} Logs permission error and halts with safe exit\\
-\end{enumerate}
+\subsection{Tests for Functional Requirements}
+
+\subsubsection{ModelInterface (M1)}
+This module is tested via frontend test suites (React + Jest). Tests cover input validation, backend interaction, and PDF generation logic.
+
+\textbf{$1$. MI-test-upload-valid}\\
+Type: Automatic\\
+Initial State: No image uploaded\\
+Input: Valid image file (e.g., .jpg)\\
+Output: Image preview renders in UI\\
+Test Case Derivation: Valid images should trigger preview render for verification.\\
+How test will be performed: Simulate file input and assert image tag is inserted into DOM.
+
+\textbf{$2$. MI-test-analyze-error}\\
+Type: Automatic\\
+Initial State: Image uploaded\\
+Input: API call fails (mock $500$ error)\\
+Output: Error message appears to user\\
+Test Case Derivation: Server-side issues should produce user-readable feedback.\\
+How test will be performed: Mock failed request and confirm displayed error.
+
+\textbf{$3$. MI-test-report-download}\\
+Type: Automatic\\
+Initial State: Analysis completed and UI visible\\
+Input: Click on "Download Report"\\
+Output: File download initiated\\
+Test Case Derivation: Download trigger must call blob creation and trigger anchor link.\\
+How test will be performed: Mock browser APIs and confirm link click occurs.
+
+\subsubsection{AuthClient (M2)}
+Frontend module tested using UI simulation and API mocking. Test cases ensure proper error handling and form state behavior.
+
+\textbf{$1$. AC-test-register-valid}\\
+Type: Automatic\\
+Initial State: Registration form shown\\
+Input: Valid username, email, and password\\
+Output: Success message and redirect to login\\
+Test Case Derivation: Valid input should create account and guide user to next step.\\
+How test will be performed: Simulate form fill and submit; assert redirect and toast.
+
+\textbf{$2$. AC-test-login-invalid}\\
+Type: Automatic\\
+Initial State: Login form active\\
+Input: Invalid password for known user\\
+Output: Authentication error shown\\
+Test Case Derivation: Failed login must provide helpful error without crashing.\\
+How test will be performed: Submit credentials and verify error state.
+
+\subsubsection{DataRetrieval (M3)}
+Focuses on verifying NIH image archive download and extraction operations.
+
+\textbf{$1$. DR-test-download-skipped-if-exists}\\
+Type: Automatic\\
+Initial State: Partial image set exists\\
+Input: prepareData() call\\
+Output: Logs skipping already-downloaded files\\
+Test Case Derivation: Should avoid re-downloading existing content.\\
+How test will be performed: Pre-create dummy tar.gz and assert skip path.
+
+\textbf{$2$. DR-test-extraction-failure}\\
+Type: Automatic\\
+Initial State: Corrupt archive present\\
+Input: prepareData() call\\
+Output: Raises FileIOError\\
+Test Case Derivation: Corrupted archives must halt cleanly and raise traceable error.\\
+How test will be performed: Replace archive with dummy data and invoke.
+
+\subsubsection{DataPreparation (M4)}
+This is one of the most testable components. Tests span label parsing, stratified splitting, and augmentation.
+
+\textbf{$1$. DP-test-preprocess-valid}\\
+Type: Automatic\\
+Initial State: Raw CSV loaded\\
+Input: DataFrame with label values\\
+Output: Filtered rows with valid disease strings\\
+Test Case Derivation: Ensures rows with invalid/no labels are removed.\\
+How test will be performed: Feed test CSV and verify rows retained.
+
+\textbf{$2$. DP-test-binarize-labels}\\
+Type: Automatic\\
+Initial State: DataFrame contains pipe-separated label column\\
+Input: e.g., "Pneumonia|Infiltration"\\
+Output: Columns pneumonia=$1$, infiltration=$1$\\
+Test Case Derivation: Multi-label parsing must yield one-hot vector.\\
+How test will be performed: Validate output columns after run.
+
+\textbf{$3$. DP-test-stratified-split}\\
+Type: Automatic\\
+Initial State: DataFrame has labels\\
+Input: Call splitData()\\
+Output: $80$/$20$ split with class distribution retained\\
+Test Case Derivation: Split should preserve label proportion across sets.\\
+How test will be performed: Compare $value_counts$ across sets.
+
+\textbf{$4$. DP-test-transform}\\
+Type: Automatic\\
+Initial State: Transform pipeline defined\\
+Input: Image tensor\\
+Output: Transformed tensor of correct shape\\
+Test Case Derivation: Valid transformations must preserve shape and normalization.\\
+How test will be performed: Pass dummy image and inspect result.
+
+\textbf{$5$. DP-test-training-stats}\\
+Type: Automatic\\
+Initial State: Training dataset loaded\\
+Input: binarized label matrix\\
+Output: posWeights and avgPos count\\
+Test Case Derivation: Loss balancing terms must reflect true label sparsity.\\
+How test will be performed: Manually compute and compare.
+
+\subsubsection{Authorization (M5)}
+Covers backend login, token issuance, and registration flows.
+
+\textbf{$1$. AUTH-test-token-generation}\\
+Type: Automatic\\
+Initial State: Valid user credentials\\
+Input: Authenticated session\\
+Output: JWT returned\\
+Test Case Derivation: Login should result in signed token creation.\\
+How test will be performed: Use mock auth and assert token schema.
+
+\textbf{$2$. AUTH-test-invalid-token}\\
+Type: Automatic\\
+Initial State: Token from expired session\\
+Input: validateToken() call\\
+Output: False or exception raised\\
+Test Case Derivation: Expired/malformed tokens should not validate.\\
+How test will be performed: Manually craft bad token.
+
+\subsubsection{MLBackend (M6)}
+Python Flask server responsible for model inference.
+
+\textbf{$1$. MLB-test-healthcheck}\\
+Type: Automatic\\
+Initial State: Backend server running\\
+Input: GET /test\\
+Output: $200$ OK + "API connected"\\
+Test Case Derivation: Reachability check verifies backend is online.\\
+How test will be performed: Use test client to make GET call.
+
+\textbf{$2$. MLB-test-valid-prediction}\\
+Type: Automatic\\
+Initial State: Model loaded\\
+Input: Valid chest X-ray image\\
+Output: JSON with predictions\\
+Test Case Derivation: API must return class-wise probabilities.\\
+How test will be performed: Use file upload with sample image and parse output.
+
+\textbf{$3$. MLB-test-missing-file}\\
+Type: Automatic\\
+Initial State: POST /predict triggered without image\\
+Input: No file\\
+Output: HTTP $400$ with error\\
+Test Case Derivation: Missing files must be caught and responded to.\\
+How test will be performed: Empty POST request.
+
+\subsubsection{ModelArchitecture (M7)}
+
+\textbf{$1$. MA-test-model-construction}\\
+Type: Automatic\\
+Initial State: None\\
+Input: Call assembleFullModel($13$)\\
+Output: nn.Module with $13$ output units\\
+Test Case Derivation: Classification head must output correct dimensions.\\
+How test will be performed: Create model and inspect final layer.
+
+\textbf{$2$. MA-test-layer-freeze}\\
+Type: Automatic\\
+Initial State: Base model instantiated\\
+Input: freezeBaseLayers()\\
+Output: Base layers require\_grad = False\\
+Test Case Derivation: Prevent gradient updates in transfer learning.\\
+How test will be performed: Loop through layer flags.
+
+\subsubsection{Training (M8)}
+
+\textbf{$1$. TRAIN-test-single-batch}\\
+Type: Automatic\\
+Initial State: Model + loader initialized\\
+Input: One training batch\\
+Output: Gradient computed\\
+Test Case Derivation: Confirms training loop runs per-batch loss\\
+How test will be performed: Forward, loss, backward.
+
+\textbf{$2$. TRAIN-test-eval-shape}\\
+Type: Automatic\\
+Initial State: Model in eval mode\\
+Input: Batch of images\\
+Output: Tensor (B, $13$) with logits\\
+Test Case Derivation: Output should be interpretable for all labels.\\
+How test will be performed: Dummy input, inspect shape.
+
+\textbf{$3$. TRAIN-test-margin-loss}\\
+Type: Automatic\\
+Initial State: Tensors prepared\\
+Input: logits, labels\\
+Output: Scalar margin loss\\
+Test Case Derivation: Checks added regularization term.\\
+How test will be performed: Call loss function on fixed input.
 
 
-\subsubsection{ChestXrayDataset Module}
-This module handles dataset creation and data loading. It ensures that chest X-ray images and their corresponding labels are correctly paired and transformed. The tests verify dataset initialization, data retrieval, and format consistency.
-
-\begin{enumerate}
-  \item \textbf{Test Name:} Dataset Initialization Verification\\
-    \textbf{Type:} Automatic\\
-    \textbf{Initial State:} Dataset CSV and image files are available and accessible.\\
-    \textbf{Function Tested:} \verb|ChestXrayDataset.__init__|\\
-    \textbf{Input:} A CSV file containing image-label mappings and a valid image directory.\\
-    \textbf{Expected Output:} The dataset initializes successfully with correct sample count and class mappings.\\
-    \textbf{Test Case Derivation:} Validates that all samples are parsed and labels are correctly assigned.\\
-    \textbf{How the test will be performed:}
-    \begin{enumerate}
-      \item Load the dataset with a known subset (e.g., 100 labeled entries).
-      \item Verify the total number of samples and unique classes.
-      \item Confirm no missing image-label pairs exist.
-    \end{enumerate}
-    \textbf{Edge Case:} CSV contains a reference to a missing image file.\\
-    \textbf{Expected Output for Edge Case:} The dataset skips the missing image or raises a descriptive warning.\\
-    \vspace{1em}
-
-  \item \textbf{Test Name:} Sample Retrieval and Transformation\\
-    \textbf{Type:} Automatic\\
-    \textbf{Initial State:} Dataset object is instantiated.\\
-    \textbf{Function Tested:} \verb|ChestXrayDataset.__getitem__|\\
-    \textbf{Input:} An index to retrieve a sample from the dataset.\\
-    \textbf{Expected Output:} Returns a valid image tensor and correct one-hot encoded label vector.\\
-    \textbf{Test Case Derivation:} Ensures sample loading, preprocessing (e.g., resizing, normalization), and label pairing are correct.\\
-    \textbf{How the test will be performed:}
-    \begin{enumerate}
-      \item Retrieve a sample at a specific index.
-      \item Verify image tensor shape (e.g., $1 \times 224 \times 224$).
-      \item Verify label tensor shape (e.g., $\texttt{NUM\_CLASSES} \times 1$) and correct class mapping.
-    \end{enumerate}
-    \textbf{Edge Case:} Index out of dataset bounds.\\
-    \textbf{Expected Output for Edge Case:} Raises an \verb|IndexError| or returns a controlled exception message.\\
-\end{enumerate}
-
-% Reviewer Feedback Addressed:
-% - Clarified test logic and specific verification steps for clarity.
-% - Explicitly stated expected tensor shapes and controlled failure conditions.
-% - Incorporated class label checks for alignment with updated disease list (see SRS Section 5.2).
-\subsubsection{Model Architecture Module}
-This module defines the structure and configuration of the disease classification network, \verb|OptimizedChestXRayResNet|. These tests ensure architectural correctness, layer freezing behavior, and forward pass consistency.
-
-\begin{enumerate}
-  \item \textbf{Test Name:} Model Architecture Structure Validation\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Model instantiation routine is accessible\\
-  \textbf{Function Tested:} \verb|OptimizedChestXRayResNet.__init__|\\
-  \textbf{Input:} Symbolic constant \verb|D| for number of disease classes\\
-  \textbf{Expected Output:} Model contains input layer, frozen feature extractor layers, and final output layer of size \verb|D|\\
-  \textbf{Test Case Derivation:} Verifies structure required for multi-label classification output layer.\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Instantiate the model with \verb|D = 4| (for 4 diseases).
-    \item Traverse layer modules and assert expected configuration (e.g., ResNet backbone with modified head).
-    \item Confirm that the final fully connected layer shape is \verb|(batch\_size, D)|. 
-  \end{enumerate}
-  \textbf{Edge Case:} Invalid class count (\verb|D = 0| or negative)\\
-  \textbf{Expected Output for Edge Case:} Initialization raises \verb|ValueError| with descriptive message\\
-  \vspace{1em}
-
-  \item \textbf{Test Name:} Layer Freezing Enforcement\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Model is initialized\\
-  \textbf{Function Tested:} \verb|freeze_feature_extractor_layers|\\
-  \textbf{Input:} None (called during model setup)\\
-  \textbf{Expected Output:} Early convolutional layers are frozen, final classifier layers are trainable\\
-  \textbf{Test Case Derivation:} Ensures transfer learning initialization behaves as expected\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Iterate through model layers.
-    \item Assert \verb|requires_grad = False| for feature extractor layers.
-    \item Assert \verb|requires_grad = True| for classifier head.
-  \end{enumerate}
-  \textbf{Edge Case:} All layers set to trainable by mistake\\
-  \textbf{Expected Output for Edge Case:} Test fails with assertion error; highlights training inefficiency risk\\
-  \vspace{1em}
-
-  \item \textbf{Test Name:} Forward Pass Shape and Range Validation\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Model initialized and in evaluation mode\\
-  \textbf{Function Tested:} \verb|forward|\\
-  \textbf{Input:} Batch of normalized image tensors (e.g., shape \verb|(B, 1, 224, 224)|)\\
-  \textbf{Expected Output:} Tensor of shape \verb|(B, D)| with logits in expected numerical range\\
-  \textbf{Test Case Derivation:} Confirms compatibility between input format and model output\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Generate dummy input batch with random values.
-    \item Run forward pass.
-    \item Assert output shape equals \verb|(B, D)| and values are finite (no \verb|NaN|).
-  \end{enumerate}
-  \textbf{Edge Case:} Input tensor of incorrect shape\\
-  \textbf{Expected Output for Edge Case:} Raises \verb|RuntimeError| with expected dimension mismatch warning\\
-\end{enumerate}
-
-% Feedback addressed:
-% - Symbolic constant D used in place of fixed disease count (e.g., 4).
-% - Edge cases produce testable exceptions or safe handling rather than vague "failure".
-% - Explicitly documented tensor shapes and learning config.
-\subsubsection{Training and Inference Module}
-This module verifies correct model training behavior, prediction validity, and classification integrity. Tests focus on training loop stability, forward pass outputs, and performance under minimal and varied conditions.
-
-\begin{enumerate}
-  \item \textbf{Test Name:} Run Single Training Step\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Model instantiated, optimizer and dataloader configured\\
-  \textbf{Function Tested:} \verb|training_step|\\
-  \textbf{Input:} Batch of input images and corresponding label vectors\\
-  \textbf{Expected Output:} Loss computed and backward pass executed without error\\
-  \textbf{Test Case Derivation:} Confirms training loop executes correctly on a single batch.\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Create synthetic dataset batch and pass through \verb|training_step|.
-    \item Assert loss is computed and gradients are non-zero for trainable parameters.
-  \end{enumerate}
-  \textbf{Edge Case:} Batch with all-zero labels\\
-  \textbf{Expected Output for Edge Case:} Loss still computable; model does not crash or overfit to null output\\
-  \vspace{1em}
-
-  \item \textbf{Test Name:} Predict on Validation Set\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Trained model in evaluation mode\\
-  \textbf{Function Tested:} \verb|predict|\\
-  \textbf{Input:} Validation batch of normalized X-ray tensors\\
-  \textbf{Expected Output:} Multi-label classification output of shape \verb|(B, D)| with softmax/sigmoid activation values in [0, 1]\\
-  \textbf{Test Case Derivation:} Ensures inference logic matches classification output expectations.\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Feed a batch through the model's \verb|predict| function.
-    \item Assert the shape and numerical range of the outputs.
-    \item Optionally threshold the probabilities and check for expected class predictions.
-  \end{enumerate}
-  \textbf{Edge Case:} Batch contains noisy or poor-quality X-rays\\
-  \textbf{Expected Output for Edge Case:} Model still produces confidence scores; logs uncertainty without crash\\
-\end{enumerate}
-
-% Feedback Addressed:
-% - Replaced vague terms like "trainable without error" with explicit gradient checks and loss range.
-% - Used symbolic D for class count.
-% - Edge cases include all-zero labels and noisy data, consistent with VnV Report coverage of robustness to input variance.
-\subsubsection{Model Persistence Module}
-These tests ensure the model's weights, structure, and predictions are retained correctly after saving and reloading. This is critical for reproducibility and real-world deployment of the diagnostic system.
-
-\begin{enumerate}
-  \item \textbf{Test Name:} Save and Reload Model File\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Trained model with fixed weights and architecture\\
-  \textbf{Function Tested:} \verb|torch.save| and \verb|torch.load| or equivalent checkpointing logic\\
-  \textbf{Input:} Trained model object and dummy input tensor\\
-  \textbf{Expected Output:} Predictions remain consistent before and after model reload\\
-  \textbf{Test Case Derivation:} Validates persistence mechanism preserves internal state for deployed models.\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Train model minimally or load pretrained checkpoint.
-    \item Save weights to disk and reload into a fresh model instance.
-    \item Pass identical input tensor before and after reloading.
-    \item Compare outputs using a numerical tolerance threshold.
-  \end{enumerate}
-  \textbf{Edge Case:} Saved checkpoint partially corrupted or missing layers\\
-  \textbf{Expected Output for Edge Case:} Raises descriptive loading error or handles via fallback/exception handling\\
-  \vspace{1em}
-
-  \item \textbf{Test Name:} Check Compatibility of Reloaded Model with Predict Function\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Reloaded model from disk checkpoint\\
-  \textbf{Function Tested:} \verb|predict| on reloaded model instance\\
-  \textbf{Input:} Validation tensor (same shape as training input)\\
-  \textbf{Expected Output:} Valid classification vector of shape \verb|(B, D)| with values in [0, 1]\\
-  \textbf{Test Case Derivation:} Ensures reloaded model remains usable in downstream prediction functions.\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Reload model from saved state.
-    \item Run \verb|predict| on standard validation data.
-    \item Confirm output matches expected shape and contains no NaNs/infs.
-  \end{enumerate}
-  \textbf{Edge Case:} Reloaded model is mistakenly used in training mode\\
-  \textbf{Expected Output for Edge Case:} Logs warning if dropout/batchnorm active; passes if prediction results remain valid\\
-\end{enumerate}
-
-% Feedback Addressed:
-% - Traceability shown by linking model saving/loading to reproducibility requirements.
-% - Replaced vague descriptions with shape expectations and consistency checks.
-% - Included numerical tolerance comparison instead of loose "same predictions" wording.
-% - Ensures models retain classification integrity across storage cycles.
-\subsubsection{Data Download and Extraction Module}
-This module handles dataset acquisition and integrity verification. Tests ensure external data sources are correctly fetched, extracted, and structured for downstream use.
-
-\begin{enumerate}
-  \item \textbf{Test Name:} Simulate Dataset Download\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} System with internet connectivity and temporary storage path configured\\
-  \textbf{Function Tested:} \verb|download_dataset|\\
-  \textbf{Input:} Simulated or mocked download URL and target directory\\
-  \textbf{Expected Output:} Dataset archive successfully downloaded to target path\\
-  \textbf{Test Case Derivation:} Ensures remote retrieval logic is functional, even under network throttling.\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Use a mocked URL or mirror of a known dataset.
-    \item Trigger \verb|download_dataset|.
-    \item Confirm file presence at target location and match expected checksum or file size.
-  \end{enumerate}
-  \textbf{Edge Case:} URL inaccessible or timeout\\
-  \textbf{Expected Output for Edge Case:} Logs download failure and retries or exits with a descriptive message\\
-  \vspace{1em}
-
-  \item \textbf{Test Name:} Extract Dataset Archive\\
-  \textbf{Type:} Automatic\\
-  \textbf{Initial State:} Downloaded ZIP or TAR archive located on disk\\
-  \textbf{Function Tested:} \verb|extract_dataset|\\
-  \textbf{Input:} Path to archive and target extraction directory\\
-  \textbf{Expected Output:} Files correctly extracted to nested folders with preserved structure\\
-  \textbf{Test Case Derivation:} Ensures compatibility with ZIP and TAR formats, verifying extraction structure.\\
-  \textbf{How the test will be performed:}
-  \begin{enumerate}
-    \item Prepare a test archive with expected folder hierarchy and dummy X-ray images.
-    \item Call the extraction utility.
-    \item Verify output directory matches structure and file count of the original.
-  \end{enumerate}
-  \textbf{Edge Case:} Archive is corrupted or partially downloaded\\
-  \textbf{Expected Output for Edge Case:} Raises decompression error; deletes partial output and logs reason for failure\\
-\end{enumerate}
-
-% Feedback Addressed:
-% - Tests include both download simulation and extraction verification with fallback logic.
-% - Output expectations are clearly defined for corrupted archives and unreachable URLs.
-% - Ensures traceability and modularity of data setup process for reproducibility.
 
 
 \subsection{Tests for Nonfunctional Requirements}
 
-% Feedback Addressed:
-% - Ensures coverage of Grad-CAM interpretability, latency, and bias detection per updated scope.
-% - Clarified vague terminology in outputs (e.g., "minimal delay" to explicit latency targets).
-% - Ensures consistency with SRS Sections 10--17 and system test coverage.
+\subsubsection{MLBackend (M6)}
 
-This section contains unit-level and behavior-focused tests for nonfunctional requirements, emphasizing performance, interpretability, fairness, and security guarantees. Test coverage includes scenarios defined in the updated SRS and traces directly to previously untested or under-specified areas.
+\textbf{$1$. NF-M6-bulk-prediction-timing}\\
+Type: Automatic\\
+Initial State: ML model loaded with GPU enabled\\
+Input: Batch of $32$ chest X-rays\\
+Output: Inference time under $10$ seconds\\
+Test Case Derivation: Ensures latency is acceptable for real-time use.\\
+How test will be performed: Log start and end time of batch inference.
 
-\subsubsection{Performance Testing - PredictiveModel Module}
+\textbf{$2$. NF-M6-no-crash-on-noisy-data}\\
+Type: Automatic\\
+Initial State: Model ready for prediction\\
+Input: Corrupted or low-quality images\\
+Output: Prediction result or warning, no crash\\
+Test Case Derivation: Validates fault-tolerance to suboptimal inputs.\\
+How test will be performed: Feed known noisy inputs and observe log/output.
 
-\begin{enumerate}
-  \item \textbf{Test Name:} Bulk Image Processing Speed \\
-  \textbf{Type:} Automatic \\
-  \textbf{Initial State:} Model loaded with GPU acceleration enabled \\
-  \textbf{Input:} Batch of $B=32$ chest X-ray images (randomly sampled, resolution 224x224) \\
-  \textbf{Expected Output:} Batch inference completes in $< 10$ seconds per batch \\
-  \textbf{How test will be performed:} Timer starts before batch is passed to the model. End-to-end latency (inference + post-processing) is recorded. \\
-  \textbf{Edge Case:} Maximum allowable batch size (e.g., GPU memory saturation) \\
-  \textbf{Expected Output for Edge Case:} System gracefully reduces batch size, logs memory error, and retries without crashing \\
-\end{enumerate}
+\subsubsection{ModelArchitecture (M7)}
 
-\subsubsection{Interpretability Testing - DiagnosticAnalysis Module}
+\textbf{$1$. NF-M7-heatmap-integrity}\\
+Type: Automatic (Visual and IOU score)\\
+Initial State: Trained model with intermediate layers accessible\\
+Input: Image and expected anatomical region\\
+Output: Heatmap correctly focuses relevant areas\\
+Test Case Derivation: Verifies interpretability of model through Grad-CAM.\\
+How test will be performed: Compare heatmap overlay with expected lung region.
 
-\begin{enumerate}
-  \item \textbf{Test Name:} Grad-CAM Heatmap Generation \\
-  \textbf{Type:} Automatic (Visual and Structural Validation) \\
-  \textbf{Initial State:} Trained classification model loaded, intermediate activations available \\
-  \textbf{Input:} Chest X-ray with ground truth labels \\
-  \textbf{Expected Output:} Heatmap correctly overlays areas relevant to predictions, highlighting abnormal regions \\
-  \textbf{How test will be performed:} Compare Grad-CAM output for each disease class to expected anatomical focus (e.g., lungs for pneumonia). Quantitatively check localization with Intersection over Union (IoU) if bounding boxes are available. \\
-\end{enumerate}
+\subsubsection{Training (M8)}
 
-\subsubsection{Fairness and Bias Testing - PredictiveModel Module}
+\textbf{$1$. NF-M8-bias-evaluation}\\
+Type: Automatic\\
+Initial State: Model trained with metadata access\\
+Input: Dataset with demographic splits\\
+Output: No major metric disparity across subgroups\\
+Test Case Derivation: Checks demographic fairness of model behavior.\\
+How test will be performed: Evaluate recall/specificity per subgroup.
 
-\begin{enumerate}
-  \item \textbf{Test Name:} Bias Detection Across Demographics \\
-  \textbf{Type:} Automatic (Stratified Evaluation) \\
-  \textbf{Initial State:} Labeled dataset includes demographic metadata (age, sex, ethnicity) \\
-  \textbf{Input:} Validation set split into demographic subgroups \\
-  \textbf{Expected Output:} No subgroup has $>10\%$ deviation in sensitivity/specificity compared to overall model performance \\
-  \textbf{How test will be performed:} Calculate sensitivity, specificity, precision, and recall for each demographic. Compare metrics and flag significant disparities. \\
-  \textbf{Edge Case:} Subgroup with very small sample size (e.g., $< 30$ images) \\
-  \textbf{Expected Output for Edge Case:} Logs insufficient data for statistical comparison and skips unreliable metrics \\
-\end{enumerate}
+\subsubsection{Authorization (M5)}
 
-\subsubsection{Security Testing - Training and Inference Module}
+\textbf{$1$. NF-M5-invalid-token-access}\\
+Type: Automatic\\
+Initial State: Endpoint secured by JWT middleware\\
+Input: Request with malformed/expired token\\
+Output: $403$ Forbidden with log entry\\
+Test Case Derivation: Enforces secure access and auditability.\\
+How test will be performed: Simulate invalid request and verify log/status.
 
-\begin{enumerate}
-  \item \textbf{Test Name:} Unauthorized Access Block \\
-  \textbf{Type:} Automatic \\
-  \textbf{Initial State:} System initialized without active authentication token \\
-  \textbf{Input:} Attempt to access protected endpoints (e.g., download report, view sensitive logs) \\
-  \textbf{Expected Output:} 403 Forbidden response with corresponding audit log entry \\
-  \textbf{How test will be performed:} Attempt requests using a non-authenticated client or expired token. Verify HTTP status code and ensure access is denied. Check that security logs correctly record the failed access attempt. \\
-  \textbf{Edge Case:} Replay attack or malformed token \\
-  \textbf{Expected Output for Edge Case:} Denied access with "token invalid or expired" error message; logs reflect the attempt type for forensic traceability \\
-\end{enumerate}
+\subsubsection{Config (M6)}
+
+\textbf{$1$. NF-M6-api-connectivity-test}\\
+Type: Automatic\\
+Initial State: Config boot logic active\\
+Input: Attempt to ping Flask backend\\
+Output: Successful response from ML backend\\
+Test Case Derivation: Ensures connection across stack is reliable.\\
+How test will be performed: Run connectivity ping on init and assert success.
 
 
-\subsection{Traceability Between Test Cases and Modules}
+
+
+subsection{Traceability Between Test Cases and Modules}
 
 \begin{table}[h!]
   \centering
@@ -1761,17 +1583,23 @@ This section contains unit-level and behavior-focused tests for nonfunctional re
     \hline
     \textbf{Module Label} & \textbf{Description} \\
     \hline
-    M1 & Data Preprocessing Module - Handles metadata cleaning, label encoding, dataset organization, and train/val splitting. \\
+    M1 & DataPreprocessing - Cleans metadata, binarizes labels, applies transforms, and performs stratified splits. \\
     \hline
-    M2 & ChestXrayDataset Module - PyTorch-compatible loader for on-the-fly image loading and transformation. \\
+    M2 & ChestXrayDataset - Custom PyTorch dataset for loading X-ray images and binary labels. \\
     \hline
-    M3 & Model Architecture Module - Defines the classification model architecture (e.g., ResNet-18 variant). \\
+    M3 & ModelArchitecture - Builds MobileNetV2-based CNN and classification head for disease prediction. \\
     \hline
-    M4 & Training and Inference Module - Executes training loop, evaluation, prediction, and bias testing. \\
+    M4 & Training - Manages training loop, loss calculation, and metric evaluation. \\
     \hline
-    M5 & Model Persistence Module - Saves and restores trained models using serialization. \\
+    M5 & ModelPersistence - Handles saving and loading model checkpoints. \\
     \hline
-    M6 & Data Download and Extraction Module - Downloads, extracts, and organizes raw datasets. \\
+    M6 & DataRetrieval - Downloads and extracts NIH datasets from public URLs. \\
+    \hline
+    M7 & MLBackend - Flask backend for API communication and image inference. \\
+    \hline
+    M8 & Config - Spring Boot config logic (security, JWT, REST communication). \\
+    \hline
+    M9 & Authorization - Auth/login/signup logic for protected user access control. \\
     \hline
   \end{tabular}
 \end{table}
@@ -1779,43 +1607,29 @@ This section contains unit-level and behavior-focused tests for nonfunctional re
 \begin{table}[h!]
   \centering
   \caption{Traceability Matrix for Functional Requirement Test Cases (FRTC)}
-  \begin{tabular}{|c|c|c|c|c|c|c|}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
     \hline
-    \textbf{FRTC} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} \\
+    \textbf{FRTC} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} & \textbf{M7} & \textbf{M8} & \textbf{M9} \\
     \hline
-    FRTC1 & X &   &   & X &   & X \\
+    FRTC1 & X & X &   &   &   &   &   &   &   \\
     \hline
-    FRTC2 & X &   &   &   &   &   \\
+    FRTC2 & X &   &   &   &   &   & X &   &   \\
     \hline
-    FRTC3 &   & X &   &   & X & X \\
+    FRTC3 & X & X &   &   &   &   & X &   &   \\
     \hline
-    FRTC4 &   & X & X &   &   &   \\
+    FRTC4 &   &   & X & X &   &   & X &   &   \\
     \hline
-    FRTC5 &   & X &   & X &   & X \\
+    FRTC5 &   &   & X & X &   &   & X &   &   \\
     \hline
-    FRTC6 &   & X &   & X &   & X \\
+    FRTC6 &   &   &   &   &   &   & X &   &   \\
     \hline
-    FRTC7 &   &   & X &   &   &   \\
+    FRTC7 &   &   &   &   &   &   &   &   & X \\
     \hline
-    FRTC8 &   &   & X &   &   &   \\
+    FRTC8 &   &   &   &   &   &   &   &   & X \\
     \hline
-    FRTC9 &   & X &   &   &   &   \\
+    FRTC9 &   &   &   &   &   &   &   & X & X \\
     \hline
-    FRTC10 &   &   & X &   &   &   \\
-    \hline
-    FRTC11 &   &   & X &   &   &   \\
-    \hline
-    FRTC12 &   &   & X & X &   &   \\
-    \hline
-    FRTC13 &   &   &   & X &   &   \\
-    \hline
-    FRTC14 &   &   &   & X &   &   \\
-    \hline
-    FRTC15 &   &   &   & X &   &   \\
-    \hline
-    FRTC16 &   &   &   & X &   &   \\
-    \hline
-    FRTC17 &   &   &   & X &   &   \\
+    FRTC10 &   &   &   &   &   &   &   & X & X \\
     \hline
   \end{tabular}
 \end{table}
@@ -1824,31 +1638,35 @@ This section contains unit-level and behavior-focused tests for nonfunctional re
 \begin{table}[h!]
   \centering
   \caption{Traceability Matrix for Non-Functional Requirement Test Cases (NFRTC)}
-  \begin{tabular}{|c|c|c|c|c|c|c|}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
     \hline
-    \textbf{NFRTC} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} \\
+    \textbf{NFRTC} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} & \textbf{M7} & \textbf{M8} & \textbf{M9} \\
     \hline
-    NFRTC1 & X &   &   &   &   &   \\
+    NFRTC1  &   &   &   &   &   &   &   & X &   \\ % UI appearance (frontend)
     \hline
-    NFRTC2 &   & X &   &   & X &   \\
+    NFRTC2  &   &   &   &   &   &   &   & X &   \\ % UI layout and visual consistency
     \hline
-    NFRTC3 &   &   & X &   &   &   \\
+    NFRTC3  &   &   &   &   &   &   &   & X &   \\ % Ease of use
     \hline
-    NFRTC4 &   &   &   & X &   &   \\
+    NFRTC4  &   &   &   &   &   &   &   & X &   \\ % Memorability of flow
     \hline
-    NFRTC5 & X &   &   & X &   &   \\
+    NFRTC5  & X & X &   &   &   &   &   & X &   \\ % Learning curve - uploading and running
     \hline
-    NFRTC6 &   & X &   &   & X &   \\
+    NFRTC6  &   &   & X & X &   &   &   &   &   \\ % Realism of generated images
     \hline
-    NFRTC7 &   &   &   & X &   &   \\
+    NFRTC7  &   &   &   &   &   &   & X &   &   \\ % Image generation speed test
     \hline
-    NFRTC8 &   &   &   & X &   &   \\
+    NFRTC8  &   &   &   &   &   &   & X &   &   \\ % System uptime
     \hline
-    NFRTC9 &   &   &   &   & X &   \\
+    NFRTC9  &   &   &   &   &   &   & X &   &   \\ % Concurrency enforcement
     \hline
-    NFRTC10 &   &   & X &   &   &   \\
+    NFRTC10 &   &   &   &   &   &   &   & X &   \\ % No-login access
     \hline
-    NFRTC11 &   &   &   & X &   &   \\
+    NFRTC11 &   &   &   &   &   &   & X &   &   \\ % PII non-collection
+    \hline
+    NFRTC12 &   &   &   &   &   &   &   & X &   \\ % Documentation-only navigation
+    \hline
+    NFRTC13 &   &   &   &   &   &   &   & X &   \\ % Language translation
     \hline
   \end{tabular}
 \end{table}
@@ -1860,7 +1678,29 @@ This section contains unit-level and behavior-focused tests for nonfunctional re
 \section{Appendix}
 In this section, additional information that complements the V\&V Plan is included.
 
+
 \subsection{Symbolic Parameters}
+
+The following symbolic parameters are used throughout the system and unit test cases to avoid hard-coded values. This approach improves clarity, consistency, and maintainability.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|p{11cm}|}
+\hline
+\textbf{Symbolic Name} & \textbf{Definition or Description} \\
+\hline
+\texttt{MIN\_CLASSIFICATION\_ACCURACY} & Minimum per-class accuracy required for CNN-based disease prediction (previously 60\%). \\
+\texttt{MIN\_MULTILABEL\_PERFORMANCE} & Minimum precision and recall required for multi-label classification tasks (previously ACCURACY\_THRESHOLD). \\
+\texttt{DISPLAY\_LATENCY\_THRESHOLD} & Maximum allowed time to display predictions and heatmaps on the UI (previously MAX\_RENDER\_TIME). \\
+\texttt{MIN\_VALIDATION\_ACCURACY} & Required accuracy across disease classes on validation datasets (previously 90\%). \\
+\texttt{MAX\_BATCH\_PREDICTION\_LATENCY} & Maximum duration for batch predictions over multiple X-rays (previously under 10 seconds). \\
+\texttt{MAX\_USER\_DETECTION\_ACCURACY} & Maximum rate users can identify synthetic vs. real X-rays (used in realism test, previously 60\%). \\
+\texttt{USER\_SUCCESS\_THRESHOLD} & Minimum user success rate on tasks or UI usability favorability (previously at least 80\%). \\
+\hline
+\end{tabular}
+\caption{Symbolic parameters used in V\&V test definitions.}
+\end{table}
+
 The definition of test cases will call for certain symbolic constants. Their values are defined in this section for easy maintenance. See the following table for reference.
 
 \begin{table}[h]
