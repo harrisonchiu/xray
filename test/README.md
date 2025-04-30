@@ -1,5 +1,5 @@
-# Automated tests
+# Tests
 
-The folders and files for this folder are as follows:
+Unit tests that tested certain functions and functionalities in the Flask backend, front end, and training scripts.
 
-Describe ...
+This is to ensure that functions ran and outputted things as expected.

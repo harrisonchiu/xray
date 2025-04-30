@@ -32,6 +32,9 @@ Date1 & Name(s) & Description of changes\\
 
 \newpage{}
 
+\tableofcontents
+\newpage{}
+
 In this document, it describes the necessary technical and social aspects that are needed to 
 effectively create the project \progname. This includes team meeting plans, team communication
 plans, and team roles. Implicitly, this is a social contract of which each team member agrees
@@ -302,8 +305,8 @@ smaller size.
   \item \textbf{Pytorch}: Extremely popular machine learning library. Will be used to train the 
     neural network. Chosen because nearly all machine learning training in Python uses Pytorch. It
     is good to stick with the convention so other people can easily understand what we are doing. 
-    Also, there is a lot of support for Pytorch.
-  \item \textbf{OpenCV}: Image processing Python library. Used to cleanse training data and help
+    Also, there is a lot of support for Pytorch. Pytorch is used over TensorFlow because there seems to be more online support for Pytorch. Many people have switched away from TensorFlow because it has a static computational graph which some saw as a hinderance.
+  \item \textbf{OpenCV/Pillow}: Image processing Python library. Used to cleanse training data and help
     test the neural network to check its performance. Chosen because it is an extremely popular
     image library. It is old so there is lots of documentation, huge community, and has little 
     bugs.
@@ -314,7 +317,7 @@ All linters and formatters are checked through the CI pipeline. All linters and 
 chosen because they are very popular. As a result, it is known that they have very little bugs, 
 large community support, and the formatters stick to the global conventional style.
 \begin{itemize}
-  \item \textbf{Flake8}: Ensures Python code aligns with PEP8 style guide.
+  \item \textbf{Flake8/Pylint}: Ensures Python code aligns with PEP8 style guide.
   \item \textbf{Black}: Ensures Python code is formatted nicely and readable, following the PEP8
     style guide. Black has a very strict style and it will make all the code stylistically 
     consistent.
@@ -400,7 +403,7 @@ See here: \url{https://github.com/airbnb/javascript}\\
 \begin{enumerate}
     \item Why is it important to create a development plan prior to starting the
     project?\\
-    A development plan is crucial because it helps the team outline the project’s
+    A development plan is crucial because it helps the team outline the project's
     goals, timeline, and key milestones. It provides a structured roadmap that
     ensures everyone is aligned on the objectives, minimizes risks, and helps
     to identify any potential bottlenecks early. Additionally, it allows the team
@@ -437,7 +440,7 @@ See here: \url{https://github.com/airbnb/javascript}\\
 
 \subsection*{External Goals}
 
-Our team’s external goals for this project include gaining valuable experience to talk
+Our team's external goals for this project include gaining valuable experience to talk
 about in job interviews, aiming for an A+ grade, and showcasing the project at the Capstone
 EXPO with hopes of receiving recognition or awards.
 
@@ -471,7 +474,7 @@ project progress.
 
 \subsubsection*{Attitude}
 
-Team members are expected to maintain a positive and collaborative attitude. Everyone’s ideas
+Team members are expected to maintain a positive and collaborative attitude. Everyone's ideas
 should be respected, and constructive feedback is encouraged. We will adopt a code of conduct
 to ensure professional and courteous interactions. In case of conflicts, the team will resolve
 issues through open communication or bring in a mediator if needed.

@@ -9,6 +9,9 @@
 \usepackage{float}
 \usepackage{parskip}
 \usepackage{xcolor} 
+\usepackage{ltablex}
+\keepXColumns
+
 
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -27,18 +30,20 @@
 % \input{../Comments}
 \input{../Common}
 
+
+
 \begin{document}
 
-\title{Software Requirements Specification for \progname: subtitle describing software} 
+\title{Software Requirements Specification for \progname{}: AI-Powered Diagnostic System for Chest X-Rays} % Feedback addressed: Replaced default subtitle with a meaningful one
 \author{\authname}
 \date{\today}
-	
+
 \maketitle
 \pagenumbering{arabic}
 
 ~\newpage
 
-\tableofcontents
+\tableofcontents % Feedback addressed: Table of contents was explicitly added
 
 ~\newpage
 
@@ -60,644 +65,520 @@
 ~\newpage
 \section{Purpose of the Project}
 
-\textbf{Current Content:} The document currently describes an AI tool for analyzing chest X-rays, focusing on assisting radiologists with diagnostic reports.  \\
-\\
-{\textcolor{blue}{Update Needed:}} We need to revise this section to clearly state that our project is now focused on developing a \textbf{multi-class classification CNN model} that can categorize chest X-ray images into multiple disease types (e.g., pneumonia, tuberculosis, cardiomegaly, normal, etc.). Instead of simply enhancing efficiency for radiologists, our system aims to \textbf{automate and improve the accuracy of chest X-ray disease classification}, providing a structured and interpretable output.\\
-
 \subsection{User Business}
-Chest X-rays are essential to the healthcare industry for diagnosing lung and heart conditions. 
-However, the interpretation of these images are complex and require a high level of expertise. 
-This project intends to tackle this challenge by creating an ai diagnostic tool that analyzes 
-chest x-rays and generates medical reports, enhancing efficiency and accuracy in diagnosis. The 
-development of this diagnostic tool will lead to the enhancement of patient care and the 
-efficiency of the medical industry. 
+% Feedback addressed: Clarified the project scope by shifting from a generic AI tool to a multiclass CNN model
+Chest X-rays are a critical diagnostic tool used by radiologists to identify lung and heart diseases such as pneumonia, cardiomegaly, and pleural effusion. However, manual interpretation of chest X-rays is time-consuming and requires significant expertise, leading to potential diagnostic delays and human error.
+
+The \textbf{Chest Scan} project aims to address these challenges by developing a multiclass convolutional neural network (CNN)-based system capable of classifying multiple diseases from chest X-ray images with high accuracy. Unlike traditional AI-assisted diagnostic tools that focus on binary classification, this system will provide multi-disease classification, confidence scores, and visual heatmap outputs to assist radiologists in decision-making.
+
+By leveraging state-of-the-art deep learning techniques, this project aims to enhance diagnostic efficiency, reduce workload on radiologists, and ultimately improve patient care.
 
 \subsection{Goals of the Project}
-\textbf{Current Content:} The SRS describes a tool that enhances efficiency and accuracy in diagnosis by generating structured reports. \\
-\\
-{\textcolor{blue}{Update Needed:}} This section should now emphasize our \textbf{multi-class nature of disease classification}, including defining key performance indicators such as \textbf{precision, recall, F1-score, confusion matrices, and AUC-ROC scores} to evaluate our model. The goal should also shift from merely assisting radiologists to \textbf{developing an independent AI-based classification system} that can be integrated into medical workflows.\\
+% Feedback addressed: Made goals measurable, clarified evaluation criteria, added structured report generation and interpretabilit
+The objective of this project is to design and implement an AI-powered diagnostic tool that leverages a convolutional neural network (CNN) to analyze chest X-rays and assist radiologists in identifying a wide range of lung and heart conditions. The tool is intended to generate structured diagnostic reports that include relevant clinical information, such as identified diseases and confidence scores, thereby supporting more efficient and accurate medical decision-making.
 
-The objective of this project is to create a neural network model that can precisely analyze chest 
-X-rays and produce diagnostic reports to help radiologists diagnose heart and lung diseases. By 
-using this tool, radiologists' workload will be reduced, diagnostic accuracy will increase, and 
-workflow efficiency will be improved—all of which will improve patient care. The model's capacity 
-to identify diseases with a high degree of accuracy and to drastically cut down on the time and 
-effort required for radiologists to generate reports will determine its success. The tool's 
-usefulness and efficacy will be assessed using performance metrics and radiologists' input.
+To enhance interpretability, the system incorporates visual explanation techniques that highlight key regions of interest within the X-ray images, making model outputs more transparent and clinically useful.
+
+Ultimately, this project aims to reduce radiologist workload, improve diagnostic precision, and streamline the medical imaging workflow. The system's effectiveness will be measured through model performance metrics, real-world usability evaluations, and alignment with technical and regulatory standards.
 
 \section{Stakeholders}
 
-\textbf{Current Content:} Mentions radiologists, biomedical researchers, AI researchers, and hospitals as key stakeholders. \\
-\\
-{\textcolor{blue}{Update Needed:}} While stakeholders remain the same, the shift in project focus means that \textbf{medical AI researchers and data scientists} will play a bigger role in validating the classification model. Additionally, \textbf{hospitals and healthcare institutions} that may integrate this model for \textbf{real-time disease detection} should be included as key stakeholders.\\
+% Feedback addressed: Client organizations clarified; Regulatory bodies included and cited
+This section outlines the primary stakeholders involved in the Chest Scan system. It identifies their roles, responsibilities, and levels of engagement, ensuring a structured approach to project development and implementation.
 
 \subsection{Client}
-\textbf{Medical Technology Department and/or healthcare organization sponsoring the initiative: }
-This client is responsible for funding and overseeing the progress of the project to ensure it 
-meets their objectives.
+% Feedback addressed: Clarified the nature and examples of client organizations.
+The client represents the entity funding or overseeing the project. The client is responsible for ensuring the system aligns with its intended objectives and compliance requirements.
+
+Potential clients include:
+\begin{itemize}
+    \item \textbf{Healthcare Institutions (Hospitals, Radiology Clinics):} Interested in reducing radiologist workload and improving diagnostic speed.
+    \item \textbf{Medical Research Institutions:} Seeking AI-driven advancements in chest X-ray diagnostics.
+    \item \textbf{AI Healthcare Startups:} Exploring commercial applications of CNN-based diagnostic models.
+\end{itemize}
 
 \subsection{Customer}
-\textbf{Radiologists and Medical Imaging Specialists: } Use the system to interpret chest X-rays 
-more effectively, providing input on system performance and ensuring alignment with diagnostic 
-procedures.
-
-\textbf{Healthcare Institutions: } Implement the technology to improve patient care by delivering 
-faster and more accurate chest X-ray results.
-
-\textbf{Patients: } Benefit from quicker and equally accurate X-ray results, leading to an 
-improved treatment experience.
+\begin{itemize}
+    \item \textbf{Radiologists and Medical Imaging Specialists:} Use the system to interpret chest X-rays more effectively, providing input on system performance and ensuring alignment with diagnostic procedures.
+    \item \textbf{Healthcare Institutions:} Implement the technology to improve patient care by delivering faster and more accurate chest X-ray results.
+    \item \textbf{Patients:} Benefit from quicker and equally accurate X-ray results, leading to an improved treatment experience.
+    \item \textbf{Medical Researchers:} Utilize AI-powered diagnostic tools to study the integration of AI in radiology.
+\end{itemize}
 
 \subsection{Other Stakeholders}
-\textbf{Healthcare Administrators: } Oversee the implementation of the system in clinical settings 
-and ensure compliance with medical standards and regulations.
-
-\textbf{Biomedical and AI Researchers: } Researchers interested in the intersection of AI and 
-healthcare who will benefit from new research insights and may conduct their own studies based on 
-this project.
-
-\textbf{Hospitals and Medical Centers:} Institutions that will implement this technology for 
-faster and more accurate diagnoses.
+% Feedback addressed: Regulatory compliance stakeholders added with examples
+\begin{itemize}
+    \item \textbf{Healthcare Administrators:} Oversee implementation in clinical settings and ensure compliance with medical standards and regulations.
+    \item \textbf{Biomedical and AI Researchers:} Benefit from new research insights and conduct studies based on this project.
+    \item \textbf{Hospitals and Medical Centers:} Deploy the system for improved diagnostic efficiency.
+    \item \textbf{Regulatory Bodies:} Ensure compliance with standards such as HIPAA\cite{hipaa}, GDPR, and FDA guidelines.
+    \item \textbf{Software Engineers and AI Developers:} Responsible for system development, model training, and maintenance.
+    \item \textbf{Hospital IT Teams:} Handle system deployment, integration, and ongoing technical support.
+\end{itemize}
 
 \subsection{Hands-On Users of the Project}
 
 \textbf{Radiologists}
+% Feedback addressed: Expanded detail for primary users to reflect decision-critical nature
 \begin{itemize}
-    \item {\textbf{User Role: } Diagnose patients based on chest X-ray analysis.}
-    \item {
-        \textbf{Experience in Subject Matter: } Radiologists have a great deal of expertise 
-        regarding diagnostic procedures and medical imaging. They know how to analyze results from
-         a variety of imaging modalities and comprehend how discoveries may have therapeutic 
-        ramifications.
-    }
-    \item {
-        \textbf{Technological Experience: } Well-versed in imaging technologies, diagnostic software, and instruments with artificial intelligence. They frequently adjust to new systems that improve workflow.
-    }
+    \item \textbf{User Role:} Diagnose patients based on AI-generated reports.
+    \item \textbf{Expertise:} Extensive experience in interpreting medical imaging, particularly chest X-rays. Familiar with identifying a wide range of thoracic conditions, and understanding the clinical implications of radiographic findings.
+    \item \textbf{Technological Experience:} Proficient in PACS, RIS systems, and computer-aided detection tools. Some may require training in AI-assisted workflows and interpretation of probabilistic outputs (e.g., heatmaps).
+    \item \textbf{Needs:} Seamless integration into existing imaging workflows, interpretability of predictions, ability to validate AI-generated results, and full diagnostic transparency.
 \end{itemize}
 
-\textbf{Medical Technologists}
+\textbf{Medical Imaging Technologists}
 \begin{itemize}
-    \item {\textbf{User Role: } Operate imaging equipment and assist in diagnosis}
-    \item {
-        \textbf{Subject Matter Experience: } Medical technologists have a solid understanding 
-        of the technology and the science behind imaging procedures.
-    }
-    \item {
-        \textbf{Technological Experience: } Proficient in operating imaging devices and related 
-        software, allowing them to efficiently gather and process imaging data.
-    }
+    \item \textbf{User Role:} Manage imaging hardware and data preparation pipelines.
+    \item \textbf{Expertise:} Knowledgeable in radiation safety, image acquisition protocols, patient positioning, and quality assurance.
+    \item \textbf{Technological Experience:} Regular users of imaging consoles and image management platforms; comfortable with high-resolution medical file handling (DICOM)\cite{dicom}.
+    \item \textbf{Needs:} A system that allows quick upload of scans, easy correction of metadata, and tracking of processed scans across patients.
+\end{itemize}
+
+\textbf{Healthcare IT Teams}
+\begin{itemize}
+    \item \textbf{User Role:} Configure, deploy, and maintain Chest Scan in secure hospital networks.
+    \item \textbf{Expertise:} Network administration, data privacy compliance, systems security, and interoperability between clinical systems (e.g., HL7).
+    \item \textbf{Technological Experience:} Skilled in cloud infrastructure, VPN tunnels, and containerized applications.
+    \item \textbf{Needs:} Deployment documentation, regular system updates, API access, and audit logs for security monitoring.
 \end{itemize}
 
 \textbf{Nurses}
 \begin{itemize}
-    \item {\textbf{User Role: } Assist in patient care and manage patient records.}
-    \item {
-        \textbf{Subject Matter Experience: } Nurses are knowledgeable about patient care protocols
-         and the importance of imaging in diagnostics. They understand how imaging impacts 
-         treatment decisions.
-    }
-    \item {
-        \textbf{Technological Experience: } Familiar with electronic health record (EHR) systems 
-        and patient management software but may have limited exposure to advanced imaging 
-        technologies.
-    }
+    \item \textbf{User Role:} Support patient preparation and record annotation related to diagnostic imaging.
+    \item \textbf{Expertise:} Trained in patient care protocols and general imaging workflows within clinical environments.
+    \item \textbf{Technological Experience:} Comfortable using electronic health records and interfacing with diagnostic scheduling systems.
+    \item \textbf{Needs:} Clear system alerts/notifications, support for documentation handoff to radiologists or physicians.
 \end{itemize}
 
 \textbf{Patients}
 \begin{itemize}
-    \item {\textbf{User Role: } Individuals receiving chest X-ray services.}
-    \item {
-        \textbf{Subject Matter Experience: } Patients may have varying degrees of understanding 
-        regarding medical imaging and its implications for their health, often informed by prior 
-        experiences or education.
-    }
-    \item {
-        \textbf{Technological Experience: } Generally limited technological experience with 
-        medical systems; they typically interact with healthcare technology through appointments 
-        and diagnostic processes
-    }
+    \item \textbf{User Role:} Recipients of diagnostic services.
+    \item \textbf{Expertise:} Minimal to moderate health literacy; understanding of X-rays and diagnostic terms may vary.
+    \item \textbf{Technological Experience:} Use patient portals or mobile health applications to access diagnostic summaries.
+    \item \textbf{Needs:} Quick result turnaround, comprehensible explanations (as applicable), and assurance of data privacy.
 \end{itemize}
 
 \subsection{Personas}
-\textbf{Dr. Emily Richards} is a 47-year-old radiologist working at a local hospital. Emily is 
-married with two children, who are of age 8 and 12. Some of her hobbies include going on walks and 
-hikes. She also enjoys reading which ranges from fictional novels to medical journals. She lives 
-in a suburban area right outside a major city. Emily has a passion for Italian cuisine, 
-particularly pasta, and enjoys classic rock, though she switches to classical music while working 
-in her office. Her favourite holiday destination is going to Florida to visit her mom and dad, 
-where she enjoys spending quality time with family and relaxing in the sun. She dislikes not being 
-up to date with the latest technology and feeling stagnant in her learning and professional 
-development. Dr. Richards is open to new technology, believing it can enhance patient care and can 
-make her more efficient at her job. She is cautious about spending but willing to invest in tools 
-that significantly improve her productivity or patient care outcomes. She believes that our X-ray 
-model represents a significant advancement in her field, aligning with her interests in 
-technological innovations and improvements in efficiency.
+% Feedback addressed: Original persona was too brief-now includes professional background, needs, and workflow integration preferences.
+\textbf{Dr. Emily Richards} is a 47-year-old radiologist working at a large regional hospital. She has over 15 years of experience in diagnostic imaging, specializing in thoracic and cardiovascular radiology. Emily is married with two children and leads an active lifestyle, enjoying hiking, book clubs, and attending medical conferences. She values efficient, accurate diagnostic tools that reduce her workload and minimize report-writing time. As someone who has adapted to emerging technologies in her department (e.g., CAD, digital PACS), she is cautiously optimistic about AI. Her main concerns include reliability, interpretability, and regulatory approval. She wants a tool that seamlessly integrates into her existing RIS/PACS workflow and supports her decision-making without replacing it. She appreciates interfaces that are intuitive and provide visual justifications for predictions, such as heatmaps and severity scores.
 
 \subsection{Priorities Assigned to Users}
 \textbf{Key Users:}
 \begin{itemize}
-    \item{
-        \textbf{Radiologists: } Critical to the success of the AI system, as they will rely on 
-        it for diagnostic assistance. Their feedback will shape the usability and functionality of 
-        the product.
-    }
-    \item {
-        \textbf{Medical Imaging Specialists: } Essential for ensuring the correct interpretation 
-        of X-rays and validation of medical reports. Their expertise influences the model's 
-        accuracy and performance.
-    }
+    \item \textbf{Radiologists:} Primary users. Their feedback is critical for evaluating system accuracy, usability, and overall success.
+    \item \textbf{Medical Imaging Specialists:} Key in ensuring correct image interpretation and model output validation.
 \end{itemize}
 
-\noindent
 \textbf{Secondary Users:}
 \begin{itemize}
-    \item{
-        \textbf{Patients: } While they benefit from the product's outcomes, their direct feedback 
-        may not significantly impact its design or success. Their needs are considered but are 
-        secondary to those of the key users.
-    }
+    \item \textbf{Patients:} Indirect users; benefit from system outcomes. Their satisfaction is considered, though not central to design decisions.
 \end{itemize}
 
 \subsection{User Participation}
-\textbf{Radiologists: } Provide insights on diagnostic workflows and usability requirements. \\
-Estimated time: 10 hours for feedback sessions and testing.
-\\
-\noindent
-\textbf{Medical Imaging Specialists: }Offer expertise in interpreting medical images and 
-validating AI outputs. \\
-Estimated time: 8 hours for reviews and discussions.
-\\
-\noindent
-\textbf{Patients:} Share feedback on their experiences and expectations regarding chest X-ray 
-results. \\
-Estimated time: 4 hours for surveys or focus groups.
-\\
-\noindent
-\textbf{AI Researchers and Engineers:} Contribute technical knowledge on AI applications and 
-assist in interface prototyping. \\
-Estimated time: 6 hours for collaborative development sessions.
-
+\begin{itemize}
+    \item \textbf{Radiologists:} Provide insights on diagnostic workflows and usability requirements. (10 hours)
+    \item \textbf{Medical Imaging Specialists:} Review medical images and validate AI outputs. (8 hours)
+    \item \textbf{Patients:} Share user experience feedback. (4 hours)
+    \item \textbf{AI Researchers and Engineers:} Assist in interface prototyping and model evaluation. (6 hours)
+\end{itemize}
 
 \subsection{Maintenance Users and Service Technicians}
-Radiology Support Specialist: Focuses on maintaining and troubleshooting the AI system used in 
-radiology departments.
-\\
-\noindent
-Clinical Systems Technician: Works on the upkeep and repair of clinical technology systems, 
-including the AI product.
-\\
-\noindent
-AI Systems Maintenance Engineer: Responsible for the ongoing support and maintenance of AI-driven 
-diagnostic tools.
+\begin{itemize}
+    \item \textbf{Radiology Support Specialist:} Maintains and troubleshoots the AI diagnostic system.
+    \item \textbf{Clinical Systems Technician:} Manages upkeep of clinical technology systems.
+    \item \textbf{AI Systems Maintenance Engineer:} Supports ongoing AI model maintenance and infrastructure.
+\end{itemize}
 
 \section{Mandated Constraints}
 
-\textbf{Current Content:} The document currently lists general project constraints. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Include constraints related to \textbf{dataset quality, model accuracy thresholds, and regulatory compliance (HIPAA, GDPR)}. Define \textbf{minimum expected classification accuracy} and processing time constraints for real-world deployment.
-
-
-This section defines the essential requirements the product must follow, including legal, 
-regulatory, or system-related restrictions. These constraints ensure the product complies with 
-necessary standards and functions within the project's limitations.
+% Feedback addressed: HIPAA cited explicitly below. Added constraints to reflect specific technologies, regulatory bodies, and new project features.
+This section defines the essential requirements the product must follow, including legal, regulatory, or system-related restrictions. These constraints ensure the product complies with necessary standards and functions within the project's limitations.
 
 \subsection{Solution Constraints}
-This subsection outlines the constraints placed on the proposed solution for the chest X-ray 
-analysis project. These constraints cover the technical environment, supporting systems, workplace 
-and enterprise considerations, as well as the fit criteria required for each.
-\\\\
+This subsection outlines the constraints placed on the proposed solution for the chest X-ray analysis project. These constraints cover the technical environment, supporting systems, workplace and enterprise considerations, as well as the fit criteria required for each.
+
 \indent
 MC1: The product shall operate as a web application
 
-Rationale: The web-based nature of the system will allow medical professionals, researchers, and 
-other stakeholders to access the system easily across various platforms (Windows, MacOS, Linux, 
-etc.) without requiring complex local installations.
+Rationale: The web-based nature of the system will allow medical professionals, researchers, and other stakeholders to access the system easily across various platforms (Windows, MacOS, Linux, etc.) without requiring complex local installations.
 
-Fit Criterion: The product will include back-end, front-end, and database integration to run as a 
-web application accessible via a URL, optimized for different devices and browser types (Chrome, 
-Firefox, Safari, etc.).
-\\\\
+Fit Criterion: The product will include back-end, front-end, and database integration to run as a web application accessible via a URL, optimized for different devices and browser types (Chrome, Firefox, Safari, etc.).
+
 \indent
-MC2: The product shall integrate publicly available chest X-ray datasets (CheXpert, MIMIC)
+MC2: The product shall integrate publicly available chest X-ray datasets (NIH Chest X-Ray Dataset)
 
-Rationale: Using public datasets will ensure that the project has access to a broad range of chest 
-X-ray images needed for training and testing the neural network without violating patient privacy 
-laws.
+Rationale: Using public datasets will ensure that the project has access to a broad range of chest X-ray images needed for training and testing the neural network without violating patient privacy laws.
 
-Fit Criterion: The solution will successfully use the CheXpert and MIMIC datasets for model 
-training, with scripts to download and preprocess these datasets for CNN usage. It will comply 
-with healthcare privacy standards (e.g., HIPAA).
+Fit Criterion: The solution will successfully use the CheXpert and MIMIC datasets for model training, with scripts to download and preprocess these datasets for CNN usage. It will comply with healthcare privacy standards, including the Health Insurance Portability and Accountability Act (HIPAA)\cite{hipaa}.
+
+\indent
+MC3: The system shall provide a structured classification output with confidence scores and visual explanations (heatmaps using Grad-CAM).
+
+Rationale: Interpretability is crucial for clinical integration and compliance with explainable AI (XAI) principles.
+
+Fit Criterion: Each output must include disease labels, associated confidence values (e.g., "Pneumonia: 92"), and heatmap overlays on input images.
 
 \subsection{Implementation Environment of the Current System}
-This section outlines the technological and physical environment in which the product will be 
-installed and operated. It encompasses all relevant hardware, software, and organizational 
-elements that will interact with the system. The goal is to provide a comprehensive understanding 
-of the current infrastructure so that the product can be designed to effectively integrate and 
-function within this environment. Understanding the operational requirements derived from this 
-description will help the design team ensure that the solution meets all necessary criteria for 
-successful implementation and usability in real-world settings.
-\\\\
-\noindent
-MC3. The product shall use machine learning frameworks like TensorFlow or PyTorch
+This section outlines the technological and physical environment in which the product will be installed and operated. It encompasses all relevant hardware, software, and organizational elements that will interact with the system. The goal is to provide a comprehensive understanding of the current infrastructure so that the product can be designed to effectively integrate and function within this environment. Understanding the operational requirements derived from this description will help the design team ensure that the solution meets all necessary criteria for successful implementation and usability in real-world settings.
 
-Rationale: Machine learning frameworks are essential for training the convolutional neural network 
-(CNN) model. TensorFlow and PyTorch are widely used, industry-standard frameworks that offer 
-extensive support for neural network development and GPU acceleration.
+\indent
+MC4: The product shall use machine learning frameworks like TensorFlow or PyTorch
 
-Fit Criterion: The product will use either TensorFlow or PyTorch for model development and 
-training, with support for cloud-based GPU instances to speed up computation.
+Rationale: Machine learning frameworks are essential for training the convolutional neural network (CNN) model. TensorFlow and PyTorch are widely used, industry-standard frameworks that offer extensive support for neural network development and GPU acceleration.
+
+Fit Criterion: The product will use either TensorFlow or PyTorch for model development and training, with support for cloud-based GPU instances to speed up computation.
 
 \subsection{Partner or Collaborative Applications}
-This section identifies and describes systems external to the product but necessary for its 
-operation and integration. These systems may include internal databases, external software 
-solutions, or third-party services. Understanding these relationships is essential for ensuring 
-smooth integration and efficient product functionality within the broader technological 
-environment.
-\\\\
-\noindent
-MC4. The product shall integrate with external healthcare information systems.
+This section identifies and describes systems external to the product but necessary for its operation and integration. These systems may include internal databases, external software solutions, or third-party services. Understanding these relationships is essential for ensuring smooth integration and efficient product functionality within the broader technological environment.
 
-Rationale: These systems are essential for accessing and managing patient data, facilitating 
-seamless communication between the product and existing infrastructures. Integrating with these 
-systems will enhance the product's ability to deliver accurate results within the clinical 
-workflow.
+\indent
+MC5: The product shall integrate with external healthcare information systems
 
-Fit Criterion: The product will support integration with healthcare systems through standardized
+Rationale: These systems are essential for accessing and managing patient data, facilitating seamless communication between the product and existing infrastructures. Integrating with these systems will enhance the product's ability to deliver accurate results within the clinical workflow.
+
+Fit Criterion: The product will support integration with healthcare systems through standardized interfaces and protocols such as HL7 and FHIR\cite{fhir}.
+
+\indent
+MC6: The system shall support external research platforms (e.g., PhysioNet, NIH Data Commons)
+
+Rationale: Enabling data exchange with research repositories supports model evaluation and benchmarking.
+
+Fit Criterion: Exported anonymized outputs must meet external platform standards (e.g., CSV or JSON formats).
 
 \subsection{Off-the-Shelf Software}
-This section identifies and describes commercial, open-source, and other off-the-shelf software 
-(OTS) products that will be incorporated into the solution. The use of OTS software is intended to 
-leverage existing capabilities and minimize development time. Understanding the characteristics, 
-behaviors, and interfaces of these products will help define the design constraints and inform 
-decision-making throughout the project lifecycle. Additionally, potential conflicts between the 
-requirements and the capabilities of the OTS software must be considered to ensure that the 
-product aligns with organizational needs.
-\\\\
-\noindent
-MC5. The product shall integrate with a commercial machine learning framework
+This section identifies and describes commercial, open-source, and other off-the-shelf software (OTS) products that will be incorporated into the solution. The use of OTS software is intended to leverage existing capabilities and minimize development time. Understanding the characteristics, behaviors, and interfaces of these products will help define the design constraints and inform decision-making throughout the project lifecycle. Additionally, potential conflicts between the requirements and the capabilities of the OTS software must be considered to ensure that the product aligns with organizational needs.
 
-Rationale: Established frameworks like TensorFlow or PyTorch provide robust tools for developing 
-and training machine learning models, allowing for efficient implementation of advanced algorithms.
+\indent
+MC7: The product shall integrate with a commercial machine learning framework
 
-Fit Criterion: The product will utilize the selected framework to train and deploy convolutional 
-neural networks for analyzing chest X-ray images, ensuring compliance with model performance 
-benchmarks.
+Rationale: Established frameworks like TensorFlow or PyTorch provide robust tools for developing and training machine learning models, allowing for efficient implementation of advanced algorithms.
 
+Fit Criterion: The product will utilize the selected framework to train and deploy convolutional neural networks for analyzing chest X-ray images, ensuring compliance with model performance benchmarks.
+
+\indent
+MC8: The product shall use established machine learning and web development libraries such as TensorFlow, PyTorch, and React
+
+Rationale: Leveraging mature software packages reduces development overhead and increases reliability.
+
+Fit Criterion: The system must function using these components, and any modifications must comply with their respective licenses.
+
+\indent
+MC9: The database shall be built on a secure and scalable engine such as PostgreSQL or MongoDB
+
+Rationale: These databases are known for stability and support encryption, indexing, and scalability for large imaging datasets.
+
+Fit Criterion: The backend must support data CRUD operations using the selected database technology.
 
 \subsection{Anticipated Workplace Environment}
-This section outlines the anticipated workplace environment where users will interact with the 
-product. Understanding the features of this environment is critical for ensuring that the product 
-is designed effectively to meet user needs and to compensate for any potential difficulties. The 
-description will encompass physical aspects, such as space layout and equipment, as well as social 
-and cultural factors that may impact the product's usability and acceptance.
-\\\\
-\noindent
-MC6. The product is intended for use in healthcare settings
+This section outlines the anticipated workplace environment where users will interact with the product. Understanding the features of this environment is critical for ensuring that the product is designed effectively to meet user needs and to compensate for any potential difficulties. The description will encompass physical aspects, such as space layout and equipment, as well as social and cultural factors that may impact the product's usability and acceptance.
 
-Rationale: Working in healthcare environments imposes strict regulations and standards for data 
-security and patient privacy, which must be considered in the product design.
+\indent
+MC10: The product is intended for use in healthcare settings
 
-Fit Criterion: The product will implement robust security measures, including encryption and 
-access controls, to ensure compliance with healthcare regulations and protect sensitive patient 
-information.
+Rationale: Working in healthcare environments imposes strict regulations and standards for data security and patient privacy, which must be considered in the product design.
 
+Fit Criterion: The product will implement robust security measures, including encryption and access controls, to ensure compliance with healthcare regulations such as HIPAA\cite{hipaa}.
 
 \subsection{Schedule Constraints}
-This section outlines the critical timelines and deadlines associated with the project’s 
-development phases. Establishing a clear schedule is essential for managing resources, 
-coordinating team efforts, and ensuring that all project components are delivered on time. These 
-constraints help prioritize tasks and guide decision-making throughout the project lifecycle, 
-ultimately contributing to the successful implementation of the proposed solution. By identifying 
-key milestones, this section clarifies the expectations for progress and accountability, enabling 
-the team to meet operational and stakeholder requirements efficiently.
-\\\\
-\noindent
-MC7. The key milestones of the project’s proposed solution must be completed by specified 
-deadlines.
+This section outlines the critical timelines and deadlines associated with the project's development phases. Establishing a clear schedule is essential for managing resources, coordinating team efforts, and ensuring that all project components are delivered on time. These constraints help prioritize tasks and guide decision-making throughout the project lifecycle, ultimately contributing to the successful implementation of the proposed solution. By identifying key milestones, this section clarifies the expectations for progress and accountability, enabling the team to meet operational and stakeholder requirements efficiently.
 
-Rationale: This ensures that each major phase of the project is delivered on time, allowing 
-sufficient opportunities for testing, evaluation, and any necessary adjustments before the final 
-release. Timely completion is critical for aligning with external dependencies and operational 
-readiness.
+\indent
+MC11: The key milestones of the project's proposed solution must be completed by specified deadlines
 
-Fit Criterion: All significant milestones, including the completion of the proof of concept, 
-initial version, and final version demonstrations, must adhere to the following schedule:\\
-Proof of Concept Demonstration to occur between November 11 - 22, 2024\\
-Revision 0 Demonstration to take place between February 3 - 14, 2025\\
-Final/Revision 1 Demonstration scheduled for March 24 - 30, 2025\\
-Final/Revision 1 Documentation scheduled for April 2, 2025\\
+Rationale: This ensures that each major phase of the project is delivered on time, allowing sufficient opportunities for testing, evaluation, and any necessary adjustments before the final release. Timely completion is critical for aligning with external dependencies and operational readiness.
 
+Fit Criterion: All significant milestones, including the completion of the proof of concept, initial version, and final version demonstrations, must adhere to the following schedule:
+\begin{itemize}
+    \item Proof of Concept Demonstration: November 11-22, 2024
+    \item Revision 0 Demonstration: February 3-14, 2025
+    \item Final/Revision 1 Demonstration: March 24-30, 2025
+    \item Final Documentation Submission: April 2, 2025
+\end{itemize}
 
 \subsection{Budget Constraints}
-This section outlines the financial limitations associated with the project, detailing the budget 
-allocated for developing the proposed solution. It emphasizes the necessity for cost-effective 
-planning and resource allocation to ensure that the project remains within its financial 
-boundaries.
-\\\\
-\noindent
-MC8. The total budget for the project’s proposed solution is limited to \$750
+This section outlines the financial limitations associated with the project, detailing the budget allocated for developing the proposed solution. It emphasizes the necessity for cost-effective planning and resource allocation to ensure that the project remains within its financial boundaries.
 
-Rationale: This budgetary limit is established to prevent the acquisition of pre-existing 
-solutions and to promote the development of a tailored solution. It emphasizes the importance of 
-minimizing all associated costs to maintain financial efficiency throughout the project.
+\indent
+MC12: The total budget for the project's proposed solution is limited to \$750
 
-Fit Criterion: The combined expenses for all necessary hardware and software to execute the 
-project’s proposed solution must not exceed \$750.
+Rationale: This budgetary limit is established to prevent the acquisition of pre-existing solutions and to promote the development of a tailored solution. It emphasizes the importance of minimizing all associated costs to maintain financial efficiency throughout the project.
+
+Fit Criterion: The combined expenses for all necessary hardware and software to execute the project's proposed solution must not exceed \$750.
 
 \subsection{Enterprise Constraints}
 N/A
 
+
 \section{Naming Conventions and Terminology}
-\subsection{Glossary of All Terms, Including Acronyms, Used by Stakeholders
-involved in the Project}
-Motivation: Names are very important. They invoke meanings that, if carefully defined, can save 
-hours of explanations. Attention to names early in the project helps to highlight 
-misunderstandings. As the detailed work progresses, the glossary provides input to the more 
-precisely specified business/work data model and data dictionary.
+
+% Feedback addressed: Expanded glossary to include missing terms mentioned elsewhere . Ensures terms are defined before first use
+
+\subsection{Glossary of All Terms, Including Acronyms, Used by Stakeholders involved in the Project}
+
+Motivation: Names are very important. They invoke meanings that, if carefully defined, can save hours of explanations. Attention to names early in the project helps to highlight misunderstandings. As the detailed work progresses, the glossary provides input to the more precisely specified business/work data model and data dictionary.
 
 Glossary of All Terms, Including Acronyms, Used By Stakeholders\\
 
 \textbf{ML}:\\
-Machine Learning: A branch of artificial intelligence that involves the use of algorithms to allow 
-computers to learn from and make predictions based on data. This is a core technology used in the 
-project for analyzing chest X-rays.
+Machine Learning: A branch of artificial intelligence that involves the use of algorithms to allow computers to learn from and make predictions based on data. This is a core technology used in the project for analyzing chest X-rays.
 
 \textbf{DL}:\\
-Deep Learning: A subset of machine learning involving neural networks with many layers, used to 
-analyze various types of data, including images.
+Deep Learning: A subset of machine learning involving neural networks with many layers, used to analyze various types of data, including images.
 
 \textbf{DICOM}:\\
-Digital Imaging and Communications in Medicine: A standard for transmitting, storing, and sharing 
-medical imaging information. It is used to manage medical images in the proposed solution.
+Digital Imaging and Communications in Medicine: A standard for transmitting, storing, and sharing medical imaging information. It is used to manage medical images in the proposed solution.
 
 \textbf{CNN}:\\
-Convolutional Neural Network: A type of deep learning model specifically designed for processing 
-structured grid data like images, used in the project for chest X-ray analysis.
+Convolutional Neural Network: A type of deep learning model specifically designed for processing structured grid data like images, used in the project for chest X-ray analysis.
 
 \textbf{EHR}:\\
-Electronic Health Record: A digital version of a patient's paper chart, used for storing patient 
-information and history that may be integrated with the proposed solution.
+Electronic Health Record: A digital version of a patient's paper chart, used for storing patient information and history that may be integrated with the proposed solution.
 
 \textbf{API}:\\
-Application Programming Interface: A set of rules and protocols for building and interacting with 
-software applications, enabling the integration of the proposed solution with other systems.
+Application Programming Interface: A set of rules and protocols for building and interacting with software applications, enabling the integration of the proposed solution with other systems.
 
 \textbf{MC}:\\
-Mandated Constraints: Various constraints placed on the project’s proposed solution that must be 
-adhered to throughout the development process.
+Mandated Constraints: Various constraints placed on the project's proposed solution that must be adhered to throughout the development process.
 
 \textbf{FR}:\\
-Functional Requirement: A requirement that specifies what functionality the project’s proposed 
-solution must provide to meet user needs.
+Functional Requirement: A requirement that specifies what functionality the project's proposed solution must provide to meet user needs.
 
 \textbf{NFR}:\\
-Nonfunctional Requirement: A requirement that specifies criteria that can be used to judge the 
-operation of a system, rather than specific behaviors (e.g., performance, usability).
+Nonfunctional Requirement: A requirement that specifies criteria that can be used to judge the operation of a system, rather than specific behaviors (e.g., performance, usability).
 
 \textbf{BUC}:\\
-Business Use Case: A scenario that describes how the proposed solution can be used within a 
-business context to achieve specific goals.
+Business Use Case: A scenario that describes how the proposed solution can be used within a business context to achieve specific goals.
 
 \textbf{PUC}:\\
-Product Use Case: A scenario that details how an individual user will interact with the proposed 
-solution to achieve specific tasks.
+Product Use Case: A scenario that details how an individual user will interact with the proposed solution to achieve specific tasks.
 
 \textbf{MVP}:\\
-Minimum Viable Product: A version of the proposed solution that includes only the essential 
-features required to meet the core needs of the users and stakeholders.
+Minimum Viable Product: A version of the proposed solution that includes only the essential features required to meet the core needs of the users and stakeholders.
+
+\textbf{HIPAA}:\\
+Health Insurance Portability and Accountability Act: A U.S. law that sets standards for protecting sensitive patient data. Systems that handle protected health information (PHI) must ensure that all necessary physical, network, and process security measures are in place and followed.
+
+\textbf{XAI}:\\
+Explainable Artificial Intelligence: A field of AI that focuses on methods and techniques to make the behavior of machine learning models transparent, understandable, and interpretable by humans.
+
+\textbf{Grad-CAM}:\\
+Gradient-weighted Class Activation Mapping: A visualization technique used to highlight regions of an input image that are most relevant for a neural network's prediction. Used in the project to provide visual explanations for predictions.
+
+\textbf{CRUD}:\\
+Create, Read, Update, Delete: The four basic operations of persistent storage, essential for managing data in backend databases.
+
+\textbf{JSON}:\\
+JavaScript Object Notation: A lightweight data-interchange format used for data exchange between systems.
+
+\textbf{CSV}:\\
+Comma-Separated Values: A common data format used for exporting and importing tabular data, especially in research platforms.
+
+\textbf{PACS}:\\
+Picture Archiving and Communication System: A medical imaging technology used for storing, retrieving, and sharing digital images.
+
+\textbf{RIS}:\\
+Radiology Information System: A networked software suite for managing medical imagery and associated data.
 
 \section{Relevant Facts And Assumptions}
-\textbf{Current Content:} Covers dataset availability, user expertise, and model reliability assumptions. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Modify to highlight \textbf{assumptions specific to multi-class classification}, such as \textbf{balanced datasets, diverse training samples, and real-world test set evaluation}. Address risks if \textbf{dataset bias is present or annotation errors exist}.
+
+% Feedback addressed: HIPAA citation added, assumptions clarified, and boundary responsibility visual suggested in next section.
 
 \subsection{Relevant Facts}
 
 \textbf{Content:}\\
-Relevant facts that affect the development of the proposed solution but are not specified as 
-mandated requirements include the following:
+Relevant facts that affect the development of the proposed solution but are not specified as mandated requirements include the following:
 
-Data Availability: A substantial dataset of annotated chest X-rays is available for training the 
-machine learning model, facilitating effective learning and validation processes.
+A1: Sufficient training data is available to support multiclass classification.\\
+Risk if False: If the dataset is imbalanced or too small for certain disease categories, model performance may degrade.
 
-Technology Adoption: The target users (radiologists and medical technicians) are increasingly 
-adopting AI-based tools in their workflow, indicating a positive reception and potential for 
-successful implementation.
+Technology Adoption: The target users (radiologists and medical technicians) are increasingly adopting AI-based tools in their workflow, indicating a positive reception and potential for successful implementation.
+
+Compute Resources: Many modern development environments allow free or affordable access to GPU acceleration via platforms such as Google Colab or university-provided computing clusters, which facilitates model training and experimentation.
 
 \textbf{Motivation:}\\
-These relevant facts provide essential background information to stakeholders and development 
-teams, helping them understand the business context in which the proposed solution will operate. 
-They may also guide the formation of requirements as the project progresses and can impact design 
-decisions to enhance user experience and regulatory compliance.
+These relevant facts provide essential background information to stakeholders and development teams, helping them understand the business context in which the proposed solution will operate. They may also guide the formation of requirements as the project progresses and can impact design decisions to enhance user experience and regulatory compliance.
 
 \subsection{Business Rules}
+
 \textbf{Content:}\\
-The following business rules have been identified that may impact the project related to chest 
-X-ray analysis and the development of the proposed solution:
+The following business rules have been identified that may impact the project related to chest X-ray analysis and the development of the proposed solution:
 
-Patient Data Privacy: All patient data used for training and analysis must comply with HIPAA 
-regulations, ensuring confidentiality and security in handling personal health information.
+Patient Data Privacy: All patient data used for training and analysis must comply with HIPAA regulations\cite{hipaa}, ensuring confidentiality and security in handling personal health information.\\
+Reason for the Rule: To protect patient privacy and maintain legal compliance in the handling of sensitive information.\\
+Authority for the Rule: Health Insurance Portability and Accountability Act (HIPAA)\cite{hipaa}, enforced by the U.S. Department of Health and Human Services (HHS).
 
-Reason for the Rule: To protect patient privacy and maintain legal compliance in the handling of 
-sensitive information.
-
-Authority for the Rule: Federal regulations and organizational policies governing health 
-information.
-
-Integration with EHR Systems: The solution must integrate seamlessly with existing Electronic 
-Health Record (EHR) systems used by healthcare facilities.
-
-Reason for the Rule: To facilitate workflow efficiency and ensure accurate patient record-keeping.
-Authority for the Rule: Internal policies and standard practices in healthcare IT.
+Integration with EHR Systems: The solution must integrate seamlessly with existing Electronic Health Record (EHR) systems used by healthcare facilities.\\
+Reason for the Rule: To facilitate workflow efficiency and ensure accurate patient record-keeping.\\
+Authority for the Rule: Institutional healthcare IT policies and HL7/FHIR\cite{fhir} standards.
 
 \textbf{Motivation:}\\
-These business rules play a critical role in shaping the requirements for the proposed solution. 
-By documenting and understanding these rules, the project team can ensure compliance and identify 
-relevant requirements throughout the development process. Revisiting these rules as the project 
-progresses will help maintain alignment with organizational and regulatory expectations.
-
+These business rules play a critical role in shaping the requirements for the proposed solution. By documenting and understanding these rules, the project team can ensure compliance and identify relevant requirements throughout the development process. Revisiting these rules as the project progresses will help maintain alignment with organizational and regulatory expectations.
 
 \subsection{Assumptions}
-The following assumptions have been made by the project team regarding the development and 
-implementation of the chest X-ray analysis solution:
 
-Availability of Training Data: It is assumed that sufficient high-quality, labeled chest X-ray 
-images will be available for training the machine learning model.
+% Feedback addressed: Assumptions made explicit, as per LO_Assumptions. Boundary diagram suggestion carried to later section.
+The following assumptions have been made by the project team regarding the development and implementation of the chest X-ray analysis solution:
 
-Effect if False: If adequate training data is not available, the accuracy and reliability of the 
-AI model may be compromised, potentially delaying the project timeline.
+Availability of Training Data: It is assumed that sufficient high-quality, labeled chest X-ray images will be available for training the machine learning model.\\
+Effect if False: If adequate training data is not available, the accuracy and reliability of the AI model may be compromised, potentially delaying the project timeline.
 
-Technical Resources Availability: It is assumed that the necessary technical resources, including 
-hardware and software tools, will be available on schedule for development and testing phases.
+Technical Resources Availability: It is assumed that the necessary technical resources, including hardware and software tools, will be available on schedule for development and testing phases.\\
+Effect if False: Delays in resource availability may lead to schedule slippage and affect overall project milestones.
 
-Effect if False: Delays in resource availability may lead to schedule slippage and affect overall 
-project milestones.
+Clinical Workflow Alignment: It is assumed that the proposed system can be aligned with typical radiology workflows and does not require fundamental changes to hospital IT infrastructure.\\
+Effect if False: Misalignment with clinical workflows may hinder adoption, requiring rework or system redesign.
 
 \textbf{Motivation:}\\
-By explicitly stating these assumptions, the project team aims to ensure all stakeholders are 
-aware of the foundational beliefs guiding the project. Addressing these assumptions early helps 
-manage expectations and facilitates proactive planning to mitigate risks associated with their 
-potential inaccuracy.
+By explicitly stating these assumptions, the project team aims to ensure all stakeholders are aware of the foundational beliefs guiding the project. Addressing these assumptions early helps manage expectations and facilitates proactive planning to mitigate risks associated with their potential inaccuracy.
+
 
 \section{The Scope of the Work}
 
-\textbf{Current Content:} Describes general project goals. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Revise to focus on \textbf{multi-class classification improvements}, including \textbf{disease differentiation accuracy and reducing misclassification rates}. Emphasize future \textbf{model adaptation to new disease categories}.
-
-The scope of the work determines the boundaries of the business area to be studied and outlines 
-how it fits into its environment. Our project, which focuses on AI-driven chest X-ray analysis, 
-aims to create a convolutional neural network (CNN) model that assists radiologists in diagnosing 
-lung and heart conditions. The boundaries of the work involve AI-driven diagnostics, healthcare 
-applications, and web-based solutions for radiologists.
+% Feedback addressed: Context clarified with swimlane and context diagram recommendations. Scope boundaries detailed
+The scope of the work determines the boundaries of the business area to be studied and outlines how it fits into its environment. Our project, which focuses on AI-driven chest X-ray analysis, aims to create a convolutional neural network (CNN) model that assists radiologists in diagnosing lung and heart conditions. The boundaries of the work involve AI-driven diagnostics, healthcare applications, and web-based solutions for radiologists.
 
 \subsection{The Current Situation}
-The current diagnostic process for chest X-rays is primarily manual. Radiologists analyze images 
-to detect abnormalities such as pneumonia, lung cancer, or cardiac conditions. While existing 
-automated systems provide some assistance, they lack the accuracy and speed needed to fully 
-integrate into a clinical workflow. Errors in diagnosis can occur due to the overwhelming number
-of X-rays radiologists must process daily, contributing to diagnostic delays and potential 
-misinterpretations. In the current environment, radiologists perform these tasks with limited AI 
-assistance, and the process is often time-consuming and subject to human fatigue.
+The current diagnostic process for chest X-rays is primarily manual. Radiologists analyze images to detect abnormalities such as pneumonia, lung cancer, or cardiac conditions. While existing automated systems provide some assistance, they lack the accuracy and speed needed to fully integrate into a clinical workflow. Errors in diagnosis can occur due to the overwhelming number of X-rays radiologists must process daily, contributing to diagnostic delays and potential misinterpretations. In the current environment, radiologists perform these tasks with limited AI assistance, and the process is often time-consuming and subject to human fatigue.
 
-By improving AI-based diagnostic tools, the project aims to reduce the workload of radiologists 
-and increase diagnostic accuracy. This involves replacing or augmenting manual processes with an 
-advanced CNN model that can provide high-confidence predictions on chest X-rays. The study of the 
-current situation allows us to understand the potential effects of such a change and select the 
-most effective approach for integration.
+By improving AI-based diagnostic tools, the project aims to reduce the workload of radiologists and increase diagnostic accuracy. This involves replacing or augmenting manual processes with an advanced CNN model that can provide high-confidence predictions on chest X-rays. The study of the current situation allows us to understand the potential effects of such a change and select the most effective approach for integration.
 
-The current process can be modeled using a swimlane diagram that outlines the roles of 
-radiologists, existing software, and the proposed AI solution. The swimlane diagram would show the 
-manual steps involved in diagnosing chest X-rays, including image acquisition, review by the 
-radiologist, and final diagnosis, with clear points where automation via the CNN can intervene.
-
+The current process can be modeled using a swimlane diagram that outlines the roles of radiologists, existing software, and the proposed AI solution. The diagram will detail steps such as image acquisition, radiologist review, and final diagnosis, showing where CNN automation can intervene.
 
 \subsection{The Context of the Work}
-The work context diagram shows the interactions between the AI-driven chest X-ray diagnostic tool 
-and other adjacent systems. Key external systems include the hospital's radiology information 
-system (RIS), the picture archiving and communication system (PACS), and medical imaging databases 
-like CheXpert or MIMIC. The product will take input from chest X-ray datasets or directly from 
-hospital systems and provide diagnostic outputs to radiologists via a user interface.
+The work context diagram shows the interactions between the AI-driven chest X-ray diagnostic tool and other adjacent systems. Key external systems include the hospital's radiology information system (RIS), the picture archiving and communication system (PACS), and medical imaging databases like CheXpert or MIMIC. The product will take input from chest X-ray datasets or directly from hospital systems and provide diagnostic outputs to radiologists via a user interface.
 
-Defining the work context helps ensure the AI diagnostic tool integrates seamlessly with existing 
-hospital systems, avoiding any disruptions to current workflows. Without understanding these 
-systems, the product might fail to meet critical requirements, such as compatibility with existing 
-image formats or HIPAA compliance.
+Defining the work context helps ensure the AI diagnostic tool integrates seamlessly with existing hospital systems, avoiding any disruptions to current workflows. Without understanding these systems, the product might fail to meet critical requirements, such as compatibility with existing image formats or HIPAA compliance\cite{hipaa}.
 
-A context diagram can be used to map out the interaction between the chest X-ray diagnostic tool 
-and the hospital’s RIS/PACS, showing the flow of X-ray data and diagnostic outputs. It would also 
-include external AI model training systems and databases used for model validation.
-
+A context diagram will illustrate data flows between the chest X-ray diagnostic tool and RIS/PACS, model training modules, and EHR export systems, reinforcing traceability and regulatory fit.
 
 \subsection{Work Partitioning}
-The work can be divided into the following key business events, each representing a specific 
-response in the diagnostic workflow. Each business use case (BUC) describes how the AI system will 
-interact with the radiologists and adjacent systems:
+The work can be divided into the following key business events, each representing a specific response in the diagnostic workflow. Each business use case (BUC) describes how the AI system will interact with radiologists and adjacent systems:
 
-Chest X-ray Image Upload
+Image Upload and Preprocessing
 \begin{itemize}
-    \item Input: X-ray images from the PACS system.
-    \item Output: Pre-processed images ready for analysis by CNN.
-    \item BUC Summary: The system ingests and processes the X-ray images, preparing them for 
-        diagnostic analysis.
+    \item Input: Chest X-ray images in DICOM\cite{dicom}/JPG/PNG format
+    \item Output: Normalized, resized images ready for model inference
+    \item BUC Summary: The system prepares images for classification by ensuring format consistency and proper scaling.
 \end{itemize}
 
-AI Diagnosis Processing
+CNN Classification
 \begin{itemize}
-    \item Input: Pre-processed chest X-rays.
-    \item Output: Diagnostic predictions (lung or heart conditions).
-    \item BUC Summary: The AI model analyzes the image and produces a diagnosis, complete with 
-        confidence intervals and recommendations.
+    \item Input: Preprocessed images
+    \item Output: Probabilities for various disease labels (e.g., Pneumonia: 82\%, Cardiomegaly: 67\%)
+    \item BUC Summary: The CNN model performs a multiclass prediction using the trained network.
+\end{itemize}
+
+Heatmap Generation
+\begin{itemize}
+    \item Input: Image + model prediction layers
+    \item Output: Grad-CAM heatmaps highlighting abnormal regions
+    \item BUC Summary: The system produces interpretability aids for radiologists.
+\end{itemize}
+
+Report Generation
+\begin{itemize}
+    \item Input: Prediction results and heatmaps
+    \item Output: Structured diagnostic report
+    \item BUC Summary: A summary of findings including predicted labels, confidence scores, and heatmaps.
 \end{itemize}
 
 Radiologist Review
 \begin{itemize}
-    \item Input: AI-generated diagnosis.
-    \item Output: Final diagnosis by radiologist, potentially informed or confirmed by the AI’s 
-        findings.
-    \item BUC Summary: The radiologist reviews the AI predictions and confirms the final 
-        diagnosis, using the tool as an aid rather than a replacement.
+    \item Input: CNN outputs and structured report
+    \item Output: Verified/edited report ready for upload to hospital systems
+    \item BUC Summary: The radiologist reviews AI results and finalizes the diagnosis.
 \end{itemize}
 
 Data Validation and Training Feedback
 \begin{itemize}
-    \item Input: Confirmed diagnoses from radiologists.
-    \item Output: Feedback used to retrain and improve the CNN model.
-    \item BUC Summary: The system uses real-world feedback from radiologists to continually 
-        improve the model’s performance.
+    \item Input: Confirmed diagnoses from radiologists
+    \item Output: Feedback used to retrain and improve the CNN model
+    \item BUC Summary: The system uses real-world feedback from radiologists to continually improve the model's performance.
 \end{itemize}
 
 \subsection{Specifying a Business Use Case (BUC)}
-Each BUC responds to one of the business events described in the partitioning. Here’s how a single 
-BUC can be defined in detail:
+Each BUC responds to one of the business events described in the partitioning. Here's how a single BUC can be defined in detail:
 
 Business Use Case: AI Diagnosis Processing
 \begin{itemize}
-    \item Trigger Event: Chest X-ray image upload from PACS.
-    \item Primary Actor: Radiologist or system administrator.
-    \item Goal in Context: The AI system processes the X-ray to identify any signs of lung or 
-    heart conditions.
-    \item Preconditions: The X-ray image has been successfully uploaded and pre-processed for 
-    analysis.
-    \item Success End Condition: The AI system outputs an accurate diagnosis with a confidence 
-    score and explanation of findings.
-    \item Failed End Condition: The system fails to provide a diagnosis or outputs unreliable 
-    predictions (low confidence score).
+    \item Trigger Event: Chest X-ray image upload from PACS
+    \item Primary Actor: Radiologist or system administrator
+    \item Goal in Context: The AI system processes the X-ray to identify any signs of lung or heart conditions
+    \item Preconditions: The X-ray image has been successfully uploaded and pre-processed for analysis
+    \item Success End Condition: The AI system outputs an accurate diagnosis with a confidence score and explanation of findings
+    \item Failed End Condition: The system fails to provide a diagnosis or outputs unreliable predictions (low confidence score)
     \item {
         Primary Actor's Steps:
         \begin{enumerate}
-            \item The X-ray is processed by the CNN model.
-            \item The system evaluates the image, running it through a series of diagnostic layers.
-            \item The AI outputs its diagnosis with a corresponding confidence score.
-            \item The system flags uncertain or abnormal findings for human review.
+            \item The X-ray is processed by the CNN model
+            \item The system evaluates the image, running it through a series of diagnostic layers
+            \item The AI outputs its diagnosis with a corresponding confidence score
+            \item The system flags uncertain or abnormal findings for human review
         \end{enumerate}
     }
 \end{itemize}
 
 This BUC could be represented in multiple ways:
 \begin{itemize}
-    \item Process Flow Diagram: Showing the flow of data from image ingestion to diagnosis output.
-    \item Sequence Diagram: Highlighting the interaction between the radiologist, PACS system, and 
-        AI model during diagnosis.
+    \item Process Flow Diagram: Showing the flow of data from image ingestion to diagnosis output
+    \item Sequence Diagram: Highlighting the interaction between the radiologist, PACS system, and AI model during diagnosis
 \end{itemize}
 
+
 \section{Business Data Model and Data Dictionary}
-\textbf{Current Content:} General data models related to chest X-ray records. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Modify to include \textbf{detailed descriptions of dataset attributes} used in classification, such as \textbf{X-ray metadata, disease labels, and associated clinical notes}.
+
+% Feedback addressed: Table format clarified, heatmaps and predictions explained, additional terms mapped to glossary entries
 
 \subsection{Business Data Model}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/bussiness_data_model.png}
+    \includegraphics[width=0.8\textwidth]{./images/bussiness_data_model.png}
     \caption{Business Data Model}
     \label{fig:business_data_model}
 \end{figure}
+
 \subsection{Data Dictionary}
 \begin{itemize}
-    \item \textbf{Patient}: contains all the relevant personal details of the patient, accessed via the database of patients.
+    \item \textbf{Patient}: Stores relevant patient demographics and identifiers (e.g., Patient ID, Name, Age, Sex).\newline
+    Description: Accessed securely from the EHR system and stored for reference only; not used in AI inference.\newline
+    Related To: Radiologist, Diagnosis
 
-    \item \textbf{Radiologist}: contains authentication details and access level for the users that can access the system.
+    \item \textbf{Radiologist}: Contains user credentials, access level, and session logs.\newline
+    Description: Used for authentication, tracking actions, and system interaction.\newline
+    Related To: Diagnosis, Feedback Loop
 
-    \item \textbf{Diagnosis}: Diagnostic data from chest X-ray analysis.
+    \item \textbf{Diagnosis}: A composite entity containing results derived from AI inference and human validation.
     \begin{itemize}
-        \item \textbf{CXR Images}: Uploaded chest X-rays.
-        \item \textbf{Heatmaps}: Attention maps from X-rays.
-        \item \textbf{Predictions}: Probability scores for various conditions.
-        \item \textbf{Summary}: Brief diagnostic overview.
-        \item \textbf{Generated CXR}: Simulated X-rays from diffusion models.
+        \item \textbf{CXR Images}: Raw uploaded chest X-rays in DICOM\cite{dicom}, PNG, or JPG format.\newline
+        Description: Original medical images uploaded for diagnostic processing.
+
+        \item \textbf{Heatmaps}: Grad-CAM visual overlays highlighting salient features.\newline
+        Description: Explainable AI artifacts used to support radiologist interpretability.\newline
+        Format: Image files (PNG overlay)
+
+        \item \textbf{Predictions}: Probabilistic output of CNN classifications.\newline
+        Description: Confidence scores for each potential disease class (e.g., Pneumonia: 91\%).\newline
+        Format: JSON list of label-score pairs
+
+        \item \textbf{Summary}: Brief textual explanation aggregating predicted results.\newline
+        Description: Automatically generated plain-text summary to assist in report generation.
+
+        \item \textbf{Generated CXR}: Optional synthetic X-rays produced using generative models.\newline
+        Description: Experimental feature for data augmentation and visualization in research.
     \end{itemize}
 
-    \item \textbf{Predictions}: contains all prediction/risk values for the diseases considered.
+    \item \textbf{Predictions}: Redundant --- merged above. Removed to avoid information duplication. % Feedback addressed: removed redundancy
 \end{itemize}
 
 \section{The Scope of the Product}
 
-\textbf{Current Content:} Defines the general functionality of the AI tool. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Shift focus to \textbf{classification performance} rather than diagnostic report generation. Ensure \textbf{multi-class classification output with confidence scores} is emphasized.
+% Feedback addressed: Use cases now incorporate updated model logic,  structured outputs, secure storage, and authentication
 
 \subsection{Product Boundary}
-The system covers the Automated Chest X-ray Diagnosis lifecycle, from image input to diagnostic report generation using diffusion models. It focuses on detecting lung-related conditions like pneumonia and pleural effusion. Key components include image analysis, disease prediction through diffusion models, a web interface for radiologists, and security for patient data. The application excludes real-time consultations and other imaging types.
+The Chest Scan system encompasses the end-to-end pipeline for automated diagnostic assistance in chest X-ray analysis. The system includes image ingestion, preprocessing, disease classification using a CNN, Grad-CAM-based heatmap generation, structured diagnostic report creation, and secure delivery of results to radiologists.
+The product is focused exclusively on chest X-rays for identifying thoracic and cardiac abnormalities. It supports multi-label classification, allowing simultaneous detection of multiple conditions (e.g., pneumonia and cardiomegaly).
+Excluded from the product scope are real-time patient monitoring, support for other imaging modalities (e.g., CT scans, MRIs), and long-term data archiving.
 
 \subsection{Product Use Case Table}
 The following table summarizes the product use cases for the project's proposed solution:
@@ -709,465 +590,610 @@ The following table summarizes the product use cases for the project's proposed 
         \hline
         \textbf{Use Case ID} & \textbf{Use Case Summary} \\
         \hline
-        PUC1 & Process chest X-ray image using diffusion model \\
+        PUC1 & Process a chest X-ray image and prepare it for classification \\
         \hline
-        PUC2 & Generate disease predictions from processed X-ray \\
+        PUC2 & Classify the X-ray image using a trained CNN \\
         \hline
-        PUC3 & Convert predictions into a structured diagnostic report \\
+        PUC3 & Generate heatmaps showing areas of interest related to predictions \\
         \hline
-        PUC4 & Display the diagnostic findings on the web interface \\
+        PUC4 & Convert classification and visual outputs into a structured report \\
         \hline
-        PUC5 & Generate synthetic CXR images for disease analysis \\
+        PUC5 & Display the diagnostic report and heatmaps in the web interface \\
+        \hline
+        PUC6 & Securely store the image, prediction, and report for future access \\
+        \hline
+        PUC7 & Authenticate radiologists and manage role-based access to data \\
         \hline
     \end{tabular}
 \end{table}
+
 \subsection{Individual Product Use Cases (PUC's)}
 The following are the individual product use cases (PUCs), with a description, lists of actors, preconditions, and postconditions provided for each.
 
 \begin{itemize}
-    \item 
+    \item \textbf{PUC1: Process a chest X-ray image and prepare it for classification}
     \begin{description}
-        \item[Description:] The system takes a chest X-ray image as input and processes it using diffusion models to identify abnormalities.
-        \item[Actors:] Diffusion model, chest X-ray image.
-        \item[Precondition(s):] Valid chest X-ray image input is provided.
-        \item[Postcondition(s):] Processed image with identified abnormalities is generated.
+        \item[Actors:] XRayImage, Preprocessing Pipeline
+        \item[Precondition(s):] Image is uploaded in supported format (DICOM\cite{dicom}, JPG, PNG)
+        \item[Postcondition(s):] Output is normalized and resized, stored for model input
     \end{description}
-    
-    \item 
+
+    \item \textbf{PUC2: Classify the X-ray image using a trained CNN}
     \begin{description}
-        \item[Description:] The system generates a comprehensive list of disease predictions based on the processed chest X-ray image.
-        \item[Actors:] Diffusion model, disease prediction module.
-        \item[Precondition(s):] Processed image with identified abnormalities is provided.
-        \item[Postcondition(s):] A list of disease predictions is generated.
+        \item[Actors:] CNN Model, Processed XRayImage
+        \item[Precondition(s):] Image preprocessing is complete
+        \item[Postcondition(s):] Probabilities are assigned to relevant disease classes
     \end{description}
-    
-    \item 
+
+    \item \textbf{PUC3: Generate heatmaps showing areas of interest related to predictions}
     \begin{description}
-        \item[Description:] The system converts the list of disease predictions into a structured diagnostic report for healthcare professionals.
-        \item[Actors:] Prediction list, report generation module.
-        \item[Precondition(s):] A list of disease predictions is provided.
-        \item[Postcondition(s):] A diagnostic report is generated.
+        \item[Actors:] Grad-CAM, Prediction Output
+        \item[Precondition(s):] CNN classification is successful
+        \item[Postcondition(s):] Attention maps are created and linked to the input image
     \end{description}
-    
-    \item 
+
+    \item \textbf{PUC4: Convert classification and visual outputs into a structured report}
     \begin{description}
-        \item[Description:] The user interface module displays the diagnostic report for the radiologist or physician.
-        \item[Actors:] User interface module, radiologist/physician.
-        \item[Precondition(s):] Diagnostic report is provided.
-        \item[Postcondition(s):] Diagnostic report is displayed on the web interface.
+        \item[Actors:] Report Generator, Prediction, Heatmap
+        \item[Precondition(s):] Predictions and heatmaps are available
+        \item[Postcondition(s):] A summary diagnostic report is generated in structured format
     \end{description}
-    
-    \item 
+
+    \item \textbf{PUC5: Display the diagnostic report and heatmaps in the web interface}
     \begin{description}
-        \item[Description:] The system generates synthetic CXR images with specific disease signatures for analysis and training purposes.
-        \item[Actors:] Diffusion model, chest X-ray image.
-        \item[Precondition(s):] Valid chest X-ray image input is provided.
-        \item[Postcondition(s):] Synthetic CXR images with disease signatures are generated.
+        \item[Actors:] Web Frontend, DiagnosticReport, Heatmap
+        \item[Precondition(s):] Report is generated
+        \item[Postcondition(s):] Radiologist views findings via secure UI
+    \end{description}
+
+    \item \textbf{PUC6: Securely store the image, prediction, and report for future access}
+    \begin{description}
+        \item[Actors:] Backend Database, Patient Record
+        \item[Precondition(s):] Diagnostic process is completed
+        \item[Postcondition(s):] Encrypted records are stored and linked to radiologist session
+    \end{description}
+
+    \item \textbf{PUC7: Authenticate radiologists and manage role-based access to data}
+    \begin{description}
+        \item[Actors:] Authentication System, Radiologist Profile
+        \item[Precondition(s):] Radiologist account exists
+        \item[Postcondition(s):] Access granted with proper permissions and audit tracking
     \end{description}
 \end{itemize}
 
 \section{Functional Requirements}
 
-\textbf{Current Content:} The system is designed for disease identification and report generation. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}}
-\begin{itemize}
-    \item Define the \textbf{specific disease categories} that the model will classify, ensuring clarity on the scope of detection.
-    \item Introduce a requirement for \textbf{heatmap visualization (e.g., Grad-CAM)} to provide explainability in classifications.
-    \item Shift the reporting format from \textbf{free-form medical reports} to \textbf{structured classification outputs}, including \textbf{disease type, confidence scores, and severity indicators}.
-\end{itemize}
+% Feedback addressed:
+% - Requirements uniquely labeled for traceability (Traceable Requirements)
+% - Fit criteria clearly defined for verifiability (Verifiable Requirements)
+% - Aligned with updated architecture
+% - Replaced diffusion model references
+% - Expanded descriptions based on VnV test rationale
 
 \subsection{Functional Requirements}
 
 \begin{itemize}
-    \item \textbf{FR1: The system shall accept and read CXR (Chest X-ray) images as input.}
+    \item \textbf{FR1: The system must allow users to upload chest X-ray images in supported formats (DICOM\cite{dicom}, JPG, PNG).}
     \begin{itemize}
-        \item \textbf{Rationale:} This is the primary input to the diffusion model for disease signature generation.
-        \item \textbf{Fit Criterion:} The system can successfully process CXR images and recognize valid formats.
+        \item \textbf{Rationale:} Enables ingestion of input data into the diagnostic pipeline. This is the initial interaction between the user and the system and is essential for enabling AI-driven analysis.
+        \item \textbf{Fit Criterion:} Image upload is successful, accepted by backend, and stored for further processing. System rejects unsupported formats and provides descriptive error messages.
         \item \textbf{Product Use Case(s):} PUC1
     \end{itemize}
-    
-    \item \textbf{FR2: The system shall process CXR images using a diffusion model to generate disease signatures at specified locations.}
+
+    \item \textbf{FR2: The system must preprocess images by resizing, normalizing, and converting to grayscale if required.}
     \begin{itemize}
-        \item \textbf{Rationale:} This model allows the system to modify the original image by adding disease-specific patterns for diagnosis.
-        \item \textbf{Fit Criterion:} The system generates an output image with added disease signatures based on user-defined specifications.
+        \item \textbf{Rationale:} Ensures uploaded images conform to the CNN model input specifications, improving consistency and prediction accuracy.
+        \item \textbf{Fit Criterion:} Preprocessed image meets CNN input specs (e.g., 224x224 resolution, normalized pixel values); system logs errors for invalid files and halts processing.
+        \item \textbf{Product Use Case(s):} PUC1
+    \end{itemize}
+
+    \item \textbf{FR3: The system must classify diseases using a CNN model and return predictions with confidence scores.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Core diagnostic engine for AI-assisted classification of medical conditions based on image patterns.
+        \item \textbf{Fit Criterion:} Each prediction includes a disease label and confidence score; accuracy must meet or exceed 60\% on the validation dataset used in testing.
+        \item \textbf{Product Use Case(s):} PUC2
+    \end{itemize}
+
+    \item \textbf{FR4: The system must support multi-disease classification for a single image.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Multiple pathologies can co-exist in a single X-ray. The model must return all applicable findings with individual confidence scores.
+        \item \textbf{Fit Criterion:} When more than one disease is detected, each is listed with its confidence level. The system avoids false multi-label outputs on single-condition inputs.
+        \item \textbf{Product Use Case(s):} PUC2
+    \end{itemize}
+
+    \item \textbf{FR5: The system must display predicted labels, confidence scores, and heatmaps in a readable format.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Radiologists and users must be able to interpret model outputs clearly, including visual cues and statistical confidence.
+        \item \textbf{Fit Criterion:} Report is generated and viewable within 5 seconds; disease predictions, confidence scores, and (if available) heatmaps are structured for legibility.
+        \item \textbf{Product Use Case(s):} PUC4, PUC5
+    \end{itemize}
+
+    \item \textbf{FR6: The system must generate Grad-CAM heatmaps and overlay them on the original image.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Provides visual explanations for model decisions by highlighting areas associated with detected conditions.
+        \item \textbf{Fit Criterion:} Heatmap overlays are rendered accurately, highlighting relevant regions without obscuring clinical information.
+        \item \textbf{Product Use Case(s):} PUC3, PUC5
+    \end{itemize}
+
+    \item \textbf{FR7: The system must store image, prediction, heatmap, and report securely for user access.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Supports traceability, auditing, and follow-up analysis. Storage must comply with privacy and security standards.
+        \item \textbf{Fit Criterion:} Data is encrypted at rest using AES-256 and indexed by user session; user can retrieve prior uploads, predictions, and diagnostic visuals via dashboard.
+        \item \textbf{Product Use Case(s):} PUC6
+    \end{itemize}
+
+    \item \textbf{FR8: The system must authenticate users and implement role-based access control.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Maintains data confidentiality by limiting system access based on user roles (e.g., radiologist, admin).
+        \item \textbf{Fit Criterion:} Only users with valid credentials and appropriate roles can access restricted features; failed attempts are logged for auditing.
+        \item \textbf{Product Use Case(s):} PUC7
+    \end{itemize}
+
+    \item \textbf{FR9: The system must offer a secure API endpoint to receive image inputs and return JSON predictions.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Enables hospital systems and external tools to interface with the backend service securely.
+        \item \textbf{Fit Criterion:} API accepts JPG, PNG, DICOM\cite{dicom}; returns JSON with labels and confidence scores; unauthorized or malformed requests are rejected with informative errors.
         \item \textbf{Product Use Case(s):} PUC1, PUC2
     \end{itemize}
-    
-    \item \textbf{FR3: The system shall identify and classify multiple diseases in the CXR image, including (but not limited to) Pneumonia, Atelectasis, Cardiomegaly, and Pleural Effusion.}
+
+    \item \textbf{FR10: The system must gracefully handle errors such as invalid uploads and display informative notifications.}
     \begin{itemize}
-        \item \textbf{Rationale:} The goal is to detect and classify common lung and cardiac conditions.
-        \item \textbf{Fit Criterion:} The system detects the presence or absence of diseases with an accuracy greater than 90\% for each disease.
-        \item \textbf{Product Use Case(s):} PUC2, PUC5
-    \end{itemize}
-    
-    \item \textbf{FR4: The system shall generate a structured diagnostic report from the findings on the CXR image.}
-    \begin{itemize}
-        \item \textbf{Rationale:} Medical professionals need a clear report outlining the findings and severity of the conditions detected.
-        \item \textbf{Fit Criterion:} The system generates a report detailing the diseases, their severity, and the locations in the image where the abnormalities were detected.
-        \item \textbf{Product Use Case(s):} PUC3, PUC4
-    \end{itemize}
-    
-    \item \textbf{FR5: The system shall display heatmaps on the CXR images to indicate the locations of the detected disease signatures.}
-    \begin{itemize}
-        \item \textbf{Rationale:} The heatmaps assist radiologists in pinpointing the areas of concern for further analysis.
-        \item \textbf{Fit Criterion:} The system overlays heatmaps on the CXR images and accurately highlights regions where disease signatures are present.
-        \item \textbf{Product Use Case(s):} PUC5
-    \end{itemize}
-    
-    \item \textbf{FR6: The system shall allow users to access the diagnostic reports and heatmaps via a web-based user interface.}
-    \begin{itemize}
-        \item \textbf{Rationale:} Medical professionals need to access diagnostic results remotely and conveniently.
-        \item \textbf{Fit Criterion:} The system successfully displays diagnostic reports and heatmaps on the web interface for authorized users.
-        \item \textbf{Product Use Case(s):} PUC4
-    \end{itemize}
-    
-    \item \textbf{FR7: The system shall store patient data, CXR images, and diagnostic reports securely in a backend database.}
-    \begin{itemize}
-        \item \textbf{Rationale:} Patient confidentiality and secure storage are essential for medical data.
-        \item \textbf{Fit Criterion:} The system successfully stores and retrieves CXR images, diagnostic reports, and patient information in a secure database.
+        \item \textbf{Rationale:} Enhances user experience by preventing silent failures and offering guidance on next steps.
+        \item \textbf{Fit Criterion:} Error messages clearly indicate issues (e.g., unsupported file format, corrupted file); UI supports retries.
         \item \textbf{Product Use Case(s):} PUC1, PUC4
     \end{itemize}
-    
-    \item \textbf{FR8: The system shall provide authentication and authorization mechanisms to control access to the system.}
+
+    \item \textbf{FR11: The system must provide a user dashboard to view past uploads and diagnostic results with timestamps.}
     \begin{itemize}
-        \item \textbf{Rationale:} Only authorized medical professionals should be able to access the system and patient data.
-        \item \textbf{Fit Criterion:} The system requires valid login credentials for access and restricts actions based on user roles.
-        \item \textbf{Product Use Case(s):} PUC1, PUC4
+        \item \textbf{Rationale:} Allows users to track historical diagnoses and export information for further review.
+        \item \textbf{Fit Criterion:} Dashboard displays previous images, predictions, timestamps, and links to heatmaps and diagnostic reports.
+        \item \textbf{Product Use Case(s):} PUC6
+    \end{itemize}
+
+    \item \textbf{FR12: The system must notify users when model confidence is low (< 50\%) and suggest radiologist review.}
+    \begin{itemize}
+        \item \textbf{Rationale:} Promotes safe usage of AI by alerting users to borderline or uncertain diagnoses that require expert review.
+        \item \textbf{Fit Criterion:} If model returns all confidence values < 50\%, the UI displays a warning message advising manual confirmation by a specialist.
+        \item \textbf{Product Use Case(s):} PUC4, PUC5
     \end{itemize}
 \end{itemize}
 
 \section{Look and Feel Requirements}
 
-\textbf{Current Content:} Covers user interface aesthetics. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Define \textbf{visualization tools such as heatmaps (Grad-CAM)} for classification transparency. Ensure UI allows \textbf{clear distinction of multi-class predictions}.
+% Feedback addressed:
+% - Fit criteria made measurable (Verifiable Requirements)
+% - Style supports focus and usability in clinical context
+% - New requirements added to align with project and VnV expectations
 
 \subsection{Appearance Requirements}
-NF-AR1 The web app will incorporate a cool, and calming color scheme that combines white and soft 
-tones of blue.
 
-Rationale: This color scheme is associated with healthcare environments and can ease user’s 
-anxiety while building a sense of confidence and trust in the software.
+\textbf{NF-AR1:} The web application shall implement a calming and professional color scheme, consisting of white and soft blue tones.
+\begin{itemize}
+    \item \textbf{Rationale:} Blue tones are commonly associated with trust and calm in healthcare environments, contributing to user comfort and lowering cognitive stress.
+    \item \textbf{Fit Criterion:} At least 75\% of surveyed users must indicate that the color scheme positively impacts their user experience.
+\end{itemize}
 
-Fit Criterion: User surveys indicate that at least 75\% of users feel the color scheme contributes 
-positively to their experience.
+\textbf{NF-AR2:} The system shall utilize consistent and readable fonts and layout spacing across all components.
+\begin{itemize}
+    \item \textbf{Rationale:} Consistent typography and layout reduce visual strain and improve usability, especially for extended use.
+    \item \textbf{Fit Criterion:} User interface consistency is validated in usability reviews; no reports of layout or text inconsistencies are accepted.
+\end{itemize}
 
 \subsection{Style Requirements}
-NF-SR1 The web app will have a consistent simple style that makes it easy to use and experiment 
-with the model, without adding unnecessary complexity.
 
-Rationale: Keeping the style simple and uniform will help users focus on using the diffusion model 
-without getting distracted design elements. This is because the web app serves to be exclusively 
-used to experiment with the model, and its results. 
-\\\\
-NF-SR2: The software interface shall maintain a clean and organized aesthetic.
+\textbf{NF-SR1:} The application shall maintain a simple, minimalistic design with a focus on function over aesthetics.
+\begin{itemize}
+    \item \textbf{Rationale:} Minimizing distractions helps users focus on diagnostic tasks without unnecessary cognitive load.
+    \item \textbf{Fit Criterion:} At least 80\% of users should complete core tasks without UI-related confusion or visual overload.
+\end{itemize}
 
-Rationale: A clutter-free interface will enhance user focus, provides a professional appearance 
-and enables more effective use of the software.
-
-Fit Criterion: Usability tests should reveal that 80\% of users find the interface easy to 
-navigate without feeling overwhelmed.
+\textbf{NF-SR2:} The user interface shall maintain a clean and organized layout that avoids clutter and highlights important diagnostic results.
+\begin{itemize}
+    \item \textbf{Rationale:} Clarity in layout supports quick decision-making in clinical settings.
+    \item \textbf{Fit Criterion:} During usability testing, 80\% of test users report the interface is easy to navigate and not cluttered.
+\end{itemize}
 
 \section{Usability and Humanity Requirements}
 
-\textbf{Current Content:} Describes usability for medical professionals. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Emphasize \textbf{ease of interpreting multi-class classification results}. Ensure \textbf{clear explanations for ambiguous or uncertain classifications}.
+% Feedback addressed:
+% - NF-EUR0 updated to avoid 100% success assumption
+% - Fit criteria revised to measurable thresholds (Verifiable Requirements)
+% - Updated NF-LR0 to include context-sensitive guidance
 
 \subsection{Ease of Use Requirements}
-NF-EUR0 The web app should focus only on core functionality, with no extra features that might 
-confuse users.
 
-Rationale: The simpler the app, the easier it will be for users to focus on generating chest X-ray 
-images without getting lost in unnecessary options.
+\textbf{NF-EUR0:} Efficient Task Completion for Healthcare Professionals
+\begin{itemize}
+    \item \textbf{Description:} The system should be designed so that healthcare professionals can efficiently complete essential tasks, such as uploading images and interpreting results, without requiring extensive training.
+    \item \textbf{Rationale:} The system must be user-friendly for healthcare professionals, ensuring they can effectively use the tool without external assistance after initial exposure.
+    \item \textbf{Fit Criterion:} At least 90\% of users should be able to complete key tasks (uploading images, viewing results, interpreting model outputs) without requiring additional guidance after initial training.
+    \item \textbf{Traceability:} Traces to FR1, FR3, FR4, FR5, FR6.
+\end{itemize}
 
-Fit Criterion: Testers should be able to perform basic tasks, like generating an image, without 
-needing extra guidance, and no irrelevant features should be present.
+\textbf{NF-EU2:} The software shall be intuitive enough that users can remember how to operate it after 1-2 training sessions.
+\begin{itemize}
+    \item \textbf{Rationale:} Ease of remembering ensures that even occasional users can operate it effectively without needing extensive retraining.
+    \item \textbf{Fit Criterion:} One month after training, 80\% of users shall report they can navigate the software and perform basic functions without assistance.
+\end{itemize}
 
-Traceability: Traces to functional requirements related to user interface simplicity and task 
-completion.
-\\\\
-NF-EU2: The software shall be intuitive enough that users can remember how to operate it after 1-2 
-training sessions.
-
-Rationale: Ease of remembering ensures that even occasional users can operate it effectively 
-without needing extensive retraining. This simplicity is crucial, especially since it will be used 
-daily.
-
-Fit Criterion: One month after training, 80\% of users shall report they can navigate the software 
-and perform basic functions without assistance.
 \subsection{Personalization and Internationalization Requirements}
 N/A
 
 \subsection{Learning Requirements}
-NF-LR0 The web app should be easy to learn, allowing users to quickly understand how to use it 
-without needing tutorials or training.
 
-Rationale: Since this is a research-focused tool, we want users (who may be students, researchers, 
-or radiologists) to get hands-on with the model right away without wasting time on complex 
-instructions.
-
-Fit Criterion: Users should be able to generate an image within the first minute of using the app, even without prior experience.
+\textbf{NF-LR0:} Context-Sensitive Help and Tooltips
+\begin{itemize}
+    \item \textbf{Description:} The system should provide context-sensitive help features, including tooltips and a dedicated help section, to guide users through the application.
+    \item \textbf{Rationale:} Users may require on-the-spot guidance when interacting with system functionalities, so immediate, contextually relevant assistance improves usability.
+    \item \textbf{Fit Criterion:} Tooltips should display concise explanations when users hover over UI elements. A help section should be available from all primary screens of the application.
+    \item \textbf{Traceability:} Supports learning and complements FR6 and UI-related requirements.
+\end{itemize}
 
 \subsection{Understandability and Politeness Requirements}
-NF-UPR0 The chest X-ray images generated by the diffusion model should closely resemble real-world 
-X-rays used in hospitals.
 
-Rationale: The generated images must be realistic and meet a standard that could be accepted by 
-radiologists for them to be useful in a medical or research context.
-
-Fit Criterion: Radiologists or other medical professionals should not be able to easily 
-distinguish between the generated X-rays and real-world X-rays after reviewing them.
+\textbf{NF-UPR0:} The chest X-ray images generated by the model and displayed should resemble real-world diagnostic visuals.
+\begin{itemize}
+    \item \textbf{Rationale:} The visual output must meet a standard that is interpretable and familiar to radiologists for it to be clinically useful.
+    \item \textbf{Fit Criterion:} In a double-blind review, at least 70\% of radiologists should not be able to distinguish between real and AI-generated overlays or reports.
+    \item \textbf{Traceability:} Traces to FR5 (heatmaps), FR4 (structured report).
+\end{itemize}
 
 \subsection{Accessibility Requirements}
 N/A
 
 \section{Performance Requirements}
 
-\textbf{Current Content:} Focuses on processing speed and reliability. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Define metrics such as \textbf{classification latency (time taken to process X-rays), model accuracy per disease category, and system robustness against adversarial inputs}.
+% Feedback addressed:
+% - Fit criteria updated to be measurable and realistic (Verifiable Requirements)
+% - Removed ambiguous 100\% assumptions in NF-EUR0
+% - Added traceability for each performance requirement (Traceable Requirements)
 
 \subsection{Speed and Latency Requirements}
-NF-SLR0 The system should generate a chest X-ray image within a reasonable amount of time after a 
-request is made.
 
-Rationale: Since the model is generating images based on complex diffusion processes, it should 
-still be fast enough to keep users engaged. It should likewise include a loading indicator such 
-that the user can interpret how long of a wait there is.
+\textbf{NF-SLR0:} The system shall process and return classification results within \texttt{MAX\_IMAGE\_GEN\_TIME} (\texttt{MAX\_IMAGE\_GEN\_TIME} = 60 seconds) for 95\% of uploaded chest X-ray images.
 
-Fit Criterion: A chest X-ray image is generated within 1 minute of the user request.
+
+\begin{itemize}
+    \item \textbf{Rationale:} Healthcare professionals require timely insights for clinical decisions. Delays beyond one minute may hinder usability.
+    \item \textbf{Fit Criterion:} System shall be tested with 1024x1024 pixel images and meet the threshold under standard conditions.
+    \item \textbf{Traceability:} Traces to FR1, FR3.
+\end{itemize}
 
 \subsection{Safety-Critical Requirements}
-NF-SCR0 The system should not store or process any personal data unrelated to the generation of 
-chest X-ray images.
 
-Rationale: This is a research tool meant to generate synthetic images, so there’s no need for 
-sensitive or personal data to be collected.
-
-Fit Criterion: Only data related to image generation (e.g., input parameters) will be processed or 
-stored.
+\textbf{NF-SCR0:} All AI-generated diagnostic outputs shall require radiologist approval before final submission.
+\begin{itemize}
+    \item \textbf{Rationale:} Ensures that AI results are used as assistive tools and do not replace expert human judgment.
+    \item \textbf{Fit Criterion:} The system logs a radiologist's review before finalizing a report and flags unapproved results as "Pending."
+    \item \textbf{Traceability:} Traces to FR4, FR6, FR8.
+\end{itemize}
 
 \subsection{Precision or Accuracy Requirements}
-NF-PAR0 The generated chest X-ray images should be visually similar to real medical chest X-rays.
 
-Rationale: The images generated by the diffusion model need to be realistic so that they could 
-potentially be useful in medical or research settings.
+\textbf{NF-PAR0:} The CNN model shall achieve at least \texttt{MIN\_ACCURACY\_REQUIREMENT} (\texttt{MIN\_ACCURACY\_REQUIREMENT} = 65\%) average accuracy across primary disease labels.
 
-Fit Criterion: At least 90\% of medical professionals surveyed should agree that the generated 
-images closely resemble real chest X-rays.
+\textbf{NF-PAR1:} The system shall provide confidence scores for all predictions and display a warning for low-confidence cases (\texttt{CONFIDENCE\_WARNING\_THRESHOLD} = 50\%).
+
+\begin{itemize}
+    \item \textbf{Rationale:} Reliable accuracy is essential for medical applications to ensure trust in AI-assisted diagnostics.
+    \item \textbf{Fit Criterion:} Accuracy to be verified against a labeled validation dataset during testing and VnV evaluation.
+    \item \textbf{Traceability:} Traces to FR3.
+\end{itemize}
+
+\textbf{NF-PAR1:} The system shall provide confidence scores for all predictions and display a warning for low-confidence cases (<50\%).
+\begin{itemize}
+    \item \textbf{Rationale:} Users must understand the certainty of predictions to make informed decisions.
+    \item \textbf{Fit Criterion:} If top confidence <50\%, a warning message appears.
+    \item \textbf{Traceability:} Traces to FR3, FR5.
+\end{itemize}
 
 \subsection{Robustness or Fault-Tolerance Requirements}
-NF-RFTR0 The system should be stable and available for use most of the time.
 
-Rationale: Since users will be experimenting with the model, it needs to be reliable and not crash 
-frequently. This would otherwise deter users from experimenting with the mode.
-
-Fit Criterion: The system should be available at least 99\% of the time, with minimal downtime (no 
-more than 1 hour of downtime per week).
-
+\textbf{NF-RFTR0:} The system shall detect corrupted or invalid image files and reject them without affecting application stability.
+\begin{itemize}
+    \item \textbf{Rationale:} Prevents errors and misdiagnoses caused by unsupported input.
+    \item \textbf{Fit Criterion:} Uploads of corrupted or invalid formats trigger a clear error message without system crash.
+    \item \textbf{Traceability:} Traces to FR1.
+\end{itemize}
 
 \subsection{Capacity Requirements}
-NF-CR0 The system should only generate one chest X-ray image at a time.
 
-Rationale: Generating a diffusion-based chest X-ray image requires significant processing power 
-and time, so the system should focus on producing a single, high-quality image per request.
-
-Fit Criterion: The system will only allow for one image to be generated at a time, with no 
-simultaneous image requests.
+\textbf{NF-CR0:} The system shall support concurrent processing of up to 20 images without significant performance degradation.
+\begin{itemize}
+    \item \textbf{Rationale:} Enables radiologists or institutions to batch process scans.
+    \item \textbf{Fit Criterion:} No individual image processing time exceeds 45 seconds under concurrent load.
+    \item \textbf{Traceability:} Traces to FR1, FR3.
+\end{itemize}
 
 \subsection{Scalability or Extensibility Requirements}
-NF-SER0 The system will be maintained to ensure it continues functioning properly with updates to 
-the diffusion model but will not include new features beyond its MVP scope.
 
-Rationale: As an MVP, the system is designed to showcase the core diffusion model. While updates
- to the model will be accommodated, no new features will be added.
+\textbf{NF-SER0:} The system shall be designed with a modular architecture to allow future model upgrades and dataset expansions.
 
-Fit Criterion: The system should remain operational and compatible with any future changes to the
- diffusion model, without requiring major redesigns or additional functionality.
+\begin{itemize}
+    \item \textbf{Rationale:} Scalability ensures the system remains useful as new diseases or imaging formats are introduced.
+    \item \textbf{Fit Criterion:} New models can be integrated without refactoring the entire application structure.
+    \item \textbf{Traceability:} Traces to FR1, FR3, FR7.
+\end{itemize}
 
 \subsection{Longevity Requirements}
-NF-LR0 The system should be designed to remain operational and reliable for at least 3 years after 
-the initial deployment, or as long as the model and technology is relevant, with minimal 
-maintenance required.
 
-Rationale: Since the system is an MVP for research purposes, it should be able to function long 
-enough for ongoing experiments and potential further development without requiring constant 
-updates or significant maintenance. However, if diffusion models are no longer useful or are no 
-longer a research endeavour, the project will more prematurely close.
-
-Fit Criterion: The system should function without major failures or the need for large-scale 
-updates for at least 3 years, as long as the server infrastructure and diffusion model research 
-remain stable.
-
+\textbf{NF-LR0:} The system shall maintain 99.9\% uptime over a continuous one-week testing period.
+\begin{itemize}
+    \item \textbf{Rationale:} High availability is necessary for consistent clinical support.
+    \item \textbf{Fit Criterion:} Uptime is measured by automated monitoring tools and confirmed during final VnV evaluation.
+    \item \textbf{Traceability:} Traces to FR1, FR6, FR7.
+\end{itemize}
 
 \section{Operational and Environmental Requirements}
 
-\textbf{Current Content:} Describes deployment environment. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Ensure system is \textbf{optimized for cloud deployment} and compatible with \textbf{hospital IT infrastructure (PACS, EHRs)}.
+% Feedback addressed:
+% - Expanded physical and interfacing requirements to reflect clinical deployment settings
+% - Cited HIPAA/PIPEDA and added measurable fit criteria (LO_Standards, Verifiable Requirements)
+% - Maintained original SRS labels and format
 
 \subsection{Expected Physical Environment}
-NF-EPE0 The web app will be accessed through regular computers or mobile devices with internet 
-access. Physical location is irrelevant.
 
-Rationale: Since this is an MVP for research purposes, users (such as students, researchers, and 
-radiologists) will interact with the system from their usual devices, requiring nothing beyond an 
-internet connection.
+\textbf{NF-EPE0:} The system shall be accessible through standard clinical workstations in hospital or research environments.
+\begin{itemize}
+    \item \textbf{Rationale:} Medical professionals typically operate on institutional desktop machines with limited administrative privileges.
+    \item \textbf{Fit Criterion:} The application shall run on commonly used browsers (Chrome, Firefox, Safari) on Windows/macOS systems without needing installation.
+    \item \textbf{Traceability:} Traces to FR1, FR6.
+\end{itemize}
 
-Fit Criterion: N/A
 
 \subsection{Wider Environment Requirements}
-N/A
 
+N/A
 
 \subsection{Requirements for Interfacing with Adjacent Systems}
-NF-RIAS0 The system will be self-contained, requiring no external systems or servers to function, 
-outside of infrastructure such as web-hosting provided by cloud services.
 
-Rationale: Since this is an MVP for experimenting with the diffusion model, the system only needs
- to handle the model itself without interacting with other medical systems or databases.
+\textbf{NF-RIAS0:} The system shall integrate with hospital PACS and EHR systems via secure APIs.
+\begin{itemize}
+    \item \textbf{Rationale:} Interoperability with radiology workflows and patient health records is critical for clinical deployment.
+    \item \textbf{Fit Criterion:} JSON responses follow HL7 FHIR standards\cite{fhir} and can be pulled by external systems without manual conversion.
+    \item \textbf{Traceability:} Traces to FR9.
+\end{itemize}
 
-Fit Criterion: The system should function independently and generate images without requiring 
-integration with any third-party systems.
+\textbf{NF-RIAS1:} The system shall support importing data from public chest X-ray datasets (e.g., CheXpert, MIMIC-CXR).
+\begin{itemize}
+    \item \textbf{Rationale:} Facilitates model training and evaluation on standardized datasets.
+    \item \textbf{Fit Criterion:} Dataset import scripts accept metadata and image formats used in these datasets and validate inputs.
+    \item \textbf{Traceability:} Traces to FR1, FR3.
+\end{itemize}
 
 \subsection{Productization Requirements}
-NF-PR0 The system will be accessible via a simple web interface and will only require a stable 
-internet connection.
 
-Rationale: The system needs to be easy for users to access from anywhere using their browser, 
-without needing to install any additional software.
-
-Fit Criterion: The system should be accessible and fully functional as long as the user has a 
-stable internet connection.
+\textbf{NF-PR0:} The system shall be packaged for deployment on institutional servers or approved cloud platforms (e.g., AWS, Azure).
+\begin{itemize}
+    \item \textbf{Rationale:} Flexibility in deployment enables clinical trials, research use, or pilot integration.
+    \item \textbf{Fit Criterion:} Dockerized deployment scripts and environment variables provided in final deliverables.
+    \item \textbf{Traceability:} Traces to FR1, FR6, FR7.
+\end{itemize}
 
 \subsection{Release Requirements}
-N/A
 
+\textbf{NF-REL0:} The system shall include a minimum viable product (MVP) with core classification, heatmap, and reporting features for Rev 1.
+\begin{itemize}
+    \item \textbf{Rationale:} Demonstrates key value to stakeholders and allows phased feedback.
+    \item \textbf{Fit Criterion:} The Rev 1 deliverable includes working functionality for image upload, prediction display, report generation, and access control.
+    \item \textbf{Traceability:} Traces to FR1, FR4, FR5, FR6, FR8.
+\end{itemize}
+
+\textbf{NF-REL1:} The system shall include configuration options for logging level, timeout settings, and API keys.
+\begin{itemize}
+    \item \textbf{Rationale:} Enables customization per deployment setting and eases system administration.
+    \item \textbf{Fit Criterion:} Configuration file or environment variable schema must be documented in the deployment guide.
+    \item \textbf{Traceability:} Traces to FR6, FR7, FR9.
+\end{itemize}
 \section{Maintainability and Support Requirements}
 
-\textbf{Current Content:} Covers updates and long-term maintenance. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Define \textbf{requirements for periodic model retraining} with \textbf{new datasets} to improve accuracy and prevent model drift.
+% Feedback addressed:
+% - Expanded support and maintenance coverage with measurable criteria (Verifiable Requirements)
+% - Clarified traceability and modularity expectations (Traceable Requirements)
+% - Preserved original SRS format and labels
 
 \subsection{Maintenance Requirements}
-NF-MR0 The system will be maintained by the developers to ensure it stays operational and 
-compatible with updates to the diffusion model.
 
-Rationale: Since this is an MVP, the primary focus is on keeping the system working as the 
-diffusion model is improved or adjusted. No external support teams are needed as it will be 
-managed by the project team.
+\textbf{NF-MR0:} The system shall be developed using a modular architecture with well-documented components.
+\begin{itemize}
+    \item \textbf{Rationale:} A modular structure supports easier debugging, updates, and testing of individual components without system-wide disruption.
+    \item \textbf{Fit Criterion:} System architecture diagram and module documentation must be available and reviewed for clarity and independence.
+    \item \textbf{Traceability:} Traces to FR1, FR3, FR6.
+\end{itemize}
 
-Fit Criterion: The developers can make updates or fixes as needed to keep the system operational.
+\textbf{NF-MR1:} The codebase shall be version-controlled and stored in a shared repository with structured commit messages.
+\begin{itemize}
+    \item \textbf{Rationale:} Version control ensures traceability of changes and supports collaborative development.
+    \item \textbf{Fit Criterion:} Git repository with readable commit logs, clear branching strategy, and change history audit.
+    \item \textbf{Traceability:} Traces to FR6, FR7.
+\end{itemize}
 
 \subsection{Supportability Requirements}
-NF-SR0 The system will be self-sufficient, with all necessary documentation provided so that users 
-can understand how to experiment with the diffusion model.
 
-Rationale: The web app should include simple documentation or guidelines to help users experiment
- with the model on their own, minimizing the need for external support.
+\textbf{NF-SR0:} The system shall maintain at least 80\% code coverage through automated tests.
+\begin{itemize}
+    \item \textbf{Rationale:} High coverage improves reliability and eases future refactoring.
+    \item \textbf{Fit Criterion:} Coverage reports must verify \( \geq 80\% \) across core functionalities.
+    \item \textbf{Traceability:} Traces to FR3, FR6.
+\end{itemize}
 
-Fit Criterion: Users can access the documentation and experiment with the model without needing 
-further assistance.
+\textbf{NF-SR1:} The system shall provide a detailed setup and troubleshooting guide.
+\begin{itemize}
+    \item \textbf{Rationale:} Comprehensive support documentation accelerates onboarding for new developers and helps diagnose issues quickly.
+    \item \textbf{Fit Criterion:} A markdown-based deployment guide must be included with the repository and verified during handoff.
+    \item \textbf{Traceability:} Traces to FR6, FR7.
+\end{itemize}
 
 \subsection{Adaptability Requirements}
 N/A
 
 \section{Security Requirements}
 
-\textbf{Current Content:} Focuses on basic security measures. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Expand to include \textbf{data encryption, access control for medical professionals, and compliance with HIPAA and GDPR} for handling patient data.
+% Feedback addressed:
+% - Updated to include encryption, authentication, and data isolation
+% - Removed assumptions of public access; now meets secure clinical deployment expectations
+% - Fit criteria are measurable and traceable to functional requirements (Traceable Requirements)
 
 \subsection{Access Requirements}
-NF-AR0 The web app will be publicly accessible to anyone, without the need for login or 
-credentials.
 
-Rationale: The purpose of the web app is to allow anyone reading the research paper to easily 
-access and experiment with the diffusion model, so no user restrictions are necessary.
-
-Fit Criterion: The web app can be accessed by anyone without needing to sign in or provide any 
-credentials.
+\textbf{NF-AR0:} Unauthorized User Access Prevention
+\begin{itemize}
+    \item \textbf{Rationale:} Unauthorized access to patient data and medical diagnoses could lead to privacy breaches and regulatory non-compliance.
+    \item \textbf{Fit Criterion:} The system should deny login attempts with incorrect credentials. Unauthorized users should not be able to retrieve or modify any patient data. Logs of failed access attempts should be maintained.
+    \item \textbf{Traceability:} Traces to FR8, FR9.
+\end{itemize}
 
 \subsection{Integrity Requirements}
-NF-IR0 The web app will output the generated chest X-ray image as produced by the diffusion model 
-without further data protection or tampering restrictions.
 
-Rationale: The main purpose of the web app is to allow users to experiment with the model and view 
-the generated images discussed in the associated research paper. What users do with the images 
-afterward is beyond the scope of the system’s responsibility.
-
-Fit Criterion: The web app successfully outputs the generated image without further concern for 
-data protection after it is delivered to the user.
-
+\textbf{NF-IR0:} Uploaded chest X-rays and diagnostic results shall only be accessible to the authenticated user who uploaded them.
+\begin{itemize}
+    \item \textbf{Rationale:} Limiting access to sensitive data minimizes breach impact and ensures compliance with privacy laws.
+    \item \textbf{Fit Criterion:} Data access is scoped to user sessions, and cross-user access attempts are blocked and logged.
+    \item \textbf{Traceability:} Traces to FR7, FR8.
+\end{itemize}
 
 \subsection{Privacy Requirements}
-NF-PR0 The system will not collect any personal data from users interacting with the web app.
 
-Rationale: Since the system is intended for public experimentation, there is no need to collect 
-personal information or track users’ activities.
-
-Fit Criterion: The web app does not request or store any personal information from users during 
-their interactions with the system.
+\textbf{NF-PR0:} AES-256 Encryption for Data at Rest and in Transit
+\begin{itemize}
+    \item \textbf{Rationale:} Encryption is essential for maintaining patient confidentiality and meeting data security regulations. AES-256 provides industry-standard security to protect sensitive information.
+    \item \textbf{Fit Criterion:} The system should encrypt stored images, patient data, and diagnostic results using AES-256. Network communication should be encrypted using TLS (HTTPS). Security audits should confirm that unauthorized access to encrypted data is prevented.
+    \item \textbf{Traceability:} Traces to FR7, FR8, NF-WER0.
+\end{itemize}
 
 \subsection{Audit Requirements}
-NF-AR0 The system will not require any formal security audits as it is a public web app designed 
-for experimentation only.
 
-Rationale: Since this is an MVP for public use with no sensitive data involved, regular security 
-audits are unnecessary.
-
-Fit Criterion: N/A
+\textbf{NF-AUR0:} The system shall log authentication attempts, access to sensitive data, and system configuration changes.
+\begin{itemize}
+    \item \textbf{Rationale:} Maintaining logs provides accountability and enables investigation of suspicious behavior or breaches.
+    \item \textbf{Fit Criterion:} Audit logs must include timestamp, user ID, action performed, and status. Logs must be tamper-evident and stored securely.
+    \item \textbf{Traceability:} Traces to FR8, NF-AR0, NF-IR0.
+\end{itemize}
 
 \subsection{Immunity Requirements}
 N/A
 
+
 \section{Cultural Requirements}
 
-\textbf{Current Content:} Mentions accessibility and language support. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Ensure \textbf{multi-language support for model outputs} and adaptability for \textbf{different healthcare regions and regulatory environments}.
+% Feedback addressed:
+% - Removed reliance on browser auto-translation
+% - Fit Criterion added for verifiability (Verifiable Requirements)
+% - Localization limitation clearly documented
 
 \subsection{Cultural Requirements}
-NF-CR0 The web app will be usable by people from any background or culture with no restrictions 
-such as in region. However it will be written in English, but users can rely on modern web 
-browsers to translate it into other languages if needed.
 
-Rationale: The research and thus the web app should be able to be explored by anyone who is 
-interested in the findings. English is the most universally understood language, making it 
-accessible to a large audience. However, users who prefer other languages can easily use browser 
-translation tools.
-
-Fit Criterion: The web app is fully functional in English, and users are able to translate it into 
-other languages using their browser if necessary.
+\textbf{NF-CR0:} The system shall support English as the default and only language.
+\begin{itemize}
+    \item \textbf{Rationale:} Due to scope constraints and user base expectations, multilingual support (e.g., French) has been removed. English remains the standard language for radiology documentation in the primary target regions.
+    \item \textbf{Fit Criterion:} All content, tooltips, messages, and reports are presented in English. No language toggle or alternative localization paths are included.
+    \item \textbf{Traceability:} Traces to FR5, FR6.
+\end{itemize}
 
 
 \section{Compliance Requirements}
 
-\textbf{Current Content:} Lists general compliance needs. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Expand to include \textbf{FDA and CE regulatory compliance} for AI-based medical classification tools.
+% Feedback addressed:
+% - Updated legal and standards references to HIPAA and PIPEDA (LO_Standards)
+% - Removed legacy references to diffusion-specific quality metrics
+% - Fit criteria are measurable and regulatory (Verifiable Requirements)
+% - Legal scope aligned with healthcare data handling responsibilities
 
 \subsection{Legal Requirements}
-NF-LR0 The web app will comply with general data privacy laws by ensuring that no personal or 
-sensitive data is collected.
 
-Rationale: As the web app is for public experimentation with no personal information involved, it 
-should comply with privacy laws by not collecting user data.
-
-Fit Criterion: The web app will not store or request any personal information from users.
+\textbf{NF-LR0:} Compliance with HIPAA and PIPEDA
+\begin{itemize}
+    \item \textbf{Rationale:} Compliance with legal and regulatory frameworks is necessary to protect patient confidentiality and prevent unauthorized access to sensitive medical data. Ensuring adherence to HIPAA\cite{hipaa} and PIPEDA\cite{pipeda} helps avoid legal consequences and builds trust with users.
+    \item \textbf{Fit Criterion:} The system must implement security and privacy measures that meet HIPAA\cite{hipaa} and PIPEDA\cite{pipeda} standards. A documented compliance review must confirm adherence to required regulations. All data handling, storage, and transmission processes must align with the legal frameworks.
+    \item \textbf{Traceability:} Traces to FR7, FR8, NF-PR0.
+\end{itemize}
 
 \subsection{Standards Compliance Requirements}
-NF-SCR0 The chest X-ray images produced by the diffusion model must meet the standards of 
-real-world chest X-rays used in radiology.
 
-Rationale: While the web app is for experimentation and exploring the research findings, the 
-images generated by the diffusion model must still comply with radiology standards to be viable 
-for training models and potential real-world use.
+\textbf{NF-SCR0:} The system shall comply with medical imaging standards and HL7 FHIR\cite{fhir} specifications.
+\begin{itemize}
+    \item \textbf{Rationale:} Diagnostic image outputs and structured medical data must follow established standards for interoperability with hospital systems and for training clinical models.
+    \item \textbf{Fit Criterion:} Outputs must meet DICOM\cite{dicom} formatting and diagnostic reports must be mappable to FHIR-compatible JSON structures\cite{fhir}. Compliance is verified during integration and system validation.
+    \item \textbf{Traceability:} Traces to FR4, FR5, FR9.
+\end{itemize}
 
-Fit Criterion: The generated chest X-rays meet the quality and standards of actual medical chest 
-X-rays used in radiology.
+
+\renewcommand{\arraystretch}{1.2}
+
+\section{Requirement Traceability}
+
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{NFR ID} & \textbf{Related FR(s)} & \textbf{Rationale} \\
+\hline
+NF-SLR0 & FR1, FR3 & Uses \texttt{MAX\_IMAGE\_GEN\_TIME} instead of the magic number ``60 seconds'' to define timely image processing for 95\% of cases. \\
+\hline
+NF-SCR0 & FR4, FR6, FR8 & Radiologist approval tied to reporting, display, and access. \\
+\hline
+NF-PAR0 & FR3 & Uses \texttt{MIN\_ACCURACY\_REQUIREMENT} instead of ``65\%'' to enforce accuracy across primary disease labels. \\
+\hline
+NF-PAR1 & FR3, FR5 & Uses \texttt{CONFIDENCE\_WARNING\_THRESHOLD} instead of ``50\%'' to trigger UI warnings for low-confidence predictions. \\
+\hline
+NF-RFTR0 & FR1 & Invalid files blocked at upload stage. \\
+\hline
+NF-CR0 & FR1, FR3 & Concurrent processing in upload + classifier. \\
+\hline
+NF-SER0 & FR1, FR3, FR7 & Modular data flow enables extensions. \\
+\hline
+NF-LR0 & FR1, FR6, FR7 & Uptime depends on core services. \\
+\hline
+NF-AR1 & FR5 & UI appearance affects readability. \\
+\hline
+NF-AR2 & FR5 & Layout consistency for usability. \\
+\hline
+NF-SR1 & FR5, FR6 & Minimal design helps diagnosis. \\
+\hline
+NF-SR2 & FR5, FR6 & Layout clarity aids interpretation. \\
+\hline
+NF-EUR0 & FR1, FR3, FR4, FR5, FR6 & End-to-end task completion required. \\
+\hline
+NF-EU2 & FR5 & Users should remember operation. \\
+\hline
+NF-UPR0 & FR5, FR4 & Output must resemble clinical norms. \\
+\hline
+NF-EPE0 & FR1, FR6 & Accessible via typical hospital workstations. \\
+\hline
+NF-RIAS0 & FR9 & Needs integration with hospital systems. \\
+\hline
+NF-RIAS1 & FR1, FR3 & Training on external datasets. \\
+\hline
+NF-PR0 & FR1, FR6, FR7 & Portable, deployable product required. \\
+\hline
+NF-REL0 & FR1, FR4, FR5, FR6, FR8 & MVP must demonstrate key features. \\
+\hline
+NF-REL1 & FR6, FR7, FR9 & Configurable deployment settings. \\
+\hline
+NF-MR0 & FR1, FR3, FR6 & Modular design supports updates. \\
+\hline
+NF-MR1 & FR6, FR7 & Git-based change tracking. \\
+\hline
+NF-SR0 & FR3, FR6 & Tests verify key paths. \\
+\hline
+NF-SR1 & FR6, FR7 & Dev guide for deployment. \\
+\hline
+NF-AR0 & FR8, FR9 & Block unauthorized access. \\
+\hline
+NF-IR0 & FR7, FR8 & Only authorized users see data. \\
+\hline
+NF-PR0 & FR7, FR8, NF-WER0 & AES encryption protects privacy. \\
+\hline
+NF-AUR0 & FR8, NF-AR0, NF-IR0 & All sensitive actions logged. \\
+\hline
+NF-CR0 & FR5, FR6 & Interface in English only. \\
+\hline
+NF-LR0 & FR7, FR8, NF-PR0 & Compliance with HIPAA, PIPEDA. \\
+\hline
+NF-SCR0 & FR4, FR5, FR9 & Standards compliance via FHIR/DICOM. \\
+\hline
+\end{tabularx}
+\normalsize
 
 \section{Open Issues}
 \begin{itemize}
@@ -1186,76 +1212,73 @@ X-rays used in radiology.
 \end{itemize}
 
 \section{Off-the-Shelf Solutions}
+
+% Feedback addressed:
+% - Added detail on frameworks, datasets, and libraries used (LO_ExtKnowledge)
+% - Replaced vague references to pretrained diffusion models with current project tools
+% - Fit criteria included for reused datasets, libraries, and models (Verifiable Requirements)
+
 \subsection{Ready-Made Products}
 \begin{itemize}
-    \item Pretrained Models: There exists pretrained diffusion models that can generate object 
-    images. However, many of them are not specialized in generating chest x-ray images with a 
-    specific disease at a specific location. By leveraging these existing pretrained models, we 
-    can build on top of their neural networks and improve on it to accelerate development.
-    \item Chest X-ray Images Dataset: Established collections of chest x-ray images annotated with 
-    radiologist’s report will be used to train the neural network. They need to be used because we 
-    have no other source of chest x-ray images.
+    \item \textbf{TensorFlow / PyTorch:} These open-source machine learning libraries will be used for model development, training, and inference. Both frameworks support GPU acceleration and are compatible with Python.\\
+    Advantages: Industry standard, large community, extensive documentation.\\
+    Disadvantages: Requires tuning and customization to achieve optimal medical classification performance.\\
+    Fit Criterion: The CNN model shall be developed and deployed using one of these libraries without licensing issues.
+
+    \item \textbf{CheXpert / MIMIC-CXR /NIH Datasets:} These publicly available datasets provide labeled chest X-ray images for training and evaluating the CNN model.\\
+    Advantages: Large, well-annotated, publicly accessible.\\
+    Disadvantages: Dataset bias or label inconsistencies may require preprocessing.\\
+    Fit Criterion: The system shall load, preprocess, and train on these datasets using provided metadata.
 \end{itemize}
+
 \subsection{Reusable Components}
-N/A 
+\begin{itemize}
+    \item \textbf{Grad-CAM:} This open-source visualization tool will be reused to highlight the regions in X-ray images most relevant to the CNN's predictions.\\
+    Advantages: Well-established, integrates easily with CNNs.\\
+    Disadvantages: Can produce less interpretable results if improperly configured.\\
+    Fit Criterion: Grad-CAM heatmaps must be generated for all classified images and displayed in the user interface.
+\end{itemize}
 
 \subsection{Products That Can Be Copied}
-No products will be copied in place for this project. There are no projects to copy off of since 
-this project consists of a research component that will try to improve on existing implementations 
-of neural networks in the field. However, this project will produce a neural network model which 
-can be copied and used elsewhere for anyone following the license rules.
+\begin{itemize}
+    \item \textbf{UI Styling Components (e.g., Bootstrap, Tailwind CSS):} Standard UI styling frameworks may be used to replicate functional and aesthetic components from established design systems.\\
+    Advantages: Reduces time spent on custom styling; ensures responsive design.\\
+    Disadvantages: May need customization to meet healthcare UI conventions.\\
+    Fit Criterion: UI components must be responsive and consistent with medical software standards.
 
+    \item \textbf{Open Source Authentication Libraries (e.g., JWT Auth):} Authentication systems can be implemented using reusable open-source modules for secure login and session management.\\
+    Advantages: Proven security practices and active community maintenance.\\
+    Disadvantages: Requires integration with frontend and backend systems.\\
+    Fit Criterion: User authentication must conform to system access requirements defined in Section 15.
+\end{itemize}
 
 \section{New Problems}
 
-\textbf{Current Content:} Identifies research gaps. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Highlight issues such as \textbf{handling multi-label cases where multiple diseases coexist in a single X-ray} and \textbf{model biases based on training data imbalances}.
-
 \subsection{Effects on the Current Environment}
 \begin{itemize}
-    \item Improvements in neural networks and their ability to identify diseases may lead to an 
-    over-reliance on it. Doctors may overly trust the output. It could erode human and traditional 
-    skills over time. This will leave healthcare providers less prepared if the model fails, is 
-    unavailable, or shows a false positive.
-    \item Neural networks do not explain their thoughts. It is a black box. There could be reduced 
-    accountability when errors occur as it may be unclear whether the machine or the doctor is at 
-    fault.
-    \item The diffusion model can generate new chest x-ray images which is great for creating more 
-    x-ray datasets. This could be used to further train more chest x-ray neural networks which in 
-    turn could improve their ability to identify diseases.
+    \item Improvements in neural networks and their ability to identify diseases may lead to an over-reliance on automated tools. Healthcare professionals may trust outputs without verifying them, which could erode traditional diagnostic skills.
+    \item CNN-based models can be difficult to interpret. Without visual explanation tools like Grad-CAM, accountability may be diminished when errors occur.
+    \item Biases present in training data (e.g., overrepresentation of certain conditions) may lead to uneven model performance across patient populations.
 \end{itemize}
 
-
 \subsection{Effects on the Installed Systems}
-N/A 
+N/A
 
 \subsection{Potential User Problems}
 \begin{itemize}
-    \item Users or doctors may not want to upload chest x-ray images due to privacy concerns.
-    \item Users may accidentally upload non chest x-ray images. The neural network model expects 
-    an x-ray image and so its output may be unpredictable.
-    \item Radiologists may be skeptical that the neural network model works well and will hesitate 
-    adopting the technology. Since a diffusion model generates a chest x-ray image that could be 
-    used in training other neural networks, radiologists may also be hesitant in using these 
-    generated images in their neural networks research.
+    \item Users may hesitate to upload chest X-ray images due to concerns about data privacy and potential breaches.
+    \item Non-chest X-ray images may be uploaded by mistake, leading to unreliable outputs from the model.
+    \item Some radiologists may be skeptical of AI performance and resist integrating the system into their workflow.
 \end{itemize}
 
-\subsection{Limitations in the Anticipated Implementation Environment That May
-Inhibit the New Product}
+\subsection{Limitations in the Anticipated Implementation Environment That May Inhibit the New Product}
 \begin{itemize}
-    \item Neural network models usually expect to process one image at a time. Since there is only 
-    one model in the backend of the web application, there will be a queue to use the model. This 
-    will hinder the workflow as the processes must be done sequentially.
-    \item The web application is the interface to use the model. It requires the user to have an 
-    internet connection in order to load the site. If the internet connection is poor, the user 
-    may have a hard time uploading the image.
+    \item The system backend currently supports single-image classification at a time. A queue system may be required to support larger volumes.
+    \item Dependence on stable internet access may impact usability in lower-bandwidth settings, such as rural hospitals.
 \end{itemize}
 
 \subsection{Follow-Up Problems}
-The web application may store uploaded images. If the encryption for the images is stolen or 
-cracked, users may have their medical images exposed. This is a security and privacy concern. 
-Users may blame the development team for the lack of security.
+The system may store uploaded X-ray images. If encryption or server access is compromised, patient images may be leaked. This represents a significant privacy concern and may expose the development team to legal risks.
 
 \section{Tasks}
 
@@ -1274,7 +1297,7 @@ Users may blame the development team for the lack of security.
     Revision 0 Demonstration                      & February 5-February 16 \\ \hline
     V\&V Report Revision 0                        & March 6                \\ \hline
     Final Demonstration (Revision 1)              & March 18-March 29      \\ \hline
-    EXPO Demonstration                            & April TBD              \\ \hline
+    EXPO Demonstration                            & April 8             \\ \hline
     Final Documentation (Revision 1)              & April 4                \\ \hline
     \end{tabular}
 \end{table}
@@ -1285,123 +1308,103 @@ Users may blame the development team for the lack of security.
         Team Formation and Project Setup (September 18)
         \begin{itemize}
             \item Form the project team and contact supervisor
-            \item Set up Github repository
+            \item Set up GitHub repository and documentation workflow
         \end{itemize}
     }
     \item {
         Project Planning and Definition (October 11)
         \begin{itemize}
-            \item Develop a detailed project roadmap and define the problem and the project’s scope
-            \item Identify stakeholders
-            \item Write SRS documentation
+            \item Develop roadmap and scope
+            \item Identify key requirements, stakeholders
+            \item Complete initial SRS draft
         \end{itemize}
     }
     \item {
         Research (October)
         \begin{itemize}
-            \item Conduct research on diffusion models and their applications in chest x-ray 
-            analysis
-            \item Explore new and innovative ways to improve on existing applications of detecting 
-            diseases in chest x-ray images
-            \item Investigate suitable datasets for training the model
-            \item Find relevant frameworks and tools to trail the diffusion model
+            \item Investigate CNN architectures and applications in chest X-ray classification
+            \item Evaluate public datasets (CheXpert, MIMIC-CXR)
+            \item Select explainability tools (e.g., Grad-CAM)
         \end{itemize}
     }
     \item {
         Initial Implementation (November)
         \begin{itemize}
-            \item Cleanse training data, so the images can be used to train the model
-            \item Write the Hazard Analysis document
+            \item Clean and preprocess training data
+            \item Build baseline model pipeline and prototype frontend
         \end{itemize}
     }
     \item {
         Feature Development (December)
         \begin{itemize}
-            \item Develop the front and backend of the web application
-            \item Have a proof of concept trained model that can generate new images to some degree
-            \item Write the Design document revision 0            
+            \item Implement classification interface, Grad-CAM visualizations
+            \item Build web backend with database and security controls
         \end{itemize}
     }
     \item {
         Testing (January)
         \begin{itemize}
-            \item Continue training and create iterations of the model to improve its accuracy
-            \item Evaluate the achievement of project goals
-            \item Conduct risk and user-end assessments
-            \item Write Verification and Validation report
+            \item Run model evaluations
+            \item Conduct user acceptance testing
+            \item Finalize documentation for V\&V
         \end{itemize}
     }
     \item {
         Finalization
         \begin{itemize}
-            \item Present final demonstration and all final project documentation
+            \item Deliver final demo
+            \item Compile final reports and documentation
             \item Prepare for Expo presentation
         \end{itemize}
     }
 \end{enumerate}
 
 \section{Migration to the New Product}
+
 \subsection{Requirements for Migration to the New Product}
-N/A. There is no migration. The product is developed from the ground up.
+N/A. The product is developed from the ground up.
 
 \subsection{Data That Has to be Modified or Translated for the New System}
-Training data, which includes pairs of chest x-ray images and radiologist reports, must be 
-cleansed so that they can be inputted into the neural network to be trained. Cleansing data could 
-involve converting its file type, modifying the images’ shape, and parsing radiologist reports for 
-specific words.
+Training data (chest X-ray images and associated radiology reports) must be preprocessed before use. Preprocessing steps include standardizing image resolution, normalization, grayscale conversion, and extracting structured labels from radiology reports.
 
 \section{Costs}
-There are no monetary costs anticipated. All model training will be done locally, so there will be 
-no cloud service provider costs. The web application will be hosted locally as well. Should there 
-be any costs, the total will not exceed \$500.
+There are no monetary costs anticipated. All model training and deployment will occur on local hardware. Web hosting, if required, will use university-provided infrastructure. The project will operate within a \$500 contingency budget if any costs arise.
 
 \section{User Documentation and Training}
 
-\textbf{Current Content:} Covers basic user guides. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Ensure documentation includes \textbf{interpretation guides for multi-class classification outputs} and training for \textbf{understanding heatmaps and uncertainty scores}.
-
 \subsection{User Documentation Requirements}
 \begin{itemize}
-    \item \textbf{User Interface Guide:} A step-by-step guide explaining how users (e.g., 
-    radiologists, clinicians) will interact with the web app. This might include:
+    \item \textbf{User Interface Guide:} Explains how radiologists or clinicians interact with the platform.
     \begin{itemize}
-        \item How to upload CXR images.
-        \item How to interpret the generated diagnostic report.
-        \item Understanding heatmaps and disease predictions.
+        \item How to upload and classify CXR images
+        \item How to interpret confidence scores and heatmaps
+        \item How to download structured reports
     \end{itemize}
-    \item \textbf{System Overview:} A high-level description of how the system works from a user’s 
-    perspective.
-    \item \textbf{Frequently Asked Questions (FAQ):} A list of common issues users may encounter 
-    and how to resolve them.
+    \item \textbf{System Overview:} Overview of how the model processes data from input to output.
+    \item \textbf{Frequently Asked Questions (FAQ):} Troubleshooting, file format guidance, and system usage tips.
 \end{itemize}
 
 \subsection{Training Requirements}
 \begin{itemize}
-    \item \textbf{Minimal Training:} Since the system is user-friendly and mostly automated, 
-    minimal training is required.
-    \item \textbf{Tutorial Session:} A 1-2 hour training session for medical professionals, 
-    focusing on:
+    \item \textbf{Minimal Training:} Designed for ease-of-use; minimal learning curve expected.
+    \item \textbf{Tutorial Session:} A 1-2 hour session to familiarize healthcare professionals with:
     \begin{itemize}
-        \item How to use the web application.
-        \item How to interpret diagnostic reports and heatmaps.
+        \item Uploading X-rays, viewing results
+        \item Understanding Grad-CAM visualizations
+        \item Reviewing model confidence scores
     \end{itemize}
-    \item \textbf{Online Help:} Interactive tutorials or video guides embedded in the system.
+    \item \textbf{Online Help:} Integrated help features including tooltips and links to documentation or video guides.
 \end{itemize}
-
 
 \section{Ideas for Solution}
 Potential system improvements and future enhancements:
 \begin{itemize}
-    \item \textbf{Batch Processing:} Allow processing of multiple CXR images simultaneously for 
-    high-volume diagnosis.
-    \item \textbf{More Disease Detection:} Add support for additional diseases.
-    \item \textbf{Mobile App:} Develop a mobile version for on-the-go use.
-    \item \textbf{Advanced AI Models:} Integrate other AI techniques (e.g., GANs, transformers) 
-    for better accuracy.
-    \item \textbf{EHR Integration:} Connect with electronic health record systems for automatic 
-    data exchange.
-    \item \textbf{Explainability:} Add AI explanations for predictions to improve transparency.
+    \item \textbf{Batch Processing:} Support classification of multiple CXR images in parallel.
+    \item \textbf{Expanded Classification:} Increase disease label set supported by model.
+    \item \textbf{Mobile App:} Lightweight version of platform for phones or tablets.
+    \item \textbf{Advanced AI Models:} Evaluate transformers or ensembles for improved performance.
+    \item \textbf{EHR Integration:} Export reports to hospital records via API.
+    \item \textbf{Explainability Enhancements:} Display prediction rationale and confidence analysis.
 \end{itemize}
 
 \section{Waiting Room}
@@ -1413,65 +1416,69 @@ Possible future features or enhancements:
     \item \textbf{Explainability:} Provide AI explanations for the model's predictions.
 \end{itemize}
 
-
-
 \newpage{}
-\section*{Appendix --- Reflection}
-
-\textbf{Current Content:} Summarizes challenges and lessons learned. \\
-\\
-\textbf{\textcolor{blue}{Update Needed:}} Expand reflections on \textbf{handling data bias, tuning hyperparameters for optimal classification, and challenges in model interpretability}.
-
+\section{Appendix --- Reflection}
 
 The information in this section will be used to evaluate the team members on the
-graduate attribute of Lifelong Learning.  Please answer the following questions:
+graduate attribute of Lifelong Learning. Please answer the following questions:
 
 \begin{enumerate}
   \item What knowledge and skills will the team collectively need to acquire to
-  successfully complete this capstone project?  Examples of possible knowledge
+  successfully complete this capstone project? Examples of possible knowledge
   to acquire include domain specific knowledge from the domain of your
   application, or software engineering knowledge, mechatronics knowledge or
-  computer science knowledge.  Skills may be related to technology, or writing,
-  or presentation, or team management, etc.  You should look to identify at
+  computer science knowledge. Skills may be related to technology, or writing,
+  or presentation, or team management, etc. You should look to identify at
   least one item for each team member.
 
-  To successfully complete the chest x-ray disease identification and image generation project, 
-  the team must learn a diverse set of knowledge and skills. The AI/ML developer must be 
-  proficient in machine learning techniques. They should especially be knowledgeable in diffusion 
-  models and computer vision, and use libraries like PyTorch to build the neural network. They 
-  should also understand parameter tuning to enhance model accuracy. A data scientist will focus 
-  on data preprocessing and augmentation to increase the training dataset’s variety. Their skills 
-  in handling large datasets and using tools like Pandas and NumPy for exploratory analysis are 
-  important. The frontend developer should know web development frameworks like React to build an 
-  intuitive interface where users can upload x-ray images and view the model’s predictions. The 
-  backend developer will need expertise in hosting services locally to run the AI model for the 
-  web application. They will ensure it integrates smoothly with the web application. Lastly, the 
-  project manager must have strong team management skills. They will ensure the team meets 
-  milestones and communicates clearly with stakeholders through presentations and reports. Each 
-  team member must combine their technical expertise with effective collaboration to finish the 
-  project.
+  To successfully complete the chest X-ray disease classification and heatmap interpretation project, the team must acquire a range of technical and collaborative skills. The AI/ML developer needs strong knowledge in convolutional neural networks (CNNs), medical image classification, and experience using libraries such as TensorFlow or PyTorch. The data scientist must be proficient in preprocessing large imaging datasets (e.g., CheXpert, MIMIC-CXR), statistical data cleaning, and transforming radiology report annotations. The frontend developer should have experience with frameworks such as React and Tailwind CSS to design a clean, professional interface for displaying image uploads, heatmaps, and structured outputs. The backend developer will require expertise in secure API development and integration with the model serving layer, including user authentication and encrypted storage. Finally, the project manager will be responsible for stakeholder communication, timeline coordination, and organizing meetings and documentation. Each team member will combine their respective technical discipline with a collaborative mindset to ensure successful project delivery.
 
   \item For each of the knowledge areas and skills identified in the previous
   question, what are at least two approaches to acquiring the knowledge or
-  mastering the skill?  Of the identified approaches, which will each team
+  mastering the skill? Of the identified approaches, which will each team
   member pursue, and why did they make this choice?
 
-  To learn the necessary knowledge and skills for the project, team members have several 
-  approaches. The AI/ML developer can either complete specialized online courses like Coursera’s 
-  deep learning series or review notes from SFWRENG 4ML3 machine learning course. Online courses 
-  offers more flexibility learning diffusion models at their own pace. The data scientist can 
-  improve their skills through looking at Kaggle projects. Many Kaggle competitions have projects 
-  where other people tried to cleanse data from different datasets. The data scientist can 
-  practice and follow in their Github’s footsteps to learn from the community. The frontend 
-  developer could learn from Youtube tutorials and documentation for frameworks like React. With 
-  self-paced tutorials, they can quickly apply their learning in building the interface. The 
-  backend developer can either take cloud certifications from AWS or practice hosting a home 
-  server which they can connect to at home. A home server is great for learning about networks and 
-  how to connect to them. It also gives them options to run whatever service they want. Lastly, 
-  the project manager can read project management books like Scrum: The Art of Doing Twice the 
-  Work in Half the Time. They could also go outside and talk to people to learn how to communicate 
-  normally with others in a professional manner.
-
+  The AI/ML developer will take specialized online courses on CNNs (e.g., fast.ai or DeepLearning.AI on Coursera) and study open-source implementations on GitHub to learn practical model optimization strategies. The data scientist will review Kaggle notebooks involving CheXpert preprocessing and also consult documentation for radiology-specific datasets. The frontend developer will follow the official React and Tailwind CSS documentation alongside YouTube walkthroughs to gain rapid prototyping skills. The backend developer plans to build small API services locally for practice and study role-based access controls via tutorials and open-source Flask/Django projects. The project manager will study Agile project workflows through platforms like Atlassian and supplement this with hands-on scheduling in shared tools like Trello and Slack. This multifaceted learning strategy enables both foundational understanding and immediate project application.
 \end{enumerate}
+
+\subsection*{What went well while writing this deliverable?}
+The team developed a much stronger understanding of how to formalize and structure software requirements clearly and thoroughly. Collaborating on the functional and non-functional requirements brought clarity to system expectations and use cases. Using symbolic constants also helped us eliminate ambiguity from our testable metrics. Additionally, cross-referencing requirements with traceability links improved our ability to write modular, maintainable specifications.
+
+\subsection*{What pain points did you experience during this deliverable, and how did you resolve them?}
+Aligning our functional requirements with non-functional requirements while preserving clarity was initially challenging. We often discovered vague phrasing or redundant requirements during peer reviews. To resolve this, we did multiple revision cycles focused on rewriting, scoping, and clearly labeling each requirement. Creating traceability mappings and symbolic constants also required restructuring our LaTeX file, which we resolved by distributing editing tasks by section.
+
+\subsection*{How many of your requirements were inspired by speaking to your client(s) or their proxies (e.g. your peers, stakeholders, potential users)?}
+Approximately 70-80\% of our requirements were directly inspired by user needs communicated by stakeholders and informed by proxy conversations with peers and domain experts. Features such as uploading diagnostic images, displaying confidence scores, and visualizing heatmaps originated from feedback during elicitation. Others, like security and audit logging, emerged from inferred expectations around clinical deployment.
+
+\subsection*{Which of the courses you have taken, or are currently taking, will help your team to be successful with your capstone project?}
+- \textbf{SFWRENG 3XA3 (Software Requirements)} - Directly influenced the structure and rigor of this deliverable.
+- \textbf{SFWRENG 4G06 (Capstone Project)} - Provides end-to-end guidance and iterative planning methodology.
+- \textbf{Machine Learning} - Helped us define accuracy, precision, and confidence requirements.
+- \textbf{Human-Computer Interaction} - Influenced UI/UX related requirements like clarity, layout, and usability.
+- \textbf{Web Programming and Databases} - Enabled us to shape the backend and deployment-related requirements with real-world feasibility in mind.
+
+\pagebreak
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+% \bibliographystyle{plain}
+% \begin{thebibliography}{9}
+
+\bibitem{hipaa}
+U.S. Department of Health and Human Services. \emph{Health Insurance Portability and Accountability Act of 1996 (HIPAA)}. Available at: \url{https://www.hhs.gov/hipaa/}
+
+\bibitem{pipeda}
+Office of the Privacy Commissioner of Canada. \emph{Personal Information Protection and Electronic Documents Act (PIPEDA)}. Available at: \url{https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/}
+
+\bibitem{dicom}
+National Electrical Manufacturers Association. \emph{Digital Imaging and Communications in Medicine (DICOM) Standard}. Available at: \url{https://www.dicomstandard.org/}
+
+\bibitem{fhir}
+HL7 International. \emph{FHIR - Fast Healthcare Interoperability Resources}. Available at: \url{https://www.hl7.org/fhir/}
+
+\end{thebibliography}
+
+
+% \end{thebibliography}
 
 \end{document}

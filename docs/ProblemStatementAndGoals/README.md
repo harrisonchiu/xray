@@ -1,5 +1,6 @@
-# Problem Statement
+# Problem Statement and Goals
 
-The folders and files for this folder are as follows:
+This folder defines the problem the project aims to solve and outlines the project's objectives and goals.
 
-Describe ...
+## Key Files
+- **ProblemStatement.tex**: Describes the problem, inputs, outputs, and stakeholders.

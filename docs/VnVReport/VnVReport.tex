@@ -7,6 +7,13 @@
 \usepackage{makecell}
 \usepackage{longtable}
 \usepackage{graphicx}
+\usepackage[a4paper,
+            bindingoffset=0.2in,
+            left=1in,
+            right=1in,
+            top=1in,
+            bottom=1in,
+            footskip=.25in]{geometry}
 
 
 \graphicspath{ {./} }
@@ -34,10 +41,16 @@
 
 \section{Revision History}
 
+% Feedback addressed: Update revision table
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-10 March & 1.0 & Gurnoor and Harrison add section 3\\
+10 March & 1.0 & Gurnoor and Harrison: Add section 3\\
+10 March & 1.1 & Gurnoor, Harrison, Jared, Hamza, Ahmad Finish all sections\\
+2 April & 1.2 & Gurnoor, Harrison, Jared, Hamza, Ahmad add extra sections and details to address Github issues feedback\\
+4 April & 1.3 & Harrison add CI/CD code to address feedback \\
+4 April & 1.4 & Harrison address TA feedback: fix formatting and add some NFR to traceability matrix\\
+4 April & 1.5 & Add images of the usability survey\\
 \bottomrule
 \end{tabularx}
 
@@ -57,8 +70,8 @@ abbreviations and acronyms used in this VnV Plan document.
   \textbf{CNN} & Convolutional Neural Network: A type of deep learning model specifically designed for processing structured grid data like images, used in the project for chest X-ray analysis. \\ \hline
   \textbf{EHR} & Electronic Health Record: A digital version of a patient's paper chart, used for storing patient information and history that may be integrated with the proposed solution. \\ \hline
   \textbf{API} & Application Programming Interface: A set of rules and protocols for building and interacting with software applications, enabling the integration of the proposed solution with other systems. \\ \hline
-  \textbf{MC} & Mandated Constraints: Various constraints placed on the project’s proposed solution that must be adhered to throughout the development process. \\ \hline
-  \textbf{FR} & Functional Requirement: A requirement that specifies what functionality the project’s proposed solution must provide to meet user needs. \\ \hline
+  \textbf{MC} & Mandated Constraints: Various constraints placed on the project's proposed solution that must be adhered to throughout the development process. \\ \hline
+  \textbf{FR} & Functional Requirement: A requirement that specifies what functionality the project's proposed solution must provide to meet user needs. \\ \hline
   \textbf{NFR} & Nonfunctional Requirement: A requirement that specifies criteria that can be used to judge the operation of a system, rather than specific behaviors (e.g., performance, usability). \\ \hline
   \textbf{BUC} & Business Use Case: A scenario that describes how the proposed solution can be used within a business context to achieve specific goals. \\ \hline
   \textbf{PUC} & Product Use Case: A scenario that details how an individual user will interact with the proposed solution to achieve specific tasks. \\ \hline
@@ -84,7 +97,8 @@ abbreviations and acronyms used in this VnV Plan document.
 
 \pagenumbering{arabic}
 
-This document ...
+This document presents the verification and validation report for the chest X-ray classification web application, detailing how the system and model was tested against both functional and non-functional requirements. This is to ensure correctness, usability, performance, and readiness for real-world deployment.
+
 
 \section{Functional Requirements Evaluation}
 
@@ -110,8 +124,8 @@ No error messages or system anomalies occur.\\
 Invalid Chest X-ray Image Format Rejection (FRTC2)
 \textbf{Initial State:} The system is ready to receive an image file.\\
 \textbf{Input:} A sample image in an invalid format (e.g., .TXT, .DOCX).\\
-\textbf{Expected Output:} The system rejects the invalid image input.\\
-An appropriate error message is displayed, informing the user about supported formats.
+\textbf{Expected Output:} The system rejects the invalid image input.
+An appropriate error message is displayed, informing the user about supported formats.\\
 \textbf{Actual Output:} The system correctly rejects invalid file formats and provides an error message.\\
 \textbf{Expected and Actual Output Match:} True\\
 
@@ -119,9 +133,9 @@ An appropriate error message is displayed, informing the user about supported fo
 \subsubsection{Image Preprocessing and Standardization (FRTC3 - Completely Revised)}
 \textbf{Initial State:} A chest X-ray image has been uploaded and is ready for preprocessing.\\
 \textbf{Input:} A valid chest X-ray image in JPG, PNG, or DICOM format.\\
-\textbf{Expected Output:} The system resizes the image to match the CNN model’s required dimensions.\\
+\textbf{Expected Output:} The system resizes the image to match the CNN model's required dimensions.
 Pixel intensity values are normalized to enhance consistency.
-The preprocessed image is saved and ready for inference.
+The preprocessed image is saved and ready for inference.\\
 \textbf{Actual Output:} The system successfully resizes and normalizes images, preparing them for model analysis.\\
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.2 (Image Preprocessing)\\
@@ -177,7 +191,7 @@ The preprocessed image is saved and ready for inference.
 \subsubsection{Display Prediction Results in Readable Format (FRTC18 - New)}
 \textbf{Initial State:} The system has completed model inference, and the user is accessing the results page.\\
 \textbf{Input:} The user opens the result page after an image has been analyzed.\\
-\textbf{Expected Output:} The predicted disease label(s) are prominently displayed. The corresponding confidence scores are formatted for clarity. No extraneous or misleading information is presented. Results are accessible within a reasonable timeframe (<5 seconds).\\
+\textbf{Expected Output:} The predicted disease label(s) are prominently displayed. The corresponding confidence scores are formatted for clarity. No extraneous or misleading information is presented. Misleading information includes wrong details or details that are not related to the specific context. Results are accessible within a reasonable timeframe (<5 seconds).\\
 \textbf{Actual Output:} The system successfully displays predictions in a structured and readable format.\\
 \textbf{Expected and Actual Output Match:} True\\
 \textbf{Relevant Functional Requirement(s):} FR.6 (Display Results)\\
@@ -268,7 +282,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected Output:}
 \begin{itemize}
 \item The system rejects the upload.
-\item An error message appears stating, “Invalid file format. Please upload a JPG, PNG, or DICOM file.”
+\item An error message appears stating, "Invalid file format. Please upload a JPG, PNG, or DICOM file."
 \item The user is prompted to try again with a valid file format.
 \end{itemize}
 \textbf{Actual Output:} The system correctly rejects invalid file formats and displays an appropriate error message.\\
@@ -281,7 +295,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected Output:}
 \begin{itemize}
 \item The system detects that the file is corrupted and cannot be processed.
-\item An error message appears stating, “File appears to be corrupted. Please upload a valid image.”
+\item An error message appears stating, "File appears to be corrupted. Please upload a valid image."
 \item The system does not store or process the corrupted file.
 \end{itemize}
 \textbf{Actual Output:} The system successfully detects and rejects corrupted image files, displaying an appropriate error message.\\
@@ -322,7 +336,7 @@ The preprocessed image is saved and ready for inference.
 \textbf{Expected Output:}
 \begin{itemize}
 \item The system returns disease classifications with confidence scores.
-\item If the highest confidence score is below 50\%, the system displays a warning: “Low confidence in prediction – consider consulting a radiologist.”
+\item If the highest confidence score is below 50\%, the system displays a warning: "Low confidence in prediction - consider consulting a radiologist."
 \end{itemize}
 \textbf{Actual Output:} The system correctly identifies low-confidence cases and displays the warning message.\\
 \textbf{Expected and Actual Output Match:} True\\
@@ -345,7 +359,7 @@ The preprocessed image is saved and ready for inference.
 \subsection{Look and Feel Requirements}
 
 \subsubsection{NF-AR1: Calming Color Scheme}
-User surveys indicate that at least 75\% of users feel the color scheme contributes positively to their experience.
+User surveys indicate that at least \verb|MAJORITY_USERS| of users feel the color scheme contributes positively to their experience.
 
 \paragraph{Test Case:} Verification of Calming Color Scheme (NFRTC1)
 
@@ -360,12 +374,42 @@ User surveys indicate that at least 75\% of users feel the color scheme contribu
 \textbf{Expected and Actual Output Match:} True
 \textbf{Relevant Nonfunctional Requirement(s):} NF-AR1
 
+\pagebreak
+\begin{figure}
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{usersurvey1.png}
+        \caption{First page of the usability survey}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{usersurvey2.png}
+        \caption{Second page of the usability survey}
+    \end{minipage}
+\end{figure}
+
+% Feedback addressed: Add missing test case
 \subsubsection{NF-SR1: Consistent and Simple Style}
 The interface should have a minimalistic and easy-to-navigate design.  
 Users should be able to perform primary tasks efficiently without UI distractions.
 
+\paragraph{Test Case:} Consistency and Simplicity of Interface Style (NFRTC19)
+
+\textbf{Initial State:} The web application is fully functional with all interface elements loaded.
+\textbf{Input:} Navigate through different pages and use core features of the application.
+\textbf{Expected Output:}
+\begin{itemize}
+    \item User Interface remains consistent and minimal across all pages.
+    \item Users can perform tasks without encountering distracting UI elements
+    \item No confusing or redundant interactions
+\end{itemize}
+\textbf{Actual Output:} \verb|MAJORITY_USERS| of users reported that the interface was simple and distraction-free.
+\textbf{Expected and Actual Output Match:} True  
+\textbf{Relevant Nonfunctional Requirement(s):} NF-SR1, NF-SR2  
+
 \subsubsection{NF-SR2: Clean and Organized Aesthetic}
-Usability tests should show that 80\% of users find the interface easy to navigate without feeling overwhelmed.
+Usability tests should show that \verb|MAJORITY_USERS| of users find the interface easy to navigate without feeling overwhelmed.
 
 \paragraph{Test Case:} Consistency of Simple and Uncluttered Style (NFRTC2)
 
@@ -384,7 +428,7 @@ Usability tests should show that 80\% of users find the interface easy to naviga
 \subsection{Usability and Humanity Requirements}
 
 \subsubsection{NF-EUR0: Efficient Task Completion for Healthcare Professionals}
-At least 90\% of users should be able to complete key tasks (uploading images, viewing results, interpreting model outputs) without requiring additional guidance after initial training.
+At least \verb|ALMOST_ALL_USERS| of users should be able to complete key tasks (uploading images, viewing results, interpreting model outputs) without requiring additional guidance after initial training.
 
 \paragraph{Test Case:} Healthcare Professionals Task Completion (NFRTC3)
 
@@ -395,7 +439,7 @@ At least 90\% of users should be able to complete key tasks (uploading images, v
     \item At least 90\% of participants should complete tasks without requiring further support.
     \item The interface should facilitate task completion in an intuitive manner.
 \end{itemize}
-\textbf{Actual Output:} 94\% of test users successfully completed the required tasks without assistance.  
+\textbf{Actual Output:} \verb|ALMOST_ALL_USERS| of test users successfully completed the required tasks without assistance.  
 \textbf{Expected and Actual Output Match:} True  
 \textbf{Relevant Nonfunctional Requirement(s):} NF-EUR0  
 
@@ -429,7 +473,7 @@ The system should process 95\% of images within < 60 seconds.
 \begin{itemize}
     \item 95\% of images should be processed in <60 seconds.
 \end{itemize}
-\textbf{Actual Output:} 98\% of images were processed in an average of 50.5 seconds.  
+\textbf{Actual Output:} 98\% of images were each processed on average of 2.7 seconds.  
 \textbf{Expected and Actual Output Match:} True  
 \textbf{Relevant Nonfunctional Requirement(s):} NF-SLR0  
 
@@ -535,7 +579,7 @@ It is an advanced research project with its own research paper referencing it.
 \subsection{CXR-Capstone}
 The CXR-Capstone project is an open-source project that analyzes chest X-ray (CXR) images to predict potential diseases using a CNN model with multi-label prediction. It also uses demographic information such as race, age, and gender. In this way, it classifies images based on demographics as well for the intent of mitigating biases.
 
-The project is very similar to ours as it has a frontend running a backend model that takes in the user’s uploaded image and analyses if there are any diseases. On top of that, it also tracks the progression of conditions over time and generates a simple diagnostic report based on the image.
+The project is very similar to ours as it has a frontend running a backend model that takes in the user's uploaded image and analyses if there are any diseases. On top of that, it also tracks the progression of conditions over time and generates a simple diagnostic report based on the image.
 
 Their project uses a newer model architecture of DETR (detection transformer). It is said to have higher accuracy and run time performance than traditional CNNs. Its architecture is based on a transformer which is typically more data hungry, so it also uses a much larger dataset, MIMIC-CXR, which has over 300 000 images.
 
@@ -659,6 +703,75 @@ Output mean: 0.011
 ok
 \end{verbatim}
 
+\pagebreak
+% Feedback addressed: Add table for unit testing outputs
+The following table summarizes the results of unit testing for key components:
+
+
+\begin{table}[h!]
+\begin{scriptsize}
+\centering
+\begin{tabular}{|p{4cm}|p{6cm}|p{6cm}|}
+\hline
+\textbf{Test Name} & \textbf{Expected Output} & \textbf{Actual Output} \\
+\hline
+\texttt{test\_dataset\_getitem} & 
+\begin{itemize}
+    \item Image shape: (3, 224, 224)
+    \item Labels: [1.0, 0.0, 1.0]
+    \item Image normalization bounds: [0.074, 0.426]
+\end{itemize} & 
+\begin{itemize}
+    \item Image shape: (3, 224, 224)
+    \item Labels: [1.0, 0.0, 1.0]
+    \item Image normalization bounds: [0.074, 0.426]
+\end{itemize} \\
+\hline
+\texttt{test\_dataset\_initialization} & 
+\begin{itemize}
+    \item Dataset size: 1
+    \item Number of classes: 3
+    \item Class labels: ['Atelectasis', 'Mass', 'Nodule']
+\end{itemize} & 
+\begin{itemize}
+    \item Dataset size: 1
+    \item Number of classes: 3
+    \item Class labels: ['Atelectasis', 'Mass', 'Nodule']
+\end{itemize} \\
+\hline
+\texttt{test\_create\_binary\_matrix} & 
+\begin{itemize}
+    \item Binary matrix file exists
+    \item Number of rows: 3
+    \item Columns: ['Image Index', 'Atelectasis', 'Effusion', 'Mass', 'Nodule']
+    \item Binary values for first image: Atelectasis: 1, Effusion: 1, Mass: 0, Nodule: 0
+\end{itemize} & 
+\begin{itemize}
+    \item Binary matrix file exists
+    \item Number of rows: 3
+    \item Columns: ['Image Index', 'Atelectasis', 'Effusion', 'Mass', 'Nodule']
+    \item Binary values for first image: Atelectasis: 1, Effusion: 1, Mass: 0, Nodule: 0
+\end{itemize} \\
+\hline
+\texttt{test\_forward\_pass} & 
+\begin{itemize}
+    \item Output shape: (4, 14)
+    \item Output range: [-1.456, 1.686]
+    \item Output mean: 0.011
+\end{itemize} & 
+\begin{itemize}
+    \item Output shape: (4, 14)
+    \item Output range: [-1.456, 1.686]
+    \item Output mean: 0.011
+\end{itemize} \\
+\hline
+\end{tabular}
+\caption{Summary of Unit Test Outputs}
+\label{tab:unit-test-outputs}
+\end{scriptsize}
+\end{table}
+
+
 \section{Frontend Unit Testing and Coverage Analysis}
 
 \subsection{Overview}
@@ -759,6 +872,9 @@ User and supervisor feedback indicated that accuracy alone was not sufficient fo
     \item These metrics were added to the final model reports to assess performance across imbalanced disease classes.
 \end{itemize}
 
+% Feedback addresssed of clinical testing (Github issues)
+We were not able to test the model in a simulated environment with a radiologist to confirm proper usage and accuracy of the predictions due to our limited resources. Clinical evaluation in a test environment is planned in order to assess real-world performance and adoption feasibility.
+
 \subsection{Refining API Interactions and Error Handling for the Frontend}
 
 Frontend integration testing identified API response errors when handling missing images or incorrect file formats.
@@ -782,6 +898,9 @@ These changes significantly enhanced the reliability, usability, and transparenc
 \section{Automated Testing}
 Automated testing for our project currently emphasizes maintaining high code quality through consistent linting and formatting checks. The existing automated tests ensure code quality, readability, and consistency across the entire codebase. Our project does not require extensive CI/CD automated testing because the team is small and focused. The codebase is also manageable and easily divided up in parts where each member could work on it separately.
 
+% Feedback addresssed: front end testing
+Developers on the front end locally set up unit tests in order to ensure the front end React code works as expected. They used the React Testing Library and wrote simple tests that verify that certain components work as expected.
+
 \subsection{Linting and Formatting}
 
 We utilize GitHub Actions workflows to automate linting and formatting checks for both frontend and backend components. These automated checks help maintain code consistency, improve readability, and minimize potential bugs.
@@ -798,7 +917,7 @@ We use two primary tools for frontend code quality:
 
 The backend uses robust automated checks using the following tools:
 \begin{itemize}
-\item \textbf{Flake8:} Flake8 enforces adherence to Python’s PEP 8 standards. It identifies potential syntax errors, unused imports or variables, and common coding pitfalls. By automating Flake8 checks, we ensure backend code quality remains consistently high, reducing manual code reviews and catching errors early in the development process.
+\item \textbf{Flake8:} Flake8 enforces adherence to Python's PEP 8 standards. It identifies potential syntax errors, unused imports or variables, and common coding pitfalls. By automating Flake8 checks, we ensure backend code quality remains consistently high, reducing manual code reviews and catching errors early in the development process.
 \item \textbf{Black:} Black automatically formats Python code to a unified and clear style, eliminating debates about formatting preferences. It handles line length, spacing, and structural formatting. Automated Black checks verify code conformity and clearly indicate any violations, ensuring readability and maintainability.
 \end{itemize}
 
@@ -833,7 +952,44 @@ The GitHub Actions workflows are configured to trigger automatically whenever:
 
 If a workflow fails, GitHub clearly indicates the exact nature and location of errors, allowing developers to quickly identify and fix issues. This rapid feedback cycle helps team productivity and helps maintain a robust and error-free codebase
 
-
+% Feedback addressed: add CI/CD code
+Here is the CI/CD code that runs on every commit push that involves Python code. The CI/CD does the automatic linting and formatting checks described above.
+\begin{scriptsize}
+    \begin{verbatim}
+    # This is a basic workflow to help you get started with Actions
+    
+    name: Python Check
+    
+    # Controls when the workflow will run
+    on:
+      # Triggers the workflow on push or pull request events but only for the "main" branch
+      push:
+        branches: [ "main" ]
+      pull_request:
+        branches: [ "main" ]
+    
+      # Allows you to run this workflow manually from the Actions tab
+      workflow_dispatch:
+    
+    # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    jobs:
+      python-check:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - name: Python Linting
+            uses: programmingwithalex/pylinter@main
+            with:
+              python-root: '.'
+              flake8-flags: '--max-line-length=100 --ignore=E128'
+              skip-mypy: true
+              fail-on-isort: true
+          - name: Python Black Formatter
+            uses: jpetrucciani/black-check@master
+            with:
+              black_flags: '--exclude ./docs/'
+    \end{verbatim}
+\end{scriptsize}
 
 		
 \section{Trace to Requirements}
@@ -933,6 +1089,19 @@ NFR13 - Automated Testing Coverage >80\% &  &  &  &  &  & X \\ \hline
         \end{table}
 
 
+\begin{table}[h!]
+    \centering
+\begin{tabular}{|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{NFR \textbackslash TC} & \multicolumn{1}{c|}{NFRTC1} & \multicolumn{1}{c|}{NFRTC2} \\ \hline
+NFR-SR1 - Consistent and Simple Style & & X    \\ \hline
+NFR-SR2 - Clean and Organized Aesthetic & & X    \\ \hline
+NFR-AR1 - Calming Color Scheme & X & \\ \hline
+
+
+\end{tabular}%
+\end{table}
+
 \pagebreak
 
 \section{Trace to Modules}		
@@ -954,7 +1123,7 @@ This matrix ensures that each software module has corresponding test cases to va
     \textbf{M2 - Dataset Handling Tests} & FRTC4, FRTC5 & Validates dataset loading, correct sample retrieval, and label transformations. \\ \hline
      & FRTC6, NFRTC3 & Ensures data integrity by verifying labels and filtering out corrupted images. \\ \hline
     \textbf{M3 - Model Architecture Tests} & FRTC7, NFRTC4 & Confirms CNN layer structures, parameter counts, and expected model output dimensions. \\ \hline
-     & FRTC8, FRTC9 & Tests the CNN’s classification performance, ensuring correct label assignment with confidence scores. \\ \hline
+     & FRTC8, FRTC9 & Tests the CNN's classification performance, ensuring correct label assignment with confidence scores. \\ \hline
     \textbf{M4 - Training and Prediction Tests} & FRTC10, NFRTC5 & Validates model training stability, loss convergence, and parameter optimization. \\ \hline
      & FRTC11, NFRTC6 & Ensures correct prediction generation, accuracy validation, and performance benchmarks are met. \\ \hline
     \end{tabular}%
@@ -992,6 +1161,28 @@ Increasing test coverage for API services, form validation, and error handling w
 \newpage{}
 
 
+\section{Failed Test Cases and Debugging Actions}
+% Feedback addressed - add failed test cases that occurred
+During testing, a few failures were observed, especially in early iterations. The table below summarizes the failed test cases, their root causes, and the resolutions implemented to fix it in the final product:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{2cm}|p{3cm}|p{4cm}|p{4.5cm}|}
+\hline
+\textbf{Test Case} & \textbf{Description} & \textbf{Failure Cause} & \textbf{Resolution} \\
+\hline
+FRTC5 & No model prediction output & Sigmoid layer was applied twice, causing all predictions to be drastically scaled down and were below the threshold & Remove the extra sigmoid layer and adjusted model output scaling to have a normal probability distribution from 0-1. \\
+\hline
+FRTC22 & API handling of invalid image format & Initial implementation returned generic 500 error on invalid file types & Implemented MIME type validation and structured JSON error responses for unsupported formats \\
+\hline
+FRTC6 & Model prediction for healthy patients & Model confidently predicted disease in healthy cases & Introduced custom loss function penalizing confident false positives and removed the image labels that had too few samples (Hernia) from the dataset. Retrained model on balanced dataset. \\
+\hline
+\end{tabular}
+\caption{Summary of Failed Test Cases and Corrective Actions}
+\label{tab:failed-tests}
+\end{table}
+
+
 
 \section*{Appendix --- Reflection}
 
@@ -1024,20 +1215,26 @@ graduate attribute of Reflection.
   Originally, in our VnV Plan, under non-functional requirements, we had stated that our website needed to be compliant with data security standards, particularly those related to patient data protection, including secure storage, access controls, and adherence to privacy regulations (e.g., HIPAA). However, as we progressed, we realized that storing uploaded CXR images was unnecessary. Users, most likely radiologists or researchers, would only be looking for short-term insights, meaning long-term data storage would not only be an unnecessary cost but also irrelevant to their needs. 
   
   Instead, we decided to use SHA encryption for user account details, ensuring that in future refactoring of the website, any data shared by users would also be SHA encrypted and only stored in temporary storage, such as Redis Cache, before being deleted. This was our key revision regarding security compliance verification.
+
+  For context, HIPAA (Health Insurance Portability and Accountability Act) is a U.S. law that governs the protection of sensitive patient health information. It ensures that personal health data is kept private and secure when stored, processed, or transmitted by healthcare providers, insurers, and associated service providers.
+
+  Key rules include limiting access to PHI (personal health info), securing electronic data (ePHI), and notifying patients of breaches. Patients also have the right to access and correct their data.
+
+  To implement HIPAA compliance, systems should encrypt data at rest and in transit, use access controls like role-based permissions, and maintain audit logs to track data access. Physical and network security measures must be in place, and staff should be trained in HIPAA policies. Any third-party services handling PHI must sign Business Associate Agreements (BAAs) to ensure compliance throughout the data chain.
   
   \subsection{Backend Testing and Unit Test Revisions}
   
-  In the VnV plan, we made no discussion of Postman backend testing. Although we discussed unit testing at length, the actual backend testing that we conducted was primarily successful through Postman testing. For each URL belonging to the backend API, we tested each repeatedly, assuming valid and invalid payloads and credentials. This allowed us to achieve complete test coverage as well as perform tests we otherwise wouldn’t have been able to conduct via the frontend or through a collective demo.
+  In the VnV plan, we made no discussion of Postman backend testing. Although we discussed unit testing at length, the actual backend testing that we conducted was primarily successful through Postman testing. For each URL belonging to the backend API, we tested each repeatedly, assuming valid and invalid payloads and credentials. This allowed us to achieve complete test coverage as well as perform tests we otherwise wouldn't have been able to conduct via the frontend or through a collective demo.
   
-  Additionally, in our VnV plan, we had several unit tests, such as \texttt{FRTC3} and \texttt{FRTC4}, which ultimately had to be removed. This was due to a change in our project’s goals. Initially, we aimed to build a diffusion model project to generate CXR images, but we transitioned to developing a web application for multiclass classification on CXR images. As a result, these unit tests were no longer relevant and were removed.
+  Additionally, in our VnV plan, we had several unit tests, such as \texttt{FRTC3} and \texttt{FRTC4}, which ultimately had to be removed. This was due to a change in our project's goals. Initially, we aimed to build a diffusion model project to generate CXR images, but we transitioned to developing a web application for multiclass classification on CXR images. As a result, these unit tests were no longer relevant and were removed.
   
   \subsection{Challenges in Anticipating Project Direction}
   
-  These particular changes were not obvious beforehand and arose due to a shift in the project’s direction. Ideally, we would like to say that we could not have anticipated this, but at the time of writing the VnV document, we were already aware of potential challenges with our initial approach. As we were actively exploring solutions, it would have been beneficial to design unit tests that were more general or dynamic—tests that were adaptable to changing project contexts rather than being static. 
+  These particular changes were not obvious beforehand and arose due to a shift in the project's direction. Ideally, we would like to say that we could not have anticipated this, but at the time of writing the VnV document, we were already aware of potential challenges with our initial approach. As we were actively exploring solutions, it would have been beneficial to design unit tests that were more general or dynamic tests that were adaptable to changing project contexts rather than being static. 
   
   This approach would have ensured that the initial VnV plan remained useful even if the project evolved. However, there is also an argument that a verification plan that is too abstract could lose its usefulness. In hindsight, given the nature of our project, adopting a more flexible verification approach could have been a valuable revision.
   
-  \subsection{What Went Well?}
+  \subsection{What Went Well}
   
   \textbf{Gurnoor:} As a team, we distributed our roles across the document optimally. No one person was exclusive to a particular section, although each of us was primarily responsible for one section. We were all involved across different sections, helping each other and discussing any questions or confusion that arose.
   
@@ -1045,7 +1242,7 @@ graduate attribute of Reflection.
   
   \textbf{Ahmed:} We did well as a team in organizing ourselves. Some of us were highly knowledgeable when it came to addressing previous unit tests and code testing, whether functional tests or coverage tests. Others were confident in handling areas such as user feedback or supervisor feedback. By playing to our strengths, we were able to put together the document in the best way possible.
   
-  \textbf{Hamza:} Addressing the project changes went really well. In our earlier documents, we had outlined a different direction than the one we ultimately achieved. This wasn’t necessarily a bad thing. By acknowledging these changes in Section 7, we were able to extract valuable learnings for the future. Additionally, we cleared up a lot of confusion regarding earlier misalignments in our product's function.
+  \textbf{Hamza:} Addressing the project changes went really well. In our earlier documents, we had outlined a different direction than the one we ultimately achieved. This wasn't necessarily a bad thing. By acknowledging these changes in Section 7, we were able to extract valuable learnings for the future. Additionally, we cleared up a lot of confusion regarding earlier misalignments in our product's function.
   
   \textbf{Jared:} I believe writing and structuring our traceability matrix went quite well. We created a framework that allowed us to quickly gauge our progress in an easily understandable manner, and we did so with high accuracy. Additionally, the automated testing section was well-executed, capturing everything we aimed to achieve in ensuring correct testing practices beyond manual testing and demos.
   
@@ -1053,7 +1250,7 @@ graduate attribute of Reflection.
   
   One of the biggest challenges we faced was time management, especially as the project progressed and required integrating new changes. Balancing coursework alongside this deliverable sometimes made deadlines feel overwhelming. To resolve this, we divided tasks into smaller sections and held regular check-ins to ensure no team member was overloaded. This helped us stay on track without compromising the quality of critical sections.
   
-  With multiple team members working on different sections, ensuring consistency in terminology, formatting, and tone became a challenge. At one point, we noticed that some sections referenced outdated features while others reflected our latest changes. To address this, we conducted a final review session where each team member reviewed a section they hadn’t written. This process helped us flag inconsistencies and align all references with our final implementation.
+  With multiple team members working on different sections, ensuring consistency in terminology, formatting, and tone became a challenge. At one point, we noticed that some sections referenced outdated features while others reflected our latest changes. To address this, we conducted a final review session where each team member reviewed a section they hadn't written. This process helped us flag inconsistencies and align all references with our final implementation.
   
   \subsection{Sources of Input for This Document}
   

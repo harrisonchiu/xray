@@ -1,8 +1,7 @@
-# User Guide
+# SRS Volere Template
 
-The user guide could also include video introductions and tutorials.
+This folder contains a template for the Software Requirements Specification based on the Volere methodology.
 
-The folders and files for this folder are as follows:
-
-Describe ...
-
+## Key Files
+- **SRS.tex**: The main SRS document using the Volere template.
+- **./images**: Folder of images used to generate the pdf.

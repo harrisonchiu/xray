@@ -23,14 +23,15 @@
 
 \date{}
 
-\input{../Comments}
+%\input{../Comments}
 \input{../Common}
 
 \begin{document}
 
 \maketitle
 \thispagestyle{empty}
-
+~\newpage
+\tableofcontents 
 ~\newpage
 
 \pagenumbering{roman}
@@ -46,6 +47,7 @@
     25 October 2024 & Jared & Section 1, 3 \\
     25 October 2024 & Gurnoor & Section 2 \\
     25 October 2024 & Ahmad & Section 7\\
+    2 April 2025 & Harrison, Hamza, Jared, Gurnoor, Ahmad & Revised all sections to fit with final product\\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -56,422 +58,283 @@
 
 \section{Introduction}
 
-This document outlines the potential hazards and corresponding controls for the "AI for Chest
-X-ray" project, focusing on convolutional neural networks (CNNs) to automatically detect lung and
-heart conditions. A hazard, in this context, refers to any condition, event, or malfunction that
-could compromise system accuracy, reliability, security, or patient safety. Conducting a thorough
-hazard analysis is crucial to mitigate risks, ensure legal compliance (e.g., HIPAA), and improve
-the system's safety and reliability for clinical decision support, while safeguarding patient
-data integrity and confidentiality.
+% Feedback addressed:
+% - Expanded explanation of why hazard analysis is important in ML
+% - Mentioned difficulty of certifying ML correctness or explaining decisions
 
-In developing machine learning systems for medical diagnostics, hazard analysis is essential to
-identify potential risks, whether from system failures, unintended consequences, or improper
-functionality. These risks can lead to harm, mislead users with erroneous outputs, or negatively
-impact the system’s performance. For this project, hazards encompass both software issues and
-interactions between the AI system and users, such as radiologists and medical institutions. The
-goal of this hazard analysis is to assess these risks, evaluate their potential impacts, and
-implement measures to ensure the system functions safely and effectively in a real-world medical
-environment.
+This document outlines the potential hazards and corresponding controls for the "AI for Chest X-ray" project, focusing on convolutional neural networks (CNNs) to automatically detect lung and heart conditions. A hazard, in this context, refers to any condition, event, or malfunction that could compromise system accuracy, reliability, security, or patient safety. Conducting a thorough hazard analysis is crucial to mitigate risks, ensure legal compliance (e.g., HIPAA), and improve the system's safety and reliability for clinical decision support, while safeguarding patient data integrity and confidentiality.
+
+In developing machine learning systems for medical diagnostics, hazard analysis is essential to identify potential risks, whether from system failures, unintended consequences, or improper functionality. Unlike traditional software systems, machine learning models function as "black boxes," making it difficult or impossible to formally verify correctness or understand the internal logic of their decisions. This inherent uncertainty increases the importance of comprehensive hazard analysis to anticipate failure modes and mitigate risks. These risks can lead to harm, mislead users with erroneous outputs, or negatively impact the system's performance. For this project, hazards encompass both software issues and interactions between the AI system and users, such as radiologists and medical institutions. The goal of this hazard analysis is to assess these risks, evaluate their potential impacts, and implement measures to ensure the system functions safely and effectively in a real-world medical environment.
+
 
 \section{Scope and Purpose of Hazard Analysis}
 
-The purpose of this hazard analysis is to identify and mitigate risks associated with the "AI for
-Chest X-ray" system, particularly in clinical environments. Hazards may arise from various issues,
-including misdiagnosis (false positives/negatives), loss of data integrity, unauthorized access
-to patient records, and system downtime. The goal is to implement technical, procedural, and
-security controls that ensure the system operates safely and reliably while supporting
-radiologists in their diagnoses. This analysis covers the entire AI system's lifecycle—from data
-acquisition, image analysis, and diagnosis reporting to user interactions and system maintenance.
+% Feedback addressed:
+% - Clarified scope by specifying which phases and components are covered
+% - Added reference to entire system lifecycle and clarified out-of-scope items
 
-By focusing on these areas, the hazard analysis aims to safeguard the accuracy of the diagnostic
-process, protect patient privacy, and prevent errors that could lead to misdiagnoses or delays in
-care. The potential losses associated with these hazards include not only misdiagnosis and delayed
-diagnoses but also security breaches and a loss of trust among medical professionals. Given the
-high stakes involved in medical decision-making, addressing these hazards comprehensively is
-critical to ensuring patient safety and system reliability.
+The purpose of this hazard analysis is to identify and mitigate risks associated with the "AI for Chest X-ray" system, particularly in clinical environments where decisions informed by AI carry significant consequences. Hazards may arise from various sources, including image misclassification (false positives/negatives), compromised data privacy, system downtime, and failures in the user interface or backend infrastructure.
+
+The scope of this hazard analysis includes the full lifecycle of the system, from data acquisition and preprocessing, through CNN inference and diagnostic report generation, to user interaction and system maintenance. This includes the frontend web application used by radiologists, the backend infrastructure hosting the CNN model, and the data pipelines processing public datasets (e.g., CheXpert, MIMIC).
+
+While the analysis focuses on components developed and maintained by the project team, it excludes external infrastructure such as hospital-managed servers, third-party PACS systems, or internet service reliability, unless they directly impact the behavior of the AI system.
+
+By analyzing hazards within this defined scope, the document seeks to safeguard diagnostic accuracy, ensure regulatory compliance (e.g., HIPAA, PIPEDA), and maintain clinical trust in the system.
+
 
 \section{System Boundaries and Components}
 
-The system under analysis is designed to facilitate the detection of lung and heart conditions
-from chest X-ray images using advanced technologies. Its key components include the Machine
-Learning Model, specifically Convolutional Neural Networks (CNNs), which processes the X-rays to
-identify potential health issues. Complementing this is the Diffusion Model, which generates
-realistic chest X-ray images that enhance the training of the CNN. The Web Application serves as
-the interface for radiologists and researchers, allowing them to upload images and review the
-outputs generated by the AI.
+% Feedback addressed:
+% - Removed outdated diffusion model reference to align with current CNN-based project
+% - Clarified system boundaries to reflect only elements maintained by team
+% - Expanded system overview and interactions for completeness
 
-Additionally, the system relies on publicly available datasets like CheXpert and MIMIC for
-training the AI model, raising concerns about dataset accuracy and bias.
+The system under analysis is designed to facilitate the detection of lung and heart conditions from chest X-ray images using convolutional neural networks (CNNs). It consists of several integrated components that together enable real-time diagnostic support for medical professionals in clinical and research settings.
 
-In terms of functionality, the system includes:
+The AI system interacts with both human users (e.g., radiologists, clinicians) and digital services (e.g., hospital information systems) through a secure and user-friendly web-based platform. It enables clinicians to upload chest X-ray images, receive automated multi-label disease classifications, and visualize important diagnostic regions using Grad-CAM heatmaps.
 
 \textbf{Frontend}
 \begin{enumerate}
-  \item A web interface for user interaction and secure login authentication.
-  \item Features for image upload, retrieval, and display of diagnostic findings.
-  \item Access to diagnostic notes and reports restricted to authorized personnel.
+  \item A web interface for user interaction with secure login and session control.
+  \item Functionalities for uploading X-ray images, receiving diagnosis results, and viewing Grad-CAM heatmaps.
+  \item Role-based access to diagnostic notes, audit logs, and diagnostic history.
 \end{enumerate}
 
 \textbf{Backend}
 \begin{enumerate}
-  \item An AI model endpoint for detecting anomalies in chest X-rays.
-  \item Databases that store patient records, X-ray images, and diagnostic reports.
-  \item Connections to external systems, including hospital IT infrastructure and Radiology
-    Information Systems (PACS).
+  \item A CNN-based classification server that accepts images and returns disease predictions with confidence scores.
+  \item Secure databases for storing processed X-ray images, diagnostic predictions, and user logs.
+  \item RESTful API endpoints for handling model inference, image storage, and diagnostic result delivery.
 \end{enumerate}
 
-The system boundary is defined by these components and their interactions, focusing on the direct
-relationship between healthcare professionals and the AI while excluding external factors like
-hospital server management and potential network outages that are beyond our control. This
-ensures that the hazard analysis remains centered on elements that directly impact the system's
-safety, reliability, and effectiveness.
+\textbf{Training Pipeline (External to deployment scope)}
+\begin{enumerate}
+  \item An offline model training environment utilizing publicly available datasets (e.g., CheXpert, MIMIC-CXR).
+  \item Preprocessing modules to normalize, resize, and label training images.
+  \item Evaluation procedures to monitor model performance, bias, and generalization.
+\end{enumerate}
+
+The system boundary includes only components deployed and maintained by the development team. These include the user-facing web application, backend AI services, and associated internal databases. Excluded from the scope are external hospital IT networks, PACS servers, and unmanaged end-user devices. Clearly defining this boundary ensures that hazard identification focuses only on parts of the system where the team can directly implement mitigations or safety measures.
 
 \section{Critical Assumptions}
 
-In conducting the hazard analysis for the CNN-based chest X-ray analysis system, several critical
-assumptions are made regarding the functionality, environment, and usage of the system. These
-assumptions are necessary to define the scope of potential hazards and their mitigation
-strategies. While assumptions help simplify the analysis, they also highlight areas where
-potential risks may need to be revisited as the system evolves.
+% Feedback addressed:
+% - Clearly identified and labeled multiple critical assumptions
+% - Expanded content to clarify risks if assumptions fail
+
+In conducting the hazard analysis for the CNN-based chest X-ray analysis system, several critical assumptions are made regarding the functionality, environment, and usage of the system. These assumptions are necessary to define the scope of potential hazards and their mitigation strategies. While assumptions help simplify the analysis, they also highlight areas where potential risks may need to be revisited as the system evolves.
 
 \begin{enumerate}
   \item \textbf{Assumption 1: Model Performance} \\
-    It is assumed that the convolutional neural network (CNN) model will perform within the
-    expected accuracy levels (≥ 90\%) as defined by the system requirements. While the system is
-    tuned for high performance, this assumption leaves open the risk of false positives or false
-    negatives in diagnosis, which could lead to misdiagnosis if not managed properly.
+    It is assumed that the convolutional neural network (CNN) model will perform within the expected accuracy levels ($ 60\%$)
+ as defined by the system requirements. This implies that the model has been properly validated on representative data. However, any deviation from this performance (e.g., degradation in unseen settings) could lead to unsafe predictions and misdiagnoses.
+
   \item \textbf{Assumption 2: Dataset Quality and Relevance} \\
-    It is assumed that the datasets used for training (CheXpert, MIMIC) are of high quality and
-    representative of real-world chest X-ray images, both in terms of diversity and annotation
-    accuracy. This implies that the data contains no significant biases or labeling errors;
-    however, if these assumptions are incorrect, the model may generate inaccurate or biased
-    results.
+    The datasets used for training (CheXpert, MIMIC-CXR, NIH) are assumed to be representative of real-world chest X-ray images and correctly annotated. If these assumptions fail (e.g., due to dataset bias, poor labeling quality, or underrepresentation of minority groups), the model may generate inaccurate, biased, or non-generalizable results.
+
   \item \textbf{Assumption 3: Web Application Stability} \\
-    The web application is assumed to operate reliably under typical internet conditions, with
-    minimal risk of downtime or interruptions. Any disruption in the service (e.g., server
-    outages, high latency) could impact user experience and limit accessibility, especially in
-    time-sensitive clinical situations.
+    It is assumed that the web application operates reliably across standard devices and browsers with typical internet connectivity. Failures such as latency, browser incompatibility, or server outages could interrupt image uploads or result delivery, delaying diagnoses in time-sensitive settings.
+
   \item \textbf{Assumption 4: Data Privacy and Security} \\
-    It is assumed that the system does not collect or store any personally identifiable
-    information (PII) or sensitive health data from users. This assumption is crucial for
-    minimizing privacy risks; however, failure to anonymize or secure data properly could lead to
-    breaches, exposing users to legal and ethical issues related to healthcare privacy.
+    The system is assumed to follow appropriate data privacy policies and not collect any personally identifiable information (PII). If this assumption fails due to unintentional logging or insecure storage, users and patients may be exposed to regulatory or ethical risks (e.g., HIPAA/PIPEDA violations).
+
   \item \textbf{Assumption 5: User Competency} \\
-    It is assumed that the primary users (radiologists, researchers) possess adequate medical
-    knowledge to interpret the system’s outputs. The system does not explain its internal
-    decision-making processes ("black box" issue), which could lead to misinterpretation of
-    results by inexperienced users. If this assumption is invalid, there is a heightened risk of
-    incorrect diagnoses.
-  \item \textbf{Assumption 6: Integration with Hospital IT Infrastructure} \\
-    The system is assumed to integrate seamlessly with secure hospital IT infrastructure, ensuring
-    that patient data (X-rays and records) is stored and accessed securely in compliance with
-    HIPAA regulations. This integration is vital for the effective and safe operation of the AI
-    system in clinical environments.
-  \item \textbf{Assumption 7: Availability of Server Resources} \\
-    It is assumed that the server resources, both frontend and backend, will be continuously
-    available, except during planned maintenance or unexpected disruptions. Any unanticipated
-    downtime could hinder the system's functionality and impact clinical workflows.
+    It is assumed that users (e.g., radiologists, clinicians) possess adequate domain knowledge to interpret results responsibly. However, given the model's black-box nature, a lack of training or experience could lead to misuse or overreliance on predictions.
+
+  \item \textbf{Assumption 6: Secure Integration with Hospital Systems} \\
+    It is assumed that integration with hospital IT infrastructure and PACS is secure, encrypted, and compliant with healthcare standards. If this assumption is invalid, data transfers could become a point of vulnerability.
+
+  \item \textbf{Assumption 7: Backend and Infrastructure Availability} \\
+    It is assumed that backend components (APIs, servers, databases) will be accessible during clinical use, except during maintenance. Any unexpected downtime or failure may lead to incomplete workflows or delays in clinical decision-making.
 \end{enumerate}
+
 
 \section{Failure Mode and Effect Analysis}
 
-\newgeometry{left=0.25in,right=0.25in,top=0.25in,bottom=0.25in}
+% Feedback addressed:
+% - Clarified and referenced FMEA tables explicitly in body
+% - Addressed vague terms with specific threats 
+% - Enhanced clarity of Recommended Actions
+% - Used Booktabs table format for improved visual clarity
+
+This section presents the hazards identified in the Chest Scan system using a Failure Mode and Effect Analysis (FMEA) approach. The hazards include technical failures, misclassifications, data access issues, and user interface risks. These risks are evaluated by component, potential failure mode, cause, effect, and corresponding mitigation strategies. Tables~\ref{FMEA1} and~\ref{FMEA2} summarize these failure scenarios.
+
+\newgeometry{left=0.5in,right=0.5in,top=0.5in,bottom=0.5in}
 \begin{landscape}
-  \begin{table}[hp]
-    \caption{FMEA Worksheet Part 1} \label{FMEA}
-    \centering
-    \begin{footnotesize}
-      \begin{tabular}{|p{0.8in}|p{1in}|p{1.2in}|p{1.5in}|p{0.6in}|p{0.8in}|p{0.3in}|p{2.2in}|p{0.2in}|p{0.2in}|}
-        % Header
-        \toprule
-        \textbf{Component} & \textbf{Failure Modes} & \textbf{Effects of Failure} &
-        \textbf{Causes of Failure} & \textbf{Detection} & \textbf{Controls} & \textbf{Risk} &
-        \textbf{Recommended Action} & \textbf{Req.} & \textbf{Ref.} \\
-        \bottomrule
-
-        \multirow{2}{1in}{Web Application: User Access Authentication} &
-        \multirow{2}{1in}{Fail to authenticate user} &
-        Medical professional cannot login &
-        \multirow{2}{1.5in}{Authentication error in web application} &
-        \multirow{2}{0.6in}{Manual testing} & &
-        \multirow{2}{0.3in}{Low} &
-        Allow users to have alternative methods to login and be authenticated &
-        AR1, SR2 &
-        H1.1 \\
-        \cline{3-3}\cline{8-10}
-        & &
-        Unauthorized third party attempting to login & & & & &
-        Include security safeguards to prevent unauthorized parties from logging in such as
-        passwords, or only making the web application accessible locally. &
-        SR2, SR3, AR0, AR2 &
-        H1.2 \\
-        \hline
-
-        Web Application: Loading Images from Backend &
-        Fails to load chest x-ray image &
-        Users cannot see chest x-ray images &
-        Failed to encode image or failed to send data to frontend from backend &
-        Manual testing & &
-        Low &
-        Include failsafe if backend could not send image to user. And try sending it again if
-        possible. & &
-        H2 \\
-        \hline
-
-        Web Application: Uploading Images to Backend &
-        Fails to upload chest x-ray image &
-        Backend server which runs the model cannot receive input in order to run disease
-        detection &
-        Failed to encode image or failed to send data to frontend from backend &
-        Manual testing & &
-        Low &
-        Add redundant data transfer when sending image data. Ensure network connection to backend
-        is setup correctly & &
-        H3 \\
-        \hline
-
-        \multirow{2}{1in}{Web Application: Display Findings} &
-        Fails to show diagnostic reports of an x-ray image &
-        User cannot read the diagnostic summary report of finding diseases in the images &
-        \multirow{2}{1.5in}{Failed to send results from backend or failed to parse output from the
-        model into a summary} &
-        \multirow{2}{0.6in}{Manual testing} & &
-        \multirow{2}{0.3in}{Low} &
-        Include other ways for users to read the reports generated from the model & &
-        H4.1 \\
-        \cline{2-3}\cline{8-10}
-        &
-        Shows an incorrect disease report &
-        User reads a diagnostic report unrelated to the image at hand & & & & &
-        Double check if the output of the model is correct &
-        SR0 &
-        H4.2 \\
-        \hline
-
-        \multirow{2}{1in}{Model: Disease detection in the chest x-ray image} &
-        False positive detection &
-        Healthy patient could be diagnosed; waste of treatment and healthcare time &
-        Model is too sensitive to certain patterns and shapes, causing it to detect diseases in
-        normal x-ray images &
-        \multirow{2}{0.6in}{Automated validation testing during model training} & &
-        \multirow{2}{0.3in}{High} &
-        Optimize the neural network model to minimize false positives &
-        SR0, SR1 &
-        H5.1 \\
-        \cline{2-4}\cline{8-10}
-        &
-        False negative detection &
-        Patient does not correctly diagnosed and goes untreated; could worsen its state &
-        Model is too insensitive to certain shapes and patterns, so it fails to detect disease in
-        x-ray images with the diseases & & & &
-        Optimize the neural network model to minimize false negatives &
-        SR0, SR1 &
-        H5.2 \\
-        \hline
-
-        Model: Training &
-        Model overfitting &
-        Model performs very well on training data with high accuracy but has poor accuracy on
-        validation data (unseen images). Causes inaccurate detection &
-        Overfitting due to high number of training epochs or overly complex model architecture
-        layers &
-        Validation testing after training &
-        Use early stoppage, large training dataset, and regularization &
-        High &
-        Use techniques mentioned in "Controls" column to detect and prevent overfitting &
-        SR0, SR1 &
-        H6 \\
-        \bottomrule
-      \end{tabular}
-    \end{footnotesize}
-  \end{table}
+\begin{table}[hp]
+\caption{FMEA Worksheet Part 1: Frontend, Backend, and Model} \label{FMEA1}
+\centering
+\begin{footnotesize}
+\begin{tabular}{@{}p{1.1in}p{1in}p{1.1in}p{1.5in}p{0.6in}p{0.9in}p{0.3in}p{1.9in}p{0.3in}p{0.4in}@{}}
+\toprule
+\textbf{Component} & \textbf{Failure Modes} & \textbf{Effects of Failure} & \textbf{Causes of Failure} & \textbf{Detection} & \textbf{Controls} & \textbf{Risk} & \textbf{Recommended Action} & \textbf{Req.} & \textbf{Ref.} \\
+\midrule
+\multirow{2}{*}{User Access (Web App)} & Fail to authenticate authorized user & Radiologist or technician cannot access system to view results & Incorrect login credentials or broken auth module & Manual testing, log reviews & Alternative login flow, session timeout handler & Low & Add backup login method and authentication retry & AR1, SR2 & H1.1 \\
+\cmidrule(lr){2-10}
+& Unauthorized access by outsider & Breach of sensitive data or results & Weak password policy or missing rate limits & Penetration tests, log analysis & Password hashing, MFA, CAPTCHA & Medium & Enforce password policies, limit IP login attempts, use MFA & AR0, SR3 & H1.2 \\
+\midrule
+Image Upload (Frontend to Backend) & Failure to upload CXR & AI model receives no input for classification & Slow connection, bad file format, JS failure & Manual upload test, server logs & File validator, size checker & Low & Retry upload on failure, enforce accepted formats & -- & H2 \\
+\midrule
+Image Fetch (Backend to Frontend) & Failure to load result image & Radiologist sees broken preview, no heatmap & Timeout or backend fetch failure & User reports, frontend log & Retry fetch or preload fallback image & Low & Add async retry with loading spinner UI & -- & H3 \\
+\midrule
+\multirow{2}{*}{Result Display} & Report not shown or corrupted & Clinician can't interpret findings & Incomplete JSON, broken rendering logic & Console errors, schema mismatch test & Input sanitization, response schema validator & Medium & Add UI fallback and log corrupted entries for QA review & -- & H4.1 \\
+\cmidrule(lr){2-10}
+& Wrong report shown for wrong image & Misdiagnosis, legal liability & Race condition, output mislabeling & Manual test with mismatched upload, audit logs & Record-ID binding & High & Tag outputs with unique hash, verify via audit trail & SR0 & H4.2 \\
+\midrule
+\multirow{2}{*}{CNN Model} & False positive (predicts condition not present) & Unnecessary treatment, patient stress & Model overfit on noisy training samples & ROC curve and test set misclass check & Use calibrated thresholds, ensemble validation & High & Adjust decision thresholds and retrain on more negatives & SR0, SR1 & H5.1 \\
+\cmidrule(lr){2-10}
+& False negative (misses actual disease) & Missed diagnosis, worsened outcomes & Lack of data for rare class or subtle features & Confusion matrix on critical class & Data augmentation for underrepresented class & High & Use focal loss and boost rare class sampling & SR0, SR1 & H5.2 \\
+\midrule
+Model Training Process & Overfitting during training & Model fails in real-world unseen cases & Too many epochs, small train set, high variance & Gap in train/validation accuracy, generalization test & Early stopping, dropout, K-fold validation & High & Use regularization and mix training datasets & SR1 & H6 \\
+\bottomrule
+\end{tabular}
+\end{footnotesize}
+\end{table}
 \end{landscape}
 \restoregeometry
 
-\newgeometry{left=0.25in,right=0.25in,top=0.25in,bottom=0.25in}
+\newgeometry{left=0.5in,right=0.5in,top=0.5in,bottom=0.5in}
 \begin{landscape}
-  \begin{table}[hp]
-    \caption{FMEA Worksheet Part 2} \label{FMEA}
-    \centering
-    \begin{footnotesize}
-      \begin{tabular}{|p{1in}|p{1in}|p{1in}|p{1.5in}|p{0.6in}|p{0.8in}|p{0.7in}|p{1.8in}|p{0.2in}|p{0.2in}|}
-        % Header
-        \toprule
-        \textbf{Component} & \textbf{Failure Modes} & \textbf{Effects of Failure} &
-        \textbf{Causes of Failure} & \textbf{Detection} & \textbf{Controls} & \textbf{Risk} &
-        \textbf{Recommended Action} & \textbf{Req.} & \textbf{Ref.} \\
-        \bottomrule
-
-        \multirow{2}{1in}{Data Security} &
-        Cyberattacks &
-        Unauthorized access database which stores patient health records &
-        Weak security controls. This can include unsecured systems and login data unencrypted &
-        \multirow{2}{0.6in}{Unauthorized access detection} &
-        Good security policies &
-        \multirow{2}{0.8in}{Risk of leaking patient health records in a data breach} &
-        Improve cybersecurity &
-        \multirow{2}{0.2in}{AR0, AR2, SR3} &
-        H7.1 \\
-        \cline{2-4}\cline{6-6}\cline{8-8}\cline{10-10}
-        &
-        Unauthorized access &
-        Patient privacy at risk and possible data leak &
-        Weak access control measures & &
-        Minimize unnecessary access with with access groups & &
-        Improve access control & &
-        H7.2 \\
-        \hline
-
-        Access data from Database &
-        Data transfer failed &
-        Failed to retrieve patient data &
-        Network communication issues &
-        Automated data transfer checks with network handshakes &
-        Redundant data transfer paths &
-        Data retrieval risk &
-        Add data transfer redundancy when sending data &
-        SR3 &
-        H8 \\
-        \hline
-
-        \multirow{2}{1in}{Backend Server} &
-        Network failure &
-        Connection to database is disrupted &
-        Network connectivity issues &
-        \multirow{2}{0.6in}{Monitoring server performance} &
-        Redundant network connections &
-        \multirow{2}{0.9in}{Operational disruption} &
-        Use network connection redundancy & &
-        H9.1 \\
-        \cline{2-4}\cline{6-6}\cline{8-8}\cline{10-10}
-        &
-        Server downtime &
-        Unable to access database or run model &
-        Server overloaded with tasks blocking new tasks & &
-        Distributed systems & &
-        Use distributed systems to ensure server is always on & &
-        H9.2 \\
-        \hline
-
-        \multirow{2}{1in}{Data Storage} &
-        Data loss &
-        Patient images and data is lost &
-        Database accidentally deleted data &
-        Regular data backups &
-        Data redundancy by storing data in multiple places at once &
-        Data loss risk &
-        Regular backup and have a robust data storage system &
-        \multirow{2}{0.2in}{SR3, AR2} &
-        H10.1 \\
-        \cline{2-8}\cline{10-10}
-        &
-        Data corruption &
-        Patient images and data is lost &
-        Database server corruption or data got corrupted during transmission to database &
-        Data integrity checks &
-        Regular data backups &
-        Data loss leak &
-        Check integrity of data in database regularly & &
-        H10.2 \\
-        \bottomrule
-      \end{tabular}
-    \end{footnotesize}
-  \end{table}
+\begin{table}[hp]
+\caption{FMEA Worksheet Part 2: Security, Infrastructure, and Data Handling} \label{FMEA2}
+\centering
+\begin{footnotesize}
+\begin{tabular}{@{}p{0.95in}p{1in}p{1.1in}p{1.5in}p{0.6in}p{0.9in}p{0.3in}p{1.9in}p{0.4in}p{0.4in}@{}}
+\toprule
+\textbf{Component} & \textbf{Failure Modes} & \textbf{Effects of Failure} & \textbf{Causes of Failure} & \textbf{Detection} & \textbf{Controls} & \textbf{Risk} & \textbf{Recommended Action} & \textbf{Req.} & \textbf{Ref.} \\
+\midrule
+\multirow{2}{*}{Data Security} & Unauthorized access to DB & PHI breach, HIPAA violation & Weak auth layer, no encryption at rest & Intrusion detection tools, access logs & AES-256 encryption, RBAC & High & Add IP whitelist, rotate keys regularly & AR2, SR3 & H7.1 \\
+\cmidrule(lr){2-10}
+& Broad internal access & Insider threat risk & Dev access to full dataset in prod & Manual audit, test access scoping & Minimized data exposure & Medium & Use anonymization and access tiering & AR0, SR3 & H7.2 \\
+\midrule
+Data Transfer Layer & Transfer interrupted or dropped & Incomplete or corrupted transmission & Timeout, unstable net, backend crash & Transfer logs, retry pattern detection & Retry queue, ACK-reply protocol & Medium & Use auto-resume upload/download mechanism with hash check & SR3 & H8 \\
+\midrule
+\multirow{2}{*}{Backend Server} & Outage (DB/API down) & Model unavailable for triage & Container crash, memory leak, kernel fault & Liveness probe, API response time & Auto-restart on failure & Medium & Use container orchestration like Docker Compose or K8s & -- & H9.1 \\
+\cmidrule(lr){2-10}
+& Overloaded model queue & Delayed results, missed deadlines & High image volume, no async queuing & Load metrics, backlog size alerts & Thread pooling, async queue & Medium & Add queue buffer and model load balancer & -- & H9.2 \\
+\midrule
+\multirow{2}{*}{Persistent Storage} & Loss of training/report data & Re-training required, loss of trust & Disk crash, accidental deletion & Backup log schedule, system alerts & Daily snapshot + cloud sync & High & Enable automated restore from encrypted cloud archive & AR2, SR3 & H10.1 \\
+\cmidrule(lr){2-10}
+& Silent data corruption & Subtle misdiagnoses or wrong history reports & Bit rot, disk error, write race & Periodic DB checksum validation & SHA256 hash on upload & Medium & Enable end-to-end integrity verification on reads & -- & H10.2 \\
+\bottomrule
+\end{tabular}
+\end{footnotesize}
+\end{table}
 \end{landscape}
 \restoregeometry
+
 
 \section{Safety and Security Requirements}
 
+% Feedback addressed:
+% - Updated requirements to align with the CNN-based Chest Scan system (Content)
+% - Clarified actions and made all fit criteria verifiable (Verifiable Requirements)
+% - Ensured traceability using requirement IDs (Traceable Requirements)
+% - Aligned data protection statements with HIPAA compliance and encryption policies
+
 \subsection{Access Requirements}
-\textbf{AR0} The x-ray images used as training data should not be made available publicly; rather,
-they must be stored on a secure database system to prevent unauthorized access.
 
-Rationale: This is to ensure that private patient data remains secure and is not accessible by
-unauthorized individuals or bad actors.
+\textbf{AR0:} Access to patient data and diagnostic records shall be restricted to authenticated and authorized medical professionals.
 
-Fit Criterion: Only users with appropriate authorization credentials (e.g. researchers or system
-administrators) should be able to access the training data via the secure database.
+\textbf{Rationale:} This is essential to protect personal health information (PHI) and meet legal requirements such as HIPAA.
 
-\textbf{AR1} The website should be made publicly accessible to anyone, allowing users to
-experiment with the associated research findings, including generating synthetic chest X-ray
-images.
+\textbf{Fit Criterion:} Access to the system is limited to verified users through role-based authentication and enforced by access logs and permission tiers.
 
-Rationale: This is to allow wide dissemination and experimentation with the research findings,
-ensuring that researchers and the public can interact with the model without restrictions.
+\textbf{AR1:} The system's administrative dashboard shall only be accessible through secure login by authorized technical staff.
 
-Fit Criterion: Any user, without needing credentials, should be able to access the website and
-experiment with generating synthetic chest X-ray images.
+\textbf{Rationale:} Limiting system-wide configuration access reduces the likelihood of unintended disruptions or misuse.
+
+\textbf{Fit Criterion:} Access attempts to the admin dashboard must be logged and blocked if credentials are not validated through 2FA.
 
 \subsection{Integrity Requirements}
-\textbf{AR2} The system will encrypt all chest-x ray training data within the secure database.
 
-Rational: This data should not be available to any website user
+\textbf{AR2:} All sensitive medical data, including uploaded X-rays, diagnostic results, and user credentials, shall be encrypted at rest and in transit.
 
-Fit criterion: All data is not stored in any discernible language
+\textbf{Rationale:} Encryption ensures confidentiality and protects against interception or unauthorized modifications during communication and storage.
+
+\textbf{Fit Criterion:} The system shall use AES-256 encryption for data at rest and HTTPS/TLS for all data in transit. Security audits will verify compliance.
 
 \subsection{Safety Requirements}
-\textbf{SR0} The system will indicate the accuracy of the generated chest X-ray image relative to
-real-world test data.
 
-Rationale: Accurate generation is crucial to ensure the validity of research results and their
-practical application in the medical field.
+\textbf{SR0:} The system shall display classification confidence scores alongside each diagnostic prediction.
 
-Fit Criterion: The system will compare generated images with real test data and display a
-precision and accuracy score.
+\textbf{Rationale:} Transparency about model confidence helps radiologists assess uncertainty and make better-informed decisions.
 
-\textbf{SR1} The model will routinely experiment with different training data sets and model
-parameters to ensure optimal accuracy and precision of generated results.
+\textbf{Fit Criterion:} Each diagnostic report will include labeled confidence percentages (e.g., "Pneumonia: $87\%$"), and a red alert will appear for scores under $ 50\%$.
 
-Rationale: Continuous experimentation and optimization are needed to refine the diffusion model
-and improve the quality of generated data.
+\textbf{SR1:} Diagnostic predictions must be reviewed and approved by a qualified radiologist before being stored or exported.
 
-Fit Criterion: Results of the experiments will show improvement in precision and accuracy over
-time, as tested with various data sets.
+\textbf{Rationale:} AI-generated predictions are considered assistive; final medical judgments must come from certified professionals.
 
-\textbf{SR2} There will be no requirement to log in to the platform, as users are not required to
-input any personal details. The platform serves purely as an opportunity to experiment with the
-findings of the research and model.
+\textbf{Fit Criterion:} Reports will be tagged as "Pending Review" until explicitly confirmed by a logged-in radiologist. All unconfirmed results remain in a sandbox state.
 
-Rationale: Removing the need for authentication simplifies access and ensures that no personal
-data is collected, enhancing privacy.
+\textbf{SR2:} Model performance shall be monitored and validated routinely using a reserved validation dataset.
 
-Fit Criterion: Users will have unrestricted access to the platform without the need for
-authentication.
+\textbf{Rationale:} Continuous performance tracking ensures long-term reliability and early identification of model degradation.
 
-\textbf{SR3} Patient's data will be encrypted during data transfers.
+\textbf{Fit Criterion:} Accuracy on the validation dataset shall remain above $ 55\%$, with drift alerts issued when performance drops more than $ 5\%$ over a two-week period.
 
-Rationale: Encryption is needed to secure and ensure the privacy of patient's health data. It also
-prevents unauthorized access.
+\textbf{SR3:} All transmission of sensitive user data shall be protected using secure encryption protocols.
 
-Fit Criterion: The system and database will use a secure encryption algorithm like AES.
+\textbf{Rationale:} Protecting patient health data from exposure ensures legal compliance and builds user trust.
+
+\textbf{Fit Criterion:} HTTPS must be enforced site-wide. TLS 1.2 or higher will be verified during deployment audits.
 
 \section{Roadmap}
 
-Given the project's goals and requirements, our focus will be on implementing core access,
-integrity, and safety requirements. However, due to the research-oriented nature of the project
-and limited development time, we will prioritize essential functionalities initially, while some
-advanced features and security enhancements will be deferred for future phases.
+% Feedback addressed:
+% - Replaced vague scheduling statements with traceable deliverables and dates (Phase In Plan)
+% - Prioritized requirements and linked them to specific milestones (rubirc
+% - Updated timeline to reflect CNN-based Chest Scan project (Content)
 
-\textbf{To be implemented during the capstone timeline:}
+This section outlines the development roadmap for the Chest Scan system. It provides a timeline of key deliverables and phases, ensuring that priority features are developed, tested, and evaluated within the capstone project schedule. The plan accounts for system goals, safety/security requirements, and stakeholder needs.
+
+\textbf{Phase 1 - September-October 2024: Project Initialization and Requirements Gathering}
 \begin{itemize}
-  \item \textbf{AR0, AR1:} Secure storage of training data and public website access, scheduled for
-    implementation after the proof-of-concept demo
-  \item \textbf{SR0, SR1:} Displaying accuracy indicators for synthetic chest X-ray images in
-    relation to real-world data, scheduled for implementation by January 2025.
+  \item Finalize team and supervisor approval.
+  \item Submit problem statement and preliminary research plan.
+  \item Draft and submit SRS Revision 0.
+  \item Begin hazard analysis and identify key system risks.
 \end{itemize}
 
-\textbf{To be implemented in the future:}
+\textbf{Phase 2 - November 2024: Proof of Concept and Data Pipeline}
 \begin{itemize}
-  \item \textbf{Algorithm Optimization:} Continuous refinement of model parameters and training
-    data to improve precision and realism of synthetic X-ray images.
-  \item \textbf{Audit Log Maintenance:} Developing a logging system to track access and
-    interactions with the secure database for research tracking purposes.
-  \item \textbf{Regular Security Audits:} Periodic reviews and vulnerability assessments to ensure
-    data integrity and model accuracy, preventing unauthorized access or misuse of training data.
-  \item \textbf{Encryption Updates:} Continuously update encryption standards and protocols to
-    align with best practices in data protection and cybersecurity, ensuring ongoing compliance and
-    security of stored data.
+  \item Implement initial pipeline for X-ray image upload and preprocessing.
+  \item Demonstrate integration of publicly available datasets (CheXpert, MIMIC-CXR).
+  \item Present Proof of Concept with frontend upload + backend model response.
+  \item Begin writing V\&V Plan Revision 0.
 \end{itemize}
+
+\textbf{Phase 3 - December 2024 - January 2025: Core Feature Implementation}
+\begin{itemize}
+  \item Train and validate CNN model for disease classification (FR1-FR4, SR0).
+  \item Integrate Grad-CAM for visual explainability (FR5).
+  \item Enable confidence score and report generation (FR4, SR0).
+  \item Begin unit and integration testing across frontend/backend.
+\end{itemize}
+
+\textbf{Phase 4 - February 2025: Testing and Security Hardening}
+\begin{itemize}
+  \item Implement access controls, encryption (AR0-AR2, SR3).
+  \item Conduct usability tests and address report display (FR6).
+  \item Demonstrate working system in Revision 0 milestone.
+\end{itemize}
+
+\textbf{Phase 5 - March 2025: Finalization and Review}
+\begin{itemize}
+  \item Finalize validation dataset and assess model performance (SR2).
+  \item Conduct V\&V testing and performance audits.
+  \item Prepare final demonstration and documentation (SRS Rev. 1, Design Rev. 1).
+\end{itemize}
+
+\textbf{Future Work (Post-Capstone)}
+\begin{itemize}
+  \item Expand disease classification labels (e.g., nodules, tuberculosis).
+  \item Integrate role-based dashboards for institutions.
+  \item Deploy scalable API endpoints for clinical trials or research partners.
+  \item Conduct regular security audits and model revalidation (SR1, SR2).
+\end{itemize}
+
 
 \newpage{}
 
@@ -479,92 +342,45 @@ advanced features and security enhancements will be deferred for future phases.
 
 \input{../Reflection.tex}
 
+% Feedback addressed:
+% - Expanded reasoning behind what went well and what was difficult (LO)
+% - Clarified the origin of newly identified risks and how assumptions influenced analysis
+
+The information in this section will be used to evaluate the team members on the
+graduate attribute of Lifelong Learning. Please answer the following questions:
+
 \begin{enumerate}
-  \item What went well while writing this deliverable?
+  \item \textbf{What went well while writing this deliverable?}\\
+  One aspect that went well was defining the safety and security requirements for the project.
+  Since we had previously created a comprehensive SRS document, we were able to re-use and adapt many of the non-functional requirements, which helped streamline the hazard analysis. Our assumptions were straightforward to align as we had already discussed and agreed on them based on prior team meetings and system planning. Furthermore, dividing the system into frontend, backend, and model components gave structure to our risk identification, which made the FMEA process more manageable. The collaborative team environment also played a big role; brainstorming was smooth and delegation of sections was efficient.
 
-    One aspect that went well was defining the safety and security requirements for the project.
-    We had already defined non functional requirements in the SRS document, which provided us with
-    a clear idea of how to execute this task and format it. Making the assumptions went smoothly
-    since we were all on the same page and had a solid understanding of what assumptions to
-    make. Our previous work on the project contributed to this clarity, making the process more
-    efficient. Team collaboration went smoothly, as we were able to brainstorm effectively and
-    divide the tasks efficiently.
+  \item \textbf{What pain points did you experience during this deliverable, and how did you resolve them?}\\
+  One of the main challenges was defining the system boundaries, especially in a project like ours that involves a CNN model and multiple stakeholders (radiologists, backend engineers, users). It was initially unclear which parts to include within scope, particularly when it came to integration with hospital IT infrastructure or EHRs. This complexity was amplified by the research-based nature of our project, where boundaries may evolve over time. To address this, we adopted a flexible scope definition that could be revised later. We focused on core operational components (upload, classification, report generation) for this version of the hazard analysis while noting the potential for future updates.
 
-  \item What pain points did you experience during this deliverable, and how
-    did you resolve them?
+  \item \textbf{Which of your listed risks had your team thought of before this deliverable, and which did you think of while doing this deliverable? For the latter ones, how did they come about?}\\
+  \textbf{Previously identified risks:}
+  \begin{itemize}
+    \item Fail to Authenticate User (Web Application)
+    \item Fail to Load X-ray Images (Frontend Image Viewer)
+    \item Incorrect Disease Report Display (UI Output Mapping)
+    \item False Positive / False Negative Diagnoses (CNN Model)
+    \item Model Overfitting (Training Process)
+    \item Cyberattacks / Unauthorized Access (Security Layer)
+    \item Network Failures and Server Downtime (Infrastructure)
+    \item Data Corruption or Loss (Persistent Storage)
+  \end{itemize}
+  \textbf{New risks identified during this deliverable:}
+  \begin{itemize}
+    \item \textit{Image Upload Failure to Backend:} This arose while defining system boundaries and exploring data flow - we realized that image preprocessing or encoding errors could occur prior to classification.
+    \item \textit{Incorrect Display of Reports:} While analyzing how the frontend renders classification data, we considered that parsing or ID mismatch could cause diagnostic results to be shown for the wrong patient.
+    \item \textit{Unauthorized Access to Admin Portal:} This came up while documenting access requirements - since model parameters and user data are sensitive, exposing admin-level functionality without 2FA was flagged as a major security risk.
+  \end{itemize}
 
-    One of the main challenges we faced was determining how to limit the system boundaries and
-    what components to include. Given the complexity of our product and its integration
-    with external systems (such as hospital IT infrastructure and datasets), it was difficult to
-    know which elements to focus on within the scope of the hazard analysis. Another complicating
-    factor is that much of our project is research-based, meaning that as we make new discoveries
-    or refine our approach, the system boundaries and components may need to be changed. This
-    uncertainty made it challenging to confidently establish a stable set of boundaries for the
-    analysis. We addressed this by keeping the analysis flexible, acknowledging that components
-    and boundaries may shift over time as we progress in our research. This way, we can revisit
-    and adjust the hazard analysis as necessary to accommodate any new directions the project may
-    take.
+  \item \textbf{Other than the risk of physical harm, list at least 2 other types of risk in software products. Why are they important to consider?}\\
+  \textbf{1. Security Risks:} These include unauthorized access, data leaks, and vulnerabilities in authentication systems. In healthcare applications, such risks have severe legal and ethical implications under laws like HIPAA. They can undermine user trust and cause long-term damage to system credibility.
 
-  \item Which of your listed risks had your team thought of before this
-    deliverable, and which did you think of while doing this deliverable? For
-    the latter ones (ones you thought of while doing the Hazard Analysis), how
-    did they come about?
-
-    \textbf{Risks Identified Before Deliverable}
-    \begin{itemize}
-      \item Failure to Authenticate User (Web Application: User Access Authentication)
-      \item Failure to Load Chest X-ray Images (Web Application: Loading Images from Backend)
-      \item Failure to Display Report of an X-ray Image (Web Application: Display)
-      \item False Positive Detection (Model: Disease Detection in Chest X-ray Image)
-      \item False Negative Detection (Model: Disease Detection in Chest X-ray Image)
-      \item Model Overfitting (Model: Training)
-      \item Cyberattacks (Data Security)
-      \item Data Transfer Failed(Access Data from Database)
-      \item Network Failure (Backend Server)
-      \item Server Downtime (Backend Server)
-      \item Data Loss (Data Storage: Data Loss)
-      \item Data Corruption
-    \end{itemize}
-
-    \textbf{Risks Identified During Deliverable}
-    \begin{itemize}
-      \item Failure to Upload Chest X-ray Image (Web Application: Uploading Images to Backend)
-
-        This risk came about during the hazard analysis, when we conducted an assessment of the 
-        data flow from the web application to the backend. This assessment was part of our process 
-        for the system boundaries and components section which provided a better understanding of 
-        our application. This led us to recognize potential failures in image uploads due to
-        connectivity issues or encoding errors. This insight emerged from systematically analyzing
-        how user interactions with the frontend could encounter issues during backend integration.
-
-      \item Unauthorized access (Data Security)
-
-        We identified this risk during the safety and security requirements section. Specifically,
-        we consider scenarios where data might be breached and accessed by unknown/unauthorized
-        members. Training data incorporates real-life patient data which should be protected, and 
-        so the risk of cyberattacks is a crucial consideration.
-
-      \item Incorrect Display of Disease Report (Web Application: Display of Findings)
-
-        As part of the hazard analysis, we looked into how diagnostic findings are presented to
-        users (User interface characteristics). We identified that incorrect parsing or
-        summarization of data could lead to inaccurate outputs on the interface. By examining each
-        layer of interaction between the backend processing and frontend display, we discovered 
-        that failures in interpreting the model's output could cause misleading reports.
-    \end{itemize}
-
-  \item Other than the risk of physical harm (some projects may not have any
-    appreciable risks of this form), list at least 2 other types of risk in
-    software products. Why are they important to consider?
-
-    \textbf{Security Risks:} Unauthorized access or data breaches could expose sensitive patient
-    information. Security risks are critical to consider, especially in healthcare, because they
-    can lead to legal liabilities and the patient’s to lose trust in our process.
-
-    \textbf{Reliability Risks:} Software downtime or malfunction, especially in critical
-    environments like healthcare, can delay diagnosis, leading to unsatisfied patients and
-    negative outcomes. Ensuring high system reliability is essential to maintain efficiency and
-    avoid any negative impact on patient care.
+  \textbf{2. Reliability Risks:} If the system frequently crashes, returns incorrect predictions, or experiences downtime, clinical workflows are disrupted. This not only causes inefficiencies but may delay diagnoses and compromise patient care. High reliability is essential in any safety-critical software.
 \end{enumerate}
+
 
 \end{document}

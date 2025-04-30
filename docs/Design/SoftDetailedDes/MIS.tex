@@ -2,7 +2,7 @@
 
 \usepackage{amsmath, mathtools}
 
-\usepackage[round]{natbib}
+% \usepackage[round]{natbib}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -63,6 +63,7 @@ urlcolor=cyan          % color of external links
 01/12/2024 & 0.3 & Expanded Symbols, Abbreviations, and Acronyms section; refined MIS formatting. \\
 01/14/2024 & 0.4 & Completed Introduction and Notation sections; refined function signatures in MIS. \\
 01/16/2024 & 0.5 & Updated MIS for HardwareAcceleration and DatasetHandler modules based on feedback and finished all of the other modules. \\
+2025/03/28 & 0.6 & Updated MIS to reflect our change in project from Diffusion Models to CNN Multi-disease detection model \\
 \bottomrule
 \end{tabularx}
 \caption{Revision History}
@@ -70,7 +71,14 @@ urlcolor=cyan          % color of external links
 \end{table}
 
 
-~\newpage
+
+\section{Summary of Changes Made to the MIS}
+
+\begin{itemize}
+    \item The Introduction section was rewritten to reflect the updated project focus, shifting from a generative diffusion model to a CNN-based multi-disease classification model.
+    \item The Module Decomposition and Module Descriptions were revised to accurately align with the current structure and logic found in the codebase.
+    \item The Reflection Questions were updated to reflect the latest design decisions, module responsibilities, and overall development work carried out for the MIS.
+\end{itemize}
 
 \section{Symbols, Abbreviations and Acronyms}
 
@@ -116,25 +124,20 @@ The information on the rest of the symbols, abbreviations, and acronyms referenc
 
 \section{Introduction}
 
-The following document details the Module Interface Specifications of X-RayAssist. This software application is an AI-powered medical imaging software that processes chest X-ray images to identify, analyze, and reconstruct abnormal regions. The system utilizes advanced in-painting techniques to enhance visualization, aiding radiologists in interpreting affected areas. Additionally, it leverages machine learning (ML) models to generate synthetic X-ray images conditioned on specific disease characteristics, enabling better diagnosis and medical research. The processed results are then integrated into natural language radiology reports for further assessment.
+This document outlines the Module Interface Specifications for Scanalyze, a web-based chest X-ray classification application. The software leverages a custom-tuned multi-class classification machine learning (ML) algorithm to analyze chest X-ray (CXR) images and produce a probability distribution over a range of potential chest-related diseases. By identifying the most likely conditions present in a given CXR image, the system supports radiologists, researchers, and medical institutions in streamlining diagnostic workflows and reducing report backlogs.
+
+The application is built on an MVC-backend architecture, integrating components such as user credential management, repository communication, encryption protocols, and a dedicated model backend. This modular structure ensures security, scalability, and maintainability while supporting seamless integration of classification and user-facing features.
 
 Complementary documents include the System Requirement Specifications and Module Guide. The full documentation and implementation can be found at:
 
 \href{https://github.com/harrisonchiu/xray/tree/main}{\textbf{GitHub Repository}}.
 
+
 \section{Notation}
 
-\wss{You should describe your notation.  You can use what is below as
-  a starting point.}
+The structure of the MIS for modules comes from \cite{Hoffman1995}, with the addition that template modules have been adapted from \cite{Ghezzi2003}. The mathematical notation comes from Chapter 3 of \cite{Hoffman1995}. For instance, the symbol := is used for a multiple assignment statement, and conditional rules follow the form $(c_1 \Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
 
-The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
-with the addition that template modules have been adapted from
-\cite{GhezziEtAl2003}.  The mathematical notation comes from Chapter 3 of
-\citet{HoffmanAndStrooper1995}.  For instance, the symbol := is used for a
-multiple assignment statement and conditional rules follow the form $(c_1
-\Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
-
-The following table summarizes the primitive data types used by \progname. 
+The following table summarizes the primitive data types used by Chest Scan.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -144,17 +147,16 @@ The following table summarizes the primitive data types used by \progname.
 \textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\ 
 \midrule
 character & char & a single symbol or digit\\
-integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
-natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
-real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
+integer & $\mathbb{Z}$ & a number without a fractional component in $(-\infty$, $\infty$)\\
+natural number & $\mathbb{N}$ & a number without a fractional component in $[1, \infty)$\\
+real number & $\mathbb{R}$ & any number in $(-\infty$, $\infty$)\\
 \bottomrule
 \end{tabular} 
 \end{center}
 
-\noindent
-The specification of \textbf{X-RayChestScan} uses some derived data types, such as sequences, strings, and tuples. Sequences are lists containing elements of the same data type. Strings are sequences of characters. Tuples contain a list of values, potentially of different types.
+The specification of Scanalyze uses some derived data types, such as sequences, strings, and tuples. Sequences are lists containing elements of the same data type. Strings are sequences of characters. Tuples contain a list of values, potentially of different types.
 
-Additionally, \textbf{X-RayChestScan} defines functions, where inputs and outputs are described by their data types. Local functions are defined using type signatures followed by their specifications.
+Additionally, Scanalyze defines functions, where inputs and outputs are described by their data types. Local functions are defined using type signatures followed by their specifications.
 
 \section{Module Decomposition}
 
@@ -162,46 +164,40 @@ The following table is taken directly from the Module Guide document for this pr
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
-\toprule
-\textbf{Level 1} & \textbf{Level 2}\\
-\midrule
-
-{Hardware-Hiding} & HardwareAcceleration \\
-\midrule
-
-\multirow{6}{0.3\textwidth}{Behaviour-Hiding} & DataPreprocessing\\
-& SyntheticImageGen\\
-& DatasetHandler\\
-& EvaluationMetrics\\
-& LoggingAndMonitoring\\ 
-& UserInterface\\
-& Login\\
-\midrule
-
-\multirow{3}{0.3\textwidth}{Software Decision} & DiffusionModel\\
-& ImageExport\\
-& IntegrationModule\\
-\bottomrule
-
+\begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{Level 1} & \textbf{Level 2} \\
+\hline
+Hardware-Hiding & N/A \\
+\hline
+\multirow{5}{0.4\textwidth}{Behaviour-Hiding} & ModelInterface \\
+& AuthClient \\
+& DataRetrieval \\
+& DataPreparation \\
+& Authorization \\
+\hline
+\multirow{4}{0.4\textwidth}{Software Decision} & Config \\
+& MLBackend \\
+& ModelArchitecture \\
+& Training \\
+\hline
 \end{tabular}
 \caption{Module Hierarchy}
 \label{TblMH}
 \end{table}
-
-\newpage
 ~\newpage
 
-\section{MIS of HardwareAcceleration Module} \label{mHardwareAccel}
+\section{MIS of ModelInterface}
 
 \subsection{Module}
-\textbf{HardwareAcceleration} \\
-This module provides hardware-level optimizations using GPUs or TPUs for accelerating the computational tasks of the diffusion model, ensuring efficient training and generation of synthetic chest X-ray images.
+\textbf{ModelInterface} \\
+This module provides the frontend interface for uploading medical images (e.g., chest X-rays), sending them to a backend model, and visualizing the results. It facilitates zoomable image previews, prediction display, confidence-based filtering, and result export as a PDF.
 
 \subsection{Uses}
 \begin{itemize}
-    \item Relies on backend frameworks like CUDA, TensorFlow, or PyTorch for communication with hardware accelerators.
-    \item Used by other modules that require intensive computation to offload tasks for performance optimization.
+    \item Enables users to interact with machine learning models via image upload, analysis, and result exploration.
+    \item Provides an intuitive interface using modern UI features (React).
+    \item Integrates with backend APIs for real-time inference and result retrieval.
 \end{itemize}
 
 \subsection{Syntax}
@@ -212,15 +208,15 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-  \begin{tabular}{p{3cm} p{4cm} p{4cm} p{5cm}}
+  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
     \hline
     \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
     \hline
-    initializeHardware & Device ID, Memory Allocation & Initialization Confirmation & InvalidConfigError \\
+    uploadImage & imageFile & imagePreview & FileTypeError \\
     \hline
-    executeTask & Task Configuration, Input Data & Computed Results & ResourceExhaustionError \\
+    analyzeImage & uploadedImage & predictionResults & APIError \\
     \hline
-    monitorUsage & None & Hardware Utilization Statistics & None \\
+    downloadReport & analysisResults & pdfFile & PDFGenerationError \\
     \hline
   \end{tabular}
 \end{center}
@@ -229,87 +225,9 @@ None.
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item \textbf{allocatedResources}: Tracks the allocated GPU/TPU resources.
-    \item \textbf{taskQueue}: Stores tasks pending execution that require performance optimization.
-\end{itemize}
-
-\subsubsection{Environment Variables}
-\begin{itemize}
-    \item Access to GPU/TPU hardware for execution.
-\end{itemize}
-
-\subsubsection{Assumptions}
-\begin{itemize}
-    \item The execution environment includes at least one GPU or TPU with sufficient memory.
-    \item Backend frameworks are correctly installed and configured.
-\end{itemize}
-
-\subsubsection{Access Routine Semantics}
-
-\noindent \textbf{initializeHardware(DeviceID, MemAllocParams):}
-\begin{itemize}
-    \item \textbf{Transition:} Updates \textbf{allocatedResources} with details of the initialized hardware.
-    \item \textbf{Output:} Returns confirmation of hardware initialization.
-    \item \textbf{Exceptions:} Throws \textbf{InvalidConfigError} if initialization parameters are incorrect or not supported.
-\end{itemize}
-
-\noindent \textbf{executeTask(TaskConfig, InputData):}
-\begin{itemize}
-    \item \textbf{Transition:} Updates \textbf{taskQueue} with a new task. Executes computation using available hardware resources.
-    \item \textbf{Output:} Computation results for the task.
-    \item \textbf{Exceptions:} Throws \textbf{ResourceExhaustionError} if memory or compute limits are exceeded.
-\end{itemize}
-
-\noindent \textbf{monitorUsage():}
-\begin{itemize}
-    \item \textbf{Transition:} None.
-    \item \textbf{Output:} Current utilization metrics of GPU/TPU resources (e.g., memory, compute usage).
-    \item \textbf{Exceptions:} None.
-\end{itemize}
-
-\subsubsection{Local Functions}
-\begin{itemize}
-    \item \textbf{allocateResources()}: Dynamically allocates GPU/TPU resources based on task requirements.
-    \item \textbf{scheduleTask()}: Handles task scheduling and prioritization in the task queue.
-    \item \textbf{cleanupResources()}: Frees resources post-computation to avoid memory leaks.
-\end{itemize}
-
-\section{MIS of DataPreprocessing Module} \label{mDataPreproc}
-
-\subsection{Module}
-\textbf{DataPreprocessing} \\
-This module is responsible for preparing raw chest X-ray image datasets by applying data cleaning, augmentation, and transformation techniques to produce clean, ready-to-use data for input into the diffusion model.
-
-\subsection{Uses}
-\begin{itemize}
-    \item Model requires data that is preprocessed and clean before it is trained for the most effective result.
-\end{itemize}
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-None.
-
-\subsubsection{Exported Access Programs}
-
-\begin{center}
-  \begin{tabular}{p{3cm} p{4cm} p{4cm} p{5cm}}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    preprocessData & Dataset, preprocess config & Preprocessed Dataset & TransformationError \\
-    \hline
-    augmentData & Dataset, augmentation config & Augmented Dataset & AugmentationError \\
-    \hline
-  \end{tabular}
-\end{center}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-\begin{itemize}
-    \item \textbf{rawDataset}: Stores the raw dataset being processed.
-    \item \textbf{preprocessConfig}: Tracks the configuration for data preprocessing and augmentation operations.
+    \item \textbf{selectedFile}: Stores the uploaded image file.
+    \item \textbf{result}: Object holding prediction results and generated report.
+    \item \textbf{confidenceThreshold}: Numeric slider value for filtering predictions.
 \end{itemize}
 
 \subsubsection{Environment Variables}
@@ -319,41 +237,48 @@ None.
 
 \subsubsection{Assumptions}
 \begin{itemize}
-    \item Configuration files for transformations and augmentations are valid and correctly specified.
+    \item Image files are in a supported format (e.g., JPEG, PNG).
+    \item Backend API returns a valid JSON response.
+    \item Internet access is available for cloud-based predictions.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \textbf{preprocessData(DatasetObj, TransformConfig):}
+\textbf{uploadImage(file: Image):}
 \begin{itemize}
-    \item \textbf{Transition:} Applies specified transformations (e.g., normalization, resizing) to the dataset. Updates the raw dataset with the transformed dataset.
-    \item \textbf{Output:} Preprocessed dataset.
-    \item \textbf{Exceptions:} Throws \textbf{TransformationError} if any transformation fails (e.g., invalid parameters).
+    \item \textbf{Transition:} Accepts an image file, verifies its file type, and updates state for preview.
+    \item \textbf{Output:} An image preview rendered in the interface.
+    \item \textbf{Exceptions:} Throws \textbf{FileTypeError} if rendering fails.
 \end{itemize}
 
-\noindent \textbf{augmentData(DatasetObj, AugmentConfig):}
+\textbf{analyzeImage(image: File):}
 \begin{itemize}
-    \item \textbf{Transition:} Applies data augmentation techniques (e.g., rotations, flips) to the dataset. Updates the preprocessed dataset with the augmented dataset.
-    \item \textbf{Output:} Augmented dataset object.
-    \item \textbf{Exceptions:} Throws \textbf{AugmentationError} for failed augmentations.
+    \item \textbf{Transition:} Sends the image to the backend using a POST request. Receives prediction labels and probabilities.
+    \item \textbf{Output:} Renders a diagnostic report that contains prediction results and deeper insights.
+    \item \textbf{Exceptions:} Throws \textbf{APIError} if the response is malformed or request fails.
 \end{itemize}
 
-\subsubsection{Local Functions}
+\textbf{downloadReport(analysis: object):}
 \begin{itemize}
-    \item \textbf{validateDataset()}: Ensures the dataset meets input requirements before processing.
+    \item \textbf{Transition:} Converts visible diagnostic report results in the UI into a downloadable PDF.
+    \item \textbf{Output:} A PDF file downloaded via browser.
+    \item \textbf{Exceptions:} Throws \textbf{PDFGenerationError} if rendering or download fails.
 \end{itemize}
-\newpage
 
-\section{MIS of SyntheticImageGen Module} \label{mSyntheticImageGen}
+\section{MIS of AuthClient}
 
 \subsection{Module}
-\textbf{SyntheticImageGen} \\
-This module generates high-quality synthetic chest X-ray images that mimic real-world data. It enhances training datasets and simulates diverse imaging conditions for robust model evaluation.
+\textbf{AuthClient} \\
+This frontend module handles user authentication flows, including registration and login UI logic, form state management, and API interaction. It is responsible for managing input fields, UI feedback (success or error messages), and page navigation after successful login or registration. While it communicates with backend endpoints, \textbf{the core responsibility of this module is limited to the frontend layer}.
 
 \subsection{Uses}
 \begin{itemize}
-    \item Used by model training and evaluation modules to provide augmented datasets for improved performance and robustness.
-    \item Utilizes diffusion models to simulate realistic medical images.
+    \item Renders registration and login forms for users to input credentials.
+    \item Manages local input state: username, email, password, and feedback messages.
+    \item Handles form submission and calls backend API via a reusable API service.
+    \item Displays real-time feedback for success and error states using frontend validation and API responses.
+    \item Performs routing/navigation after successful login or registration using React Router.
+    \item Provides a secure and intuitive interface for authentication-related user flows.
 \end{itemize}
 
 \subsection{Syntax}
@@ -364,15 +289,15 @@ None.
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-  \begin{tabular}{p{3cm} p{4cm} p{4cm} p{5cm}}
+  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
     \hline
     \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
     \hline
-    InitializeGenerator & ConfigParameters & Generator Instance & InvalidConfigError \\
+    registerUser & username, email, password & successMessage & RegistrationError \\
     \hline
-    generateImages & GeneratorInstance, Image specifications & Synthetic Image Dataset & GenerationError \\
+    loginUser & username, password & successMessage & AuthenticationError \\
     \hline
-    saveGeneratedImages & Synthetic Image Dataset, Output file Path & Confirmation that images are saved & FileWriteError \\
+    redirectOnLogin & success & homepage & NavigationError \\
     \hline
   \end{tabular}
 \end{center}
@@ -381,807 +306,824 @@ None.
 
 \subsubsection{State Variables}
 \begin{itemize}
-    \item \textbf{generatorConfig}: Stores configuration details for the image generation process.
-    \item \textbf{generatedImages}: Tracks synthetic images created during the session.
+    \item \textbf{username}: Bound to registration form input.
+    \item \textbf{email}: Used in registration forms.
+    \item \textbf{password}: Captures user password securely.
 \end{itemize}
 
 \subsubsection{Environment Variables}
+\begin{itemize}
+    \item None.
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+    \item Form fields are validated on the frontend prior to submission.
+    \item Network is reachable when API calls are triggered.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\textbf{registerUser(username: string, email: string, password: string):}
+\begin{itemize}
+    \item \textbf{Transition:} Collects and validates form data, submits it to the API service. On success, updates UI with a success message and redirects to login.
+    \item \textbf{Output:} Success message: "Registration successful! Please log in."
+    \item \textbf{Exceptions:} Displays a frontend \textbf{RegistrationError} if the backend returns a conflict.
+\end{itemize}
+
+\textbf{loginUser(username: string, password: string):}
+\begin{itemize}
+    \item \textbf{Transition:} Sends login requests through the API service. On success, clears form state and navigates the user to the homepage or dashboard.
+    \item \textbf{Output:} Success message: "Login Successful."
+    \item \textbf{Exceptions:} Displays \textbf{AuthenticationError} if credentials are invalid.
+\end{itemize}
+
+\textbf{redirectOnLogin(success: boolean):}
+\begin{itemize}
+    \item \textbf{Transition:} If login succeeds, it triggers navigation to the homepage.
+    \item \textbf{Output:} Homepage is rendered on the UI.
+    \item \textbf{Exceptions:} Throws \textbf{NavigationError} (404 error) if routing is misconfigured or fails.
+\end{itemize}
+
+\section{MIS of DataRetrieval}
+
+\subsection{Module}
+\textbf{DataRetrieval} \\
+Handles downloading and extracting NIH Chest X-ray image archives. Ensures local storage of required .png files for downstream training and validation.
+
+\subsection{Uses}
+\begin{itemize}
+    \item Automates retrieval of 12 archive files from publicly hosted NIH Box links.
+    \item Extracts and stores images in a structured local directory (\texttt{./data/images}).
+    \item Prevents redundant downloads by checking file existence.
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+  \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
+    \hline
+    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+    \hline
+    prepareData & None & imageFiles in /data/images & NetworkError, FileIOError \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+    \item \textbf{downloadDir}: Stores .tar.gz files.
+    \item \textbf{imagesDir}: Directory for extracted .png files.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+\begin{itemize}
+    \item Internet connection.
+    \item Write permissions to local file system.
+    \item NIH archive links (hardcoded).
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+    \item Links are valid and publicly accessible.
+    \item Directory structure is consistent.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\textbf{prepareData():}
+\begin{itemize}
+    \item \textbf{Transition:} Creates download and extraction directories if they do not exist. Downloads NIH image archives unless they are already cached. Extracts .png files into the target image directory.
+    \item \textbf{Output:} All NIH .png chest X-ray images are saved into \texttt{./data/images}.
+    \item \textbf{Exceptions:} Raises \textbf{NetworkError} if internet access fails, and \textbf{FileIOError} if extraction paths are inaccessible or write fails.
+\end{itemize}
+\newpage
+
+
+\section{MIS of DataPreparation}
+
+\subsection{Module}
+\textbf{DataPreparation}
+
+This module handles all logic required to prepare the dataset for training. This includes preprocessing and filtering the data, label binarization, stratified splitting, image augmentation, and the calculation of class-wise statistics used during loss balancing and regularization.
+
+\subsection{Uses}
+\begin{itemize}
+    \item Filters rows based on label conditions (e.g. excludes "No Finding" and "Hernia").
+    \item Converts multi-label strings into binary disease columns.
+    \item Splits data to create training and validation sets.
+    \item Constructs image transformation pipelines (base + augmented).
+    \item Computes class-wise weights for BCE loss and average label count per sample.
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+preprocessDataframe & dataframe & filteredDataframe & DataParsingError \\
+binarizeLabels & dataframe & binary-labelDataframe & LabelProcessingError \\
+splitData & dataframe & trainDataframe, valDataframe & SplitDataframeError \\
+applyTransforms & trainDataframe, valDataframe & augmentedTrainDataframe, augmentedValDataframe & TransformConfigError \\
+computeTrainingStats & trainDataframe & posWeight: Tensor, avgPositive: float & ValueError \\
+\hline
+\end{tabular}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+    \item \texttt{data}: Raw or filtered DataFrame.
+    \item \texttt{trainDataframe, valDataframe}: Split datasets used for training and validation.
+    \item \texttt{transform}: Torchvision transform pipeline for images.
+    \item \texttt{posWeight}: Tensor for loss class balancing.
+    \item \texttt{avgPositive}: Float indicating average number of labels per sample.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+None.
+
+\subsubsection{Assumptions}
+\begin{itemize}
+    \item Labels in the CSV are pipe-separated.
+    \item All image inputs are grayscale and resized to 128x128.
+    \item Class distribution is imbalanced and requires correction.
+    \item Augmentations apply only to training data.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\textbf{preprocessDataframe(data: DataFrame, trim: bool):}
+\begin{itemize}
+    \item \textbf{Transition:} Removes image data that contain hernia or no finding. Filters rows to retain meaningful diagnostic labels.
+    \vspace{0.1cm}
+    \item \textbf{Output:} Cleaned DataFrame suitable for label encoding.
+    \vspace{0.1cm}
+    \item \textbf{Exceptions:} Raises \texttt{DataParsingError} if structure is invalid or columns are missing.
+\end{itemize}
+
+\textbf{binarizeLabels(data: DataFrame):}
+\begin{itemize}
+    \item \textbf{Transition:} Parses the Finding Labels string field into 13 binary columns representing the disease classes in \texttt{allLabels}.
+    \vspace{0.1cm}
+    \item \textbf{Output:} DataFrame with additional binary columns for each disease.
+    \vspace{0.1cm}
+    \item \textbf{Exceptions:} Raises \texttt{LabelProcessingError} if the label field is missing or improperly formatted.
+\end{itemize}
+
+\textbf{splitData(data: DataFrame):}
+\begin{itemize}
+    \item \textbf{Transition:} Performs an 80/20 train-validation split with stratification based on a partial hash of the Finding Labels.
+    \vspace{0.1cm}
+    \item \textbf{Output:} \texttt{trainDataframe}: Training subset, \texttt{valDataframe}: Validation subset.
+    \vspace{0.1cm}
+    \item \textbf{Exceptions:} Raises \texttt{SplitError} if stratification fails or sample size is too small.
+\end{itemize}
+
+\textbf{createTransforms(augment: bool):}
+\begin{itemize}
+    \item \textbf{Transition:} Constructs a Torchvision transformation pipeline. Applies randomized augmentations like horizontal flip, affine transformation, and brightness/contrast jitter to the training dataset. Applies only base preprocessing (resize, normalize) to the validation dataset.
+    \vspace{0.1cm}
+    \item \textbf{Output:} Augmented validation and training datasets.
+    \vspace{0.1cm}
+    \item \textbf{Exceptions:} Raises \texttt{TransformConfigError} if the transformation composition fails due to internal misconfiguration.
+\end{itemize}
+
+\textbf{computeTrainingStatistics(train\_df: DataFrame):}
+\begin{itemize}
+    \item \textbf{Transition:} Calculates two statistics from the training set:
+    \begin{itemize}
+        \item \texttt{posWeight}: Ratio of negative to positive samples per class (for use in BCEWithLogitsLoss).
+        \item \texttt{avgPositive}: Average number of positive labels per training sample (used in sparsity regularization).
+    \end{itemize}
+    \vspace{0.1cm}
+    \item \textbf{Output:} 
+    \begin{itemize}
+        \item \texttt{posWeight}: Tensor of shape (13,).
+        \item \texttt{avgPositive}: Float scalar.
+    \end{itemize}
+    \vspace{0.1cm}
+    \item \textbf{Exceptions:} Raises \texttt{ValueError} if data is malformed or if class counts include zeros.
+\end{itemize}
+\newpage
+
+
+
+\section{MIS of Authorization Module}
+
+\subsection{Module}
+\textbf{Authorization} \\
+This module is responsible for handling user authentication and registration. It enables secure access to protected endpoints using JWT tokens. It manages login, signup, token generation, validation, and user roles for access control.
+
+\subsection{Uses}
+\begin{itemize}
+    \item Enables user login and registration via REST APIs.
+    \item Generates and validates JWT tokens for session-less authentication.
+    \item Filters incoming requests and injects authenticated users into the Spring Security context.
+    \item Defines and persists users and roles using JPA and MySQL.
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+login & loginDto & JWTAuthResponse & UsernameNotFoundException \\
+register & RegisterDto & Success Message & APIException \\
+generateToken & Authentication & JWT String & APIException \\
+validateToken & String (JWT) & Boolean & APIException \\
+getUsername & String (JWT) & Username & APIException \\
+\hline
+\end{tabular}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+    \item \textbf{UserRepository:} Handles retrieval and persistence of user data.
+    \item \textbf{RoleRepository:} Handles retrieval and persistence of roles.
+    \item \textbf{JwtTokenProvider:} Responsible for JWT operations like generation and validation.
+    \item \textbf{CustomUserDetailsService:} Loads user credentials and authorities for Spring Security.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+\begin{itemize}
+    \item \textbf{app.jwt-secret:} Secret used to sign JWT tokens.
+    \item \textbf{app.jwt-expiration-milliseconds:} Expiry duration for the JWT token.
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+    \item Usernames and emails are unique and validated at registration.
+    \item Valid roles (\verb|ROLE_USER|, \verb|ROLE_ADMIN|, etc.) are seeded or pre-created in the system.
+    \item Spring Security is enabled and properly configured (refer to \texttt{SecurityConfig} module).
+    \item The secret key and expiration time are defined in the application properties.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\paragraph{login(LoginDto)}
+\begin{itemize}
+    \item \textbf{Transition:} Validates credentials, loads the user, and generates a JWT token.
+    \item \textbf{Output:} \texttt{JwtAuthResponse} containing the access token and type.
+    \item \textbf{Exceptions:} Throws \texttt{UsernameNotFoundException} if user is not found; may throw \texttt{APIException} on JWT issues.
+\end{itemize}
+
+\paragraph{register(RegisterDto)}
+\begin{itemize}
+    \item \textbf{Transition:} Registers a new user by saving to the database with encrypted password and assigned roles.
+    \item \textbf{Output:} \texttt{String} message indicating success.
+    \item \textbf{Exceptions:} Throws \texttt{APIException} if username or email already exists.
+\end{itemize}
+
+\paragraph{generateToken(Authentication)}
+\begin{itemize}
+    \item \textbf{Transition:} Generates a JWT token using username and configured expiration duration.
+    \item \textbf{Output:} JWT token as a \texttt{String}.
+    \item \textbf{Exceptions:} None explicitly thrown.
+\end{itemize}
+
+\paragraph{validateToken(token)}
+\begin{itemize}
+    \item \textbf{Transition:} Parses the token and validates its signature, expiration, and format.
+    \item \textbf{Output:} Boolean indicating whether the token is valid.
+    \item \textbf{Exceptions:} Throws \texttt{APIException} with relevant HTTP status if token is malformed, expired, unsupported, or null.
+\end{itemize}
+
+\paragraph{getUsername(token)}
+\begin{itemize}
+    \item \textbf{Transition:} Extracts the username (subject) from the decoded JWT claims.
+    \item \textbf{Output:} Username as a \texttt{String}.
+    \item \textbf{Exceptions:} Throws \texttt{APIException} if token is invalid.
+\end{itemize}
+
+\paragraph{doFilterInternal(request, response, filterChain) (JWTAuthenticationFilter)}
+\begin{itemize}
+    \item \textbf{Transition:} Extracts token from header, validates it, loads user, and sets security context.
+    \item \textbf{Output:} None (side-effect: injects user into \texttt{SecurityContextHolder}).
+    \item \textbf{Exceptions:} Continues filter chain even on invalid tokens (handled globally).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\paragraph{getTokenFromRequest(request):} Extracts Bearer token from the request header.
+
+\newpage
+
+\section{MIS of Config Module}
+\label{sec:ConfigModule}
+
+\subsection{Module}
+\label{sec:ConfigModuleModule}
+
+\textbf{Config}
+
+This module is responsible for configuring key aspects of the Spring Boot backend application. It includes application-wide configurations such as REST template instantiation, CORS settings, security filter chains, and network connectivity testing between Java and the Flask ML backend.
+
+\subsection{Uses}
+\label{sec:ConfigModuleUses}
+
+\begin{itemize}
+    \item Enables CORS policies to allow frontend-backend communication.
+    \item Provides \texttt{RestTemplate} bean for HTTP communication.
+    \item Secures API endpoints using \texttt{JWT} authentication and Spring Security.
+    \item Verifies network connectivity to the Flask API used for ML inference.
+\end{itemize}
+
+\subsection{Syntax}
+\label{sec:ConfigModuleSyntax}
+
+\subsubsection{Exported Constants}
+None.
+
+\subsubsection{Exported Access Programs}
+\label{sec:ConfigModuleExported}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Name}         & \textbf{In}           & \textbf{Out}             & \textbf{Exceptions} \\ \hline
+corsConfigurer        & None                  & WebMvcConfigurer         & -                  \\ \hline
+authenticationManager  & AuthenticationConfig  & AuthenticationManager    & Exception          \\ \hline
+passwordEncoder       & None                  & PasswordEncoder          & Exception          \\ \hline
+securityFilterChain    & HttpSecurity          & SecurityFilterChain      & Exception          \\ \hline
+\end{tabular}
+\caption{Exported Access Programs for \texttt{Config} Module}
+\end{table}
+
+\subsection{Semantics}
+\label{sec:ConfigModuleSemantics}
+
+\subsubsection{State Variables}
+\label{sec:ConfigModuleStateVariables}
+
+\begin{itemize}
+    \item \texttt{authenticationEntryPoint}: Handles unauthorized access attempts.
+    \item \texttt{userDetailsService}: Loads user-specific data for authentication.
+    \item \texttt{authenticationFilter}: Filters incoming requests and validates JWT tokens.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+\label{sec:ConfigModuleEnvVariables}
+
 \begin{itemize}
     \item Requires access to GPU resources for computationally intensive image generation.
     \item File system access for saving synthetic datasets.
 \end{itemize}
 
 \subsubsection{Assumptions}
+\label{sec:ConfigModuleAssumptions}
+
 \begin{itemize}
     \item Input configurations are valid and specify all necessary parameters.
     \item The environment has the required computational resources to execute the process.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
+\label{sec:ConfigModuleAccessRoutineSemantics}
 
-\noindent \textbf{initializeGenerator(ConfigParams):}
+\textbf{initializeGenerator(ConfigParams):}
+
 \begin{itemize}
-    \item \textbf{Transition:} Sets up the image generator based on configuration parameters. Updates \textbf{generatorConfig}.
+    \item \textbf{Transition:} Sets up the image generator based on configuration parameters. Updates \texttt{generatorConfig}.
     \item \textbf{Output:} Generator instance ready for image generation.
-    \item \textbf{Exceptions:} Throws \textbf{InvalidConfigError} if the configuration parameters are invalid.
+    \item \textbf{Exceptions:} Throws \texttt{InvalidConfigError} if the configuration parameters are invalid.
 \end{itemize}
 
-\noindent \textbf{generateImages(GenInstance, ImageParams):}
+\textbf{generateImages(GenInstance, ImageParams):}
+
 \begin{itemize}
     \item \textbf{Transition:} Uses the generator instance to create synthetic images based on the specified parameters.
     \item \textbf{Output:} A dataset of synthetic chest X-ray images.
-    \item \textbf{Exceptions:} Throws \textbf{GenerationError} if the image generation fails.
 \end{itemize}
 
-\noindent \textbf{saveGeneratedImages(SyntheticDataset, OutputPath):}
+\textbf{saveGeneratedImages(SyntheticDataset, OutputPath):}
+
 \begin{itemize}
     \item \textbf{Transition:} Saves the synthetic dataset to the specified file/folder.
     \item \textbf{Output:} Receives confirmation that the dataset was successfully saved.
-    \item \textbf{Exceptions:} Throws \textbf{FileWriteError} if the save operation fails (e.g., non-existing file path).
+    \item \textbf{Exceptions:} Throws \texttt{FileWriteError} if the save operation fails (e.g., non-existing file path).
 \end{itemize}
-\newpage
-\section{MIS of DatasetHandler Module} \label{mDatasetHandler}
+
+
+\section{MIS of MLBackend}
+\label{sec:MLBackend}
 
 \subsection{Module}
-\textbf{DatasetHandler} \\
-This module manages the storage, retrieval, and organization of large volumes of medical imaging data. It ensures seamless compatibility with preprocessing and other essential pipelines while maintaining efficient data handling practices.
+\label{sec:MLBackendModule}
+
+\textbf{MLBackend}
+
+This module provides the backend logic for receiving medical images, performing deep learning-based analysis using a ResNet50 model, and returning structured diagnostic predictions. It uses Flask as the web framework and PyTorch for inference.
 
 \subsection{Uses}
+\label{sec:MLBackendUses}
+
 \begin{itemize}
-    \item Utilized by preprocessing, training, and analysis modules for accessing and managing medical imaging datasets.
-    \item Provides a consistent interface for handling large-scale data in a backend storage system.
+    \item Serves as the API layer between the frontend and the trained chest X-ray classification model.
 \end{itemize}
 
 \subsection{Syntax}
+\label{sec:MLBackendSyntax}
 
 \subsubsection{Exported Constants}
 None.
 
 \subsubsection{Exported Access Programs}
-
-\begin{center}
-  \begin{tabular}{p{3cm} p{4cm} p{4cm} p{5cm}}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    storeData & Dataset, Destination path & None & DataStorageError \\
-    \hline
-    retrieveData & Data parameters & Retrieved Dataset & DataRetrievalError \\
-    \hline
-    deleteData & Dataset Identifier & None & DeletionError \\
-    \hline
-  \end{tabular}
-\end{center}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-\begin{itemize}
-    \item \textbf{storageConfig}: Stores the configuration details for the backend data storage system.
-    \item \textbf{dataRegistry}: Tracks metadata and identifiers for all datasets managed by the system.
-\end{itemize}
-
-\subsubsection{Environment Variables}
-\begin{itemize}
-    \item File system or cloud storage access for storing and retrieving datasets.
-    \item Credentials for connectivity with the backend data management system.
-\end{itemize}
-
-\subsubsection{Assumptions}
-\begin{itemize}
-    \item Input datasets are in a supported format (e.g., DICOM).
-    \item Sufficient storage space is available for dataset operations.
-    \item The backend system is correctly configured and operational.
-\end{itemize}
-
-\subsubsection{Access Routine Semantics}
-
-\noindent \textbf{storeData(Dataset, DestinationPath):}
-\begin{itemize}
-    \item \textbf{Transition:} Stores the dataset in the specified location. Updates \textbf{dataRegistry} with metadata for that dataset.
-    \item \textbf{Output:} None.
-    \item \textbf{Exceptions:} Throws \textbf{DataStorageError} for issues like insufficient storage or invalid paths.
-\end{itemize}
-
-\noindent \textbf{retrieveData(DataParams):}
-\begin{itemize}
-    \item \textbf{Transition:} Fetches the dataset based on the provided parameters.
-    \item \textbf{Output:} Retrieved dataset.
-    \item \textbf{Exceptions:} Throws \textbf{DataRetrievalError} if the query is invalid or the dataset cannot be found.
-\end{itemize}
-
-\noindent \textbf{deleteData(DatasetID):}
-\begin{itemize}
-    \item \textbf{Transition:} Removes the specified dataset from storage. Updates the metadata in \textbf{dataRegistry}.
-    \item \textbf{Output:} None.
-    \item \textbf{Exceptions:} Throws \textbf{DeletionError} if the dataset cannot be found or deletion fails.
-\end{itemize}
-
-\subsubsection{Local Functions}
-\begin{itemize}
-    \item \textbf{validateStorageConfig()}: Verifies the storage configuration parameters are valid.
-    \item \textbf{updateRegistry()}: Manages metadata and tracks changes to the datasets.
-    \item \textbf{optimizeStorage()}: Performs optimization tasks (e.g., compressing or reorganizing data) to optimize the use of storage.
-\end{itemize}
-
-
-\subsubsection{Local Functions}
-\begin{itemize}
-    \item \textbf{validateGeneratorConfig()}: Validates the generator configurations for synthetic image creation.
-    \item \textbf{validateImageParams()}: Validates the input parameters for synthetic image generation.
-\end{itemize}
-
-
-\newpage
-
-\section{MIS of EvaluationMetrics Module}
-
-\subsection{Module}
-\textbf{EvaluationMetrics} \\
-This module provides metrics and evaluation techniques to assess the quality of synthetic images and model performance. It computes quantitative evaluations, ensuring the system’s effectiveness is monitored and validated.
-
-\subsection{Uses}
-\begin{itemize}
-    \item Used by analysis and validation modules to measure the system's performance and the quality of synthetic images.
-    \item Provides feedback for model improvement and fine-tuning.
-\end{itemize}
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-None.
-
-\subsubsection{Exported Access Programs}
+\label{sec:MLBackendExported}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    \textbf{computeMetrics} & Ground Truth, Predictions, Metric Type & Computed Metric Score & MetricComputationError \\
-    \hline
-    \textbf{genEvaluationReport} & Evaluation Results, Output Path & Report Confirmation & FileWriteError \\
-    \hline
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Name}         & \textbf{In}           & \textbf{Out}             & \textbf{Exceptions} \\ \hline
+test\_connection      & None                  & API Reachability Message & -                  \\ \hline
+predict\_api          & Image File            & Predictions \& Probabilities & PredictionError   \\ \hline
+load\_model           & Model Path, Device    & Loaded Model             & LoadError          \\ \hline
+predict               & Image Bytes           & Diagnoses, Class Probabilities & PredictionError   \\ \hline
 \end{tabular}
-\caption{Exported Access Programs for EvaluationMetrics}
-\label{table:evalmetrics}
+\caption{Exported Access Programs for \texttt{MLBackend} Module}
 \end{table}
 
 \subsection{Semantics}
+\label{sec:MLBackendSemantics}
 
 \subsubsection{State Variables}
+\label{sec:MLBackendStateVariables}
+
 \begin{itemize}
-    \item \textbf{evaluationResults}: Stores the results of computed evaluation metrics.
+    \item \texttt{model}: An instance of \texttt{OptimizedChestXRayResNet} loaded from disk.
+    \item \texttt{device}: Either \texttt{cuda} (GPU) or \texttt{cpu}, selected at runtime.
+    \item \texttt{class\_labels}: List of 14 disease classes used to interpret model output.
 \end{itemize}
 
 \subsubsection{Environment Variables}
+\label{sec:MLBackendEnvVariables}
+
 \begin{itemize}
-    \item Requires access to ground truth data and predictions for evaluation.
-    \item File system access for saving evaluation reports.
+    \item The model file \texttt{resnet50model.pth} is present in the backend directory.
+    \item All dependent libraries are installed.
+    \item Model was trained on images with 14 disease classes.
+    \item Incoming images are valid and conform to expected input types.
 \end{itemize}
 
 \subsubsection{Assumptions}
+\label{sec:MLBackendAssumptions}
+
 \begin{itemize}
-    \item Input data for metrics computation is correctly formatted (e.g., binary or multi-class labels).
-    \item The evaluation system operates in an environment with access to sufficient computational resources.
+    \item The model file \texttt{resnet50model.pth} is present in the backend directory.
+    \item All dependent libraries required for inference are installed (PyTorch, Flask, etc.).
+    \item Model was trained using images with 14 disease classes.
+    \item Incoming image files are valid (correct format and size) and conform to expected input types.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
+\label{sec:MLBackendAccessRoutineSemantics}
 
-\textbf{computeMetrics(GroundTruth, Predictions, MetricType)}:
+\textbf{predict\_api()}
+
 \begin{itemize}
-    \item \textbf{Transition}: Computes the selected evaluation metric (accuracy, recall, F1-score, etc.) based on the provided ground truth and prediction data.
-    \item \textbf{Output}: Computed metric score as a floating-point value.
-    \item \textbf{Exceptions}: Throws \texttt{MetricComputationError} if inputs are incompatible or computation fails.
+    \item \textbf{Transition:} Accepts an image file via POST request. Runs prediction pipeline and returns disease list and class probabilities.
+    \item \textbf{Output:} \texttt{"predictions": \{[diagnoses], [class\_probabilities]\}}
+    \item \textbf{Exceptions:} 
+    \begin{itemize}
+        \item Returns status 400 if no file is provided.
+        \item Returns status 500 if inference or transformation fails (\texttt{PredictionError}).
+    \end{itemize}
 \end{itemize}
 
-\textbf{generateEvaluationReport(EvaluationResults, OutputPath)}:
+\textbf{load\_model(model\_path, device)}
+
 \begin{itemize}
-    \item \textbf{Transition}: Writes the computed evaluation results to a formatted report file in the specified output path.
-    \item \textbf{Output}: Confirmation message for successful report generation.
-    \item \textbf{Exceptions}: Throws \texttt{FileWriteError} if the file cannot be written due to permission or storage issues.
+    \item \textbf{Transition:} Loads and prepares a PyTorch model for evaluation.
+    \item \textbf{Output:} Instantiated, ready-to-use \texttt{OptimizedChestXRayResNet}.
+    \item \textbf{Exceptions:} Throws \texttt{LoadError} if file is missing or incompatible.
 \end{itemize}
+
+\textbf{predict(image\_bytes)}
+
+\begin{itemize}
+    \item \textbf{Transition:} Applies transformation pipeline and runs inference.
+    \item \textbf{Output:} 
+    \begin{itemize}
+        \item Diagnoses (list of detected classes with probability > 0.5).
+        \item \texttt{class\_probs} (dictionary of all 14 class probabilities).
+    \end{itemize}
+    \item \textbf{Exceptions:} Returns a dictionary with an \texttt{error} key if prediction fails.
+\end{itemize}
+
+
 
 \newpage
-\section{MIS of LoggingAndMonitoring Module}
+
+\section{MIS of ModelArchitecture}
+\label{sec:ModelArchitecture}
 
 \subsection{Module}
-\textbf{LoggingAndMonitoring} \\
-This module tracks system performance, logs activities, and monitors errors or anomalies in real-time. It ensures the system's reliability and maintainability by providing actionable insights into its operation.
+\label{sec:ModelArchitectureModule}
+
+\textbf{ModelArchitecture}
+
+This module defines the convolutional neural network (CNN) architecture used for multi-label disease classification of chest X-ray images. It builds upon a pretrained MobileNetV2 backbone and introduces a customized classifier head for 13-class output. The architecture is designed for transfer learning, allowing the base to remain frozen while training the classifier layers.
 
 \subsection{Uses}
+\label{sec:ModelArchitectureUses}
+
 \begin{itemize}
-    \item Utilized by the system to log activities, detect anomalies, and monitor performance metrics.
-    \item Provides support for debugging, maintenance, and performance tuning.
+    \item Loads MobileNetV2 with pretrained ImageNet weights.
+    \item Freezes base convolutional layers to retain learned features.
+    \item Defines a custom classifier head for 13-class multi-label prediction.
+    \item Assembles the final CNN for use in training and inference.
+    \item Outputs raw logits suitable for BCEWithLogitsLoss.
 \end{itemize}
 
 \subsection{Syntax}
+\label{sec:ModelArchitectureSyntax}
 
 \subsubsection{Exported Constants}
 None.
 
 \subsubsection{Exported Access Programs}
+\label{sec:ModelArchitectureExported}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    \textbf{logEvent} & Log Message, Severity Level & None & LogWriteError \\
-    \hline
-    \textbf{monitorPerformance} & None & Performance Metrics & MonitoringError \\
-    \hline
-    \textbf{reportAnomalies} & Anomaly Details & Anomaly Report & AnomalyReportError \\
-    \hline
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Name}         & \textbf{In}           & \textbf{Out}             & \textbf{Exceptions} \\ \hline
+initializeBaseModel   & None                  & pretrainedBaseModel     & ModelInitializationError \\ \hline
+freezeBaseLayer       & baseModel             & baseModelWithFrozenLayers & LayerFreezingError  \\ \hline
+assembleFullModel     & frozenLayerBaseModel  & finalCNNModel           & ModelAssemblyError  \\ \hline
 \end{tabular}
-\caption{Exported Access Programs for LoggingAndMonitoring Module}
-\label{table:logging}
+\caption{Exported Access Programs for \texttt{ModelArchitecture} Module}
 \end{table}
 
 \subsection{Semantics}
+\label{sec:ModelArchitectureSemantics}
 
 \subsubsection{State Variables}
+\label{sec:ModelArchitectureStateVariables}
+
 \begin{itemize}
-    \item \textbf{logRecords}: Stores logged messages and associated metadata.
-    \item \textbf{monitoringData}: Tracks real-time system performance metrics.
+    \item \texttt{baseModel}: Pretrained MobileNetV2 model.
+    \item \texttt{classifier}: Internally constructed multi-layer classification head.
+    \item \texttt{fullModel}: Final nn.Module combining base and classifier.
 \end{itemize}
 
 \subsubsection{Environment Variables}
-\begin{itemize}
-    \item Access to the file system or cloud-based logging services for storing logs and reports.
-    \item Integration with performance monitoring tools or frameworks.
-\end{itemize}
+\label{sec:ModelArchitectureEnvVariables}
+
+None.
 
 \subsubsection{Assumptions}
+\label{sec:ModelArchitectureAssumptions}
+
 \begin{itemize}
-    \item The system is configured to allow monitoring of key metrics and resources.
+    \item The classifier head is suitable for multi-label problems (e.g., 13 classes).
+    \item The loss function used will be BCEWithLogitsLoss.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
+\label{sec:ModelArchitectureAccessRoutineSemantics}
 
-\textbf{logEvent(LogMessage, SeverityLevel)}:
+\textbf{initializeBaseModel()}
+
 \begin{itemize}
-    \item \textbf{Transition}: Adds a log entry to \texttt{logRecords} with the specified message and severity level.
-    \item \textbf{Output}: None.
-    \item \textbf{Exceptions}: Throws \texttt{LogWriteError} for file system issues or invalid log inputs.
+    \item \textbf{Transition:} Loads the pretrained MobileNetV2 model from Torchvision.
+    \item \textbf{Output:} \texttt{BaseModel} loaded.
+    \item \textbf{Exceptions:} Raises \texttt{ModelInitializationError} if model loading fails or required packages are missing.
 \end{itemize}
 
-\textbf{monitorPerformance()}:
+\textbf{freezeBaseLayers(base\_model: nn.Module)}
+
 \begin{itemize}
-    \item \textbf{Transition}: Collects and updates \texttt{monitoringData} with current performance metrics (e.g., CPU usage).
-    \item \textbf{Output}: Performance metrics in a structured format.
-    \item \textbf{Exceptions}: Throws \texttt{MonitoringError} if metrics cannot be determined.
+    \item \textbf{Transition:} Disables gradient updates for all parameters in the base model.
+    \item \textbf{Output:} Frozen base model with \texttt{requiresGrad = False} on all layers.
+    \item \textbf{Exceptions:} Raises \texttt{LayerFreezingError} if the model structure is incompatible with this operation.
 \end{itemize}
 
-\textbf{reportAnomalies(AnomalyDetails)}:
+\textbf{assembleFullModel(base\_model: nn.Module, num\_classes: int)}
+
 \begin{itemize}
-    \item \textbf{Transition}: Generates a detailed anomaly report based on provided details and updates \texttt{logRecords}.
-    \item \textbf{Output}: Anomaly report.
-    \item \textbf{Exceptions}: Throws \texttt{AnomalyReportError} if the reporting process fails.
+    \item \textbf{Transition:} Constructs a classification head composed of adaptive average pooling, flattening, batch normalization, dropout, and fully connected layers ending in a final layer with \texttt{num\_classes} outputs. Then attaches this head to the base model to form the full model.
+    \item \textbf{Output:} The full model which is a PyTorch \texttt{nn.Module} that outputs raw logits for multi-label classification.
+    \item \textbf{Exceptions:} Raises \texttt{ModelAssemblyError} if the classifier cannot be constructed or integrated into the base model.
 \end{itemize}
 
-\newpage
-\section{MIS of DiffusionModel Module}
+
+\section{MIS of Training}
+\label{sec:Training}
 
 \subsection{Module}
-\textbf{DiffusionModel} \\
-This module implements the core diffusion model architecture, which is used for generating and refining chest X-ray images.
+\label{sec:TrainingModule}
+
+\textbf{Training}
+
+This module manages the full training process of the model. It controls the training loop, applies loss functions and regularization, tracks performance metrics, and saves the best model checkpoint. It includes support for early stopping, custom regularization techniques (e.g., margin and sparsity), and consistent evaluation using multi-label classification metrics.
 
 \subsection{Uses}
+\label{sec:TrainingUses}
+
 \begin{itemize}
-    \item Used by synthetic image generation and enhancement modules to create realistic medical images.
-    \item Relies on underlying mathematical models and GPU/TPU acceleration for efficient computations.
+    \item Trains the model on labeled data using backpropagation and optimization.
+    \item Applies BCEWithLogitsLoss for multi-label prediction.
+    \item Supports additional loss terms: margin regularization and sparsity loss.
+    \item Tracks epoch-wise accuracy and validation performance.
+    \item Applies early stopping if validation does not improve.
+    \item Saves the best-performing model.
 \end{itemize}
 
 \subsection{Syntax}
+\label{sec:TrainingSyntax}
 
 \subsubsection{Exported Constants}
 None.
 
 \subsubsection{Exported Access Programs}
+\label{sec:TrainingExported}
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|p{4cm}|}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    \textbf{initializeModel} & Config Parameters & Model Instance & ModelInitError \\
-    \hline
-    \textbf{generateImage} & Model Instance, Input Noise, Parameters & Synthetic Image & ImageGenerationError \\
-    \hline
-    \textbf{refineImage} & Model Instance, Input Image, Parameters & Refined Image & RefinementError \\
-    \hline
-    \textbf{trainModel} & Training Data, Hyperparameters & Training Metrics & TrainingError \\
-    \hline
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Name}         & \textbf{In}           & \textbf{Out}             & \textbf{Exceptions} \\ \hline
+trainModel            & Model, trainLoader, valLoader, config & Path to saved model file & TrainingRuntimeError \\ \hline
+evaluateModelPerformance & logits, labels        & performanceMetrics       & MetricCalculationError \\ \hline
+calculateMarginLoss   & logits, labels         & marginRegularizationLoss & MarginLossError \\ \hline
 \end{tabular}
-\caption{Exported Access Programs for DiffusionModel Module}
-\label{table:diffusionModel}
+\caption{Exported Access Programs for \texttt{Training} Module}
 \end{table}
 
 \subsection{Semantics}
+\label{sec:TrainingSemantics}
 
 \subsubsection{State Variables}
+\label{sec:TrainingStateVariables}
+
 \begin{itemize}
-    \item \textbf{modelParameters}: Stores the configuration details and parameters of the diffusion model.
-    \item \textbf{trainingState}: Tracks the training progress, including loss metrics and checkpoints.
+    \item \texttt{trainLoader, validLoader}: Input DataLoaders.
+    \item \texttt{model}: Neural network model to train.
+    \item \texttt{config}: Dictionary of optimizer, loss function, device, training options.
+    \item \texttt{bestValLoss}: Lowest validation loss.
+    \item \texttt{earlyStopCount}: Early stopping counter.
 \end{itemize}
 
 \subsubsection{Environment Variables}
-\begin{itemize}
-    \item Access to computational resources (e.g., GPU) for training and generation tasks.
-\end{itemize}
+\label{sec:TrainingEnvVariables}
 
-\subsubsection{Assumptions}
-\begin{itemize}
-    \item Input data for training and generation is preprocessed and in the required format.
-    \item The execution system contains sufficient computational resources for this process.
-\end{itemize}
-
-\subsubsection{Access Routine Semantics}
-
-\textbf{initializeModel(ConfigParams)}:
-\begin{itemize}
-    \item \textbf{Transition}: Sets up the diffusion model based on the provided configuration parameters. Updates \texttt{modelParameters}.
-    \item \textbf{Output}: Model instance ready for image generation or training.
-    \item \textbf{Exceptions}: Throws \texttt{ModelInitError} if configuration is invalid or the initialization fails.
-\end{itemize}
-
-\textbf{generateImage(ModelInstance, InputNoise, Parameters)}:
-\begin{itemize}
-    \item \textbf{Transition}: Uses the diffusion model to generate a synthetic image from input noise.
-    \item \textbf{Output}: A synthetic chest X-ray image.
-    \item \textbf{Exceptions}: Throws \texttt{ImageGenerationError} if the generation process fails.
-\end{itemize}
-
-\textbf{refineImage(ModelInstance, InputImage, Parameters)}:
-\begin{itemize}
-    \item \textbf{Transition}: Enhances the input image to improve its quality and realism.
-    \item \textbf{Output}: Refined chest X-ray image.
-    \item \textbf{Exceptions}: Throws \texttt{RefinementError} for invalid inputs or failed refinement operations.
-\end{itemize}
-
-\textbf{trainModel(TrainingData, Hyperparameters)}:
-\begin{itemize}
-    \item \textbf{Transition}: Updates \texttt{trainingState} based on training progress.
-    \item \textbf{Output}: Training metrics, including loss and accuracy values.
-    \item \textbf{Exceptions}: Throws \texttt{TrainingError} for invalid data or parameter issues.
-\end{itemize}
-
-\newpage
-\section{MIS of ImageExport Module}
-
-\subsection{Module}
-\textbf{ImageExport} \\
-This module handles the formatting and export of generated or processed images in required formats (e.g., DICOM, PNG). It ensures compatibility with medical imaging standards and external tools.
-
-\subsection{Uses}
-\begin{itemize}
-    \item Used by synthetic image generation and refinement modules to save outputs in desired formats.
-    \item Ensures exported images are compliant with medical imaging standards for further analysis.
-\end{itemize}
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
 None.
 
-\subsubsection{Exported Access Programs}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|p{4cm}|}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    \textbf{initializeExporter} & Config Parameters & Exporter Instance & ExportInitError \\
-    \hline
-    \textbf{exportImage} & Image Object, Format, Destination Path & Export Confirmation & ExportError \\
-    \hline
-    \textbf{validateExport} & Image Object, Format & Validation Status & ValidationError \\
-    \hline
-\end{tabular}
-\caption{Exported Access Programs for ImageExport Module}
-\label{table:imageExport}
-\end{table}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-\begin{itemize}
-    \item \textbf{exportConfig}: Stores configuration details for image export formats and destinations.
-    \item \textbf{exportedImages}: Tracks metadata of all exported images.
-\end{itemize}
-
-\subsubsection{Environment Variables}
-\begin{itemize}
-    \item Access to file systems or cloud storage for saving exported images.
-    \item Compatibility with external libraries or tools for format conversions (e.g., \texttt{pydicom} for DICOM).
-\end{itemize}
-
 \subsubsection{Assumptions}
+\label{sec:TrainingAssumptions}
+
 \begin{itemize}
-    \item Input image objects are correctly formatted and meet the requirements of the specified export format.
-    \item The target destination has sufficient storage and appropriate permissions.
+    \item Config contains valid settings for optimizer, criterion, etc.
+    \item Model is constructed to output logits for BCEWithLogitsLoss.
+    \item Model checkpoint directory exists.
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
+\label{sec:TrainingAccessRoutineSemantics}
 
-\textbf{initializeExporter(ConfigParams)}:
+\textbf{trainModel(model, trainLoader, validLoader, config: dict)}
+
 \begin{itemize}
-    \item \textbf{Transition}: Sets up the exporter instance based on configuration parameters. Updates \texttt{exportConfig}.
-    \item \textbf{Output}: Exporter instance ready for image export tasks.
-    \item \textbf{Exceptions}: Throws \texttt{ExportInitError} if initialization fails or configuration parameters are invalid.
+    \item \textbf{Transition:} Uses components from config (e.g., optimizer, loss function, device, margin/sparsity flags) to train the model over multiple epochs. Tracks validation loss and metrics. Saves the best model checkpoint based on validation performance.
+    \item \textbf{Output:} Model checkpoint file: \texttt{./models/model\_<timestamp>.pth}.
+    \item \textbf{Exceptions:} Raises \texttt{TrainingRuntimeError} for failures like memory issues, config errors, or unexpected runtime exceptions.
 \end{itemize}
 
-\textbf{exportImage(ImageObj, Format, DestPath)}:
+\textbf{evaluateModelPerformance(logits: Tensor, labels: Tensor)}
+
 \begin{itemize}
-    \item \textbf{Transition}: Formats the image as specified and saves it to the target destination. Updates \texttt{exportedImages} metadata.
-    \item \textbf{Output}: Confirmation of successful image export.
-    \item \textbf{Exceptions}: Throws \texttt{ExportError} if the export operation fails (e.g., unsupported format or file system issues).
+    \item \textbf{Transition:} Takes the model's raw predictions (\texttt{logits}) and compares them to the correct labels to measure how well the model is performing.
+    \item \textbf{Output:} Calculates and outputs the multilabel accuracy (how often each disease label is predicted correctly) and subset accuracy (how often the entire prediction for an image is exactly right).
 \end{itemize}
 
-\textbf{validateExport(ImageObj, Format)}:
+\textbf{calculateMarginLoss(logits: Tensor, labels: Tensor)}
+
 \begin{itemize}
-    \item \textbf{Transition}: Validates the image and format compatibility.
-    \item \textbf{Output}: Validation status indicating success or failure.
-    \item \textbf{Exceptions}: Throws \texttt{ValidationError} if the image or format fails compatibility checks.
-\end{itemize}
-\newpage
-\section{MIS of UserInterface}
-
-\subsection{Module}
-\textbf{UserInterface} \\
-This module provides the graphical user interface (GUI) for the system, enabling users to input data, view results, and manage the system in an intuitive and user-friendly manner.
-
-\subsection{Uses}
-\begin{itemize}
-    \item Used by system users to interact with features such as data input, image generation, and result visualization.
-    \item Relies on frontend frameworks (e.g., React, PyQt) for implementation and rendering.
-\end{itemize}
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-None.
-
-\subsubsection{Exported Access Programs}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|p{4cm}|}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    \textbf{displayDashboard} & None & Rendered Dashboard & RenderError \\
-    \hline
-    \textbf{handleUserInput} & User Actions, Input Data & Response & InputHandlingError \\
-    \hline
-    \textbf{updateUI} & Updated Data & Updated Interface & UpdateError \\
-    \hline
-\end{tabular}
-\caption{Exported Access Programs for UserInterface Module}
-\label{table:userInterfaceModule}
-\end{table}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-\begin{itemize}
-    \item \textbf{inputCache}: Temporarily stores user input data before it is processed.
-\end{itemize}
-
-\subsubsection{Environment Variables}
-\begin{itemize}
-    \item Browser or local desktop environment for rendering the GUI.
-    \item Integration with backend services for real-time updates and data processing.
-\end{itemize}
-
-\subsubsection{Assumptions}
-\begin{itemize}
-    \item The execution environment supports the frontend framework used.
-    \item Backend services and APIs are operational and accessible to the frontend.
-\end{itemize}
-
-\subsubsection{Access Routine Semantics}
-
-\textbf{displayDashboard()}:
-\begin{itemize}
-    \item \textbf{Transition}: Renders the main dashboard view with all relevant components.
-    \item \textbf{Output}: A fully functional dashboard interface.
-    \item \textbf{Exceptions}: Throws \texttt{RenderError} if rendering fails (e.g., missing assets or framework issues).
-\end{itemize}
-
-\textbf{handleUserInput(UserActions, InputData)}:
-\begin{itemize}
-    \item \textbf{Transition}: Processes user actions and inputs, updating the system accordingly. Updates \texttt{inputCache} as needed.
-    \item \textbf{Output}: Response to the user's action, such as a confirmation or updated view.
-    \item \textbf{Exceptions}: Throws \texttt{InputHandlingError} for invalid actions or data.
-\end{itemize}
-
-\textbf{updateUI(UpdatedData)}:
-\begin{itemize}
-    \item \textbf{Transition}: Updates the UI components with new data (e.g., refreshed results or status updates).
-    \item \textbf{Output}: Successfully updated interface.
-    \item \textbf{Exceptions}: Throws \texttt{UpdateError} if the update operation fails.
-\end{itemize}
-
-\newpage
-\section{MIS of IntegrationModule}
-
-\subsection{Module}
-\textbf{IntegrationModule} \\
-This module implements strategies and mechanisms for integrating the system with external tools, medical databases, and IT infrastructure. It provides APIs and connectors to ensure seamless communication and interoperability with external systems.
-
-\subsection{Uses}
-\begin{itemize}
-    \item Used to establish connections with external systems for data exchange, authentication, and collaboration.
-    \item Supports integration with medical databases and external APIs to enhance system functionality.
-\end{itemize}
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-None.
-
-\subsubsection{Exported Access Programs}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{|p{4cm}|p{5cm}|p{5cm}|p{4cm}|}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    \textbf{initializeIntegration} & Config Parameters & Integration Instance & IntegrationInitError \\
-    \hline
-    \textbf{connectToDatabase} & Database Config & Connection Confirmation & DatabaseConnectionError \\
-    \hline
-    \textbf{callExternalAPI} & API Endpoint, Request Parameters & API Response & APIRequestError \\
-    \hline
-\end{tabular}
-\caption{Exported Access Programs for IntegrationModule}
-\label{table:integrationModule}
-\end{table}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-\begin{itemize}
-    \item \textbf{integrationConfig}: Stores the configuration details for integrations, including API keys and database credentials.
-    \item \textbf{connectionPool}: Manages active connections to external systems.
-\end{itemize}
-
-\subsubsection{Environment Variables}
-\begin{itemize}
-    \item Requires access to external networked resources (e.g., APIs, databases).
-    \item Integration with authentication mechanisms for secure communication.
-\end{itemize}
-
-\subsubsection{Assumptions}
-\begin{itemize}
-    \item External systems (e.g., APIs, databases) are operational and accessible.
-    \item The configuration for integrations, including credentials, is valid and up-to-date.
-\end{itemize}
-
-\subsubsection{Access Routine Semantics}
-
-\textbf{initializeIntegration(ConfigParams)}:
-\begin{itemize}
-    \item \textbf{Transition}: Sets up the integration module based on the provided configuration parameters. Updates \texttt{integrationConfig}.
-    \item \textbf{Output}: Integration instance ready to interact with external systems.
-    \item \textbf{Exceptions}: Throws \texttt{IntegrationInitError} for invalid configuration or initialization failures.
-\end{itemize}
-
-\textbf{connectToDatabase(DatabaseConfig)}:
-\begin{itemize}
-    \item \textbf{Transition}: Establishes a connection to the specified medical database. Updates \texttt{connectionPool}.
-    \item \textbf{Output}: Confirmation of a successful database connection.
-    \item \textbf{Exceptions}: Throws \texttt{DatabaseConnectionError} if the connection fails due to incorrect configuration or network issues.
-\end{itemize}
-
-\textbf{callExternalAPI(APIEndpoint, RequestParams)}:
-\begin{itemize}
-    \item \textbf{Transition}: Sends a request to an external API and retrieves the response.
-    \item \textbf{Output}: API response containing requested data or status.
-    \item \textbf{Exceptions}: Throws \texttt{APIRequestError} for request failures, such as timeout or invalid endpoints.
-\end{itemize}
-
-\newpage
-\section{MIS of Login Module}
-
-\subsection{Module}
-\textbf{Login} \\
-This module provides the login functionality for users by displaying a login portal and authenticating credentials. It ensures secure access to the application for authorized users.
-
-\subsection{Uses}
-\begin{itemize}
-    \item Provides the entry point for user authentication and access control.
-    \item Used by application modules requiring user-specific access or session management.
-\end{itemize}
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-None.
-
-\subsubsection{Exported Access Programs}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|p{4cm}|}
-    \hline
-    \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-    \hline
-    \textbf{handleAuthentication} & Username, Password & Authentication Status, Session Token & AuthenticationError, SessionCreationError \\
-    \hline
-    \textbf{manageSession} & Session Token, Action Type (Create/Logout) & Session Status & LogoutError, SessionCreationError \\
-    \hline
-\end{tabular}
-\caption{Exported Access Programs for Login Module}
-\label{table:login}
-\end{table}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-\begin{itemize}
-    \item \textbf{activeSession}: Stores the current user's session details, including session token and expiration time.
-\end{itemize}
-
-\subsubsection{Environment Variables}
-\begin{itemize}
-    \item Integration with the backend authentication system or database for credential verification.
-    \item Access to a secure storage system for managing session tokens.
-\end{itemize}
-
-\subsubsection{Assumptions}
-\begin{itemize}
-    \item User credentials are stored securely in a database or authentication service.
-    \item The application environment supports encryption for secure transmission of user credentials.
-\end{itemize}
-
-\subsubsection{Access Routine Semantics}
-
-\textbf{handleAuthentication(Username, Password)}:
-\begin{itemize}
-    \item \textbf{Transition}: Verifies user credentials against stored records. If valid, a session token is generated and stored in \texttt{activeSession}.
-    \item \textbf{Output}: Returns authentication status (success/failure) and a session token upon success.
-    \item \textbf{Exceptions}: Throws \texttt{AuthenticationError} for invalid credentials or backend issues. Throws \texttt{SessionCreationError} if session token generation fails.
-\end{itemize}
-
-\textbf{manageSession(SessionToken, ActionType)}:
-\begin{itemize}
-    \item \textbf{Transition}: If \texttt{ActionType} is "Create," a new session token is generated and stored in \texttt{activeSession}. If "Logout," the session token is invalidated.
-    \item \textbf{Output}: Returns the updated session status.
-    \item \textbf{Exceptions}: Throws \texttt{SessionCreationError} if token generation/storage fails. Throws \texttt{LogoutError} if logout fails.
+    \item \textbf{Transition:} Calculates margin loss by penalizing low-confidence predictions near zero.
+    \item \textbf{Output:} Float value representing additional margin penalty to be added to total loss.
+    \item \textbf{Exceptions:} Raises \texttt{MarginLossError} if logits or labels are malformed or misaligned.
 \end{itemize}
 
 
 
 
+\begin{thebibliography}{9}
+
+\bibitem{Ghezzi2003} 
+Ghezzi, C., Jazayeri, M., \& Mandrioli, D. (2003).
+\textit{Fundamentals of Software Engineering} (2nd ed.). 
+Prentice Hall, Upper Saddle River, NJ.
+
+\bibitem{Hoffman1995} 
+Hoffman, D. M., \& Strooper, P. A. (1995). 
+\textit{Software Design, Automated Testing, and Maintenance: A Practical Approach}. 
+International Thomson Computer Press, New York, NY. 
+URL: \url{http://citeseer.ist.psu.edu/428727.html}
+
+\end{thebibliography}
 
 
-\bibliographystyle {plainnat}
-\bibliography {../../../refs/References}
-Carlo Ghezzi, Mehdi Jazayeri, and Dino Mandrioli. \textit{Fundamentals of Software Engineering}. 
-Prentice Hall, Upper Saddle River, NJ, USA, 2nd edition, 2003.\\
-
-Daniel M. Hoffman and Paul A. Strooper. \textit{Software Design, Automated Testing, and Maintenance: A Practical Approach}. 
-International Thomson Computer Press, New York, NY, USA, 1995. URL \url{http://citeseer.ist.psu.edu/428727.html}.
 
 
 
 \newpage
-
-\section{Appendix} \label{Appendix}
-
-\wss{Extra information if required}
-
-\newpage{}
 
 \section{Appendix}
+\label{sec:appendix}
 
 \subsection{Reflection Questions}
+\label{sec:reflectionquestions}
 
-The information in this section will be used to evaluate the team members on the graduate attribute of Problem Analysis and Design.
+The information in this section will be used to evaluate the team members on the graduate attribute of Problem Analysis and Design. 
 
 The purpose of reflection questions is to assess individual and team learning experiences and identify areas for future improvement. Reflection is an essential component of the software development process, ensuring continuous improvement and better decision-making.
 
 \subsubsection{1. What went well while writing this deliverable?}
+\label{sec:wentwell}
+
 \begin{itemize}
     \item Tasks were effectively divided among team members, ensuring steady progress.
-    \item Using the \textbf{Module Guide (MG)} and \textbf{SRS} as references helped maintain consistency across documents.
+    \item Using the \texttt{Module Guide} (MG) and \texttt{SRS} as references helped maintain consistency across documents.
     \item Regular team meetings and discussions clarified misunderstandings, ensuring each module was well-defined and fit into the overall architecture.
-    \item The design process was clearly outlined, allowing for efficient documentation of our \textbf{diffusion model} approach.
-    \item Our prior research and understanding of \textbf{painting and bounding boxes for diffusion models} helped us articulate the technical aspects clearly.
+    \item The design process was clearly outlined, allowing for efficient documentation of our diffusion model approach.
+    \item Our prior research and understanding of CNN models and various training strategies helped us articulate the technical aspects clearly.
 \end{itemize}
 
 \subsubsection{2. What pain points did you experience during this deliverable, and how did you resolve them?}
+\label{sec:painpoints}
+
 \begin{itemize}
-    \item Ensuring \textbf{consistency across documents} was challenging, as some module definitions overlapped or lacked clarity.
+    \item Ensuring consistency across documents was challenging, as some module definitions overlapped or lacked clarity. 
     \begin{itemize}
-        \item \textbf{Resolution:} We refined definitions in the \textbf{MIS} to remove ambiguities and iteratively reviewed sections for alignment.
+        \item \textbf{Resolution:} We refined definitions in the MIS to remove ambiguities and iteratively reviewed sections for alignment.
     \end{itemize}
-    \item \textbf{Formatting in LaTeX} was another hurdle, especially when working with tables and cross-references.
+    \item Formatting in LaTeX was another hurdle, especially when working with tables and cross-references.
     \begin{itemize}
-        \item \textbf{Resolution:} Using \textbf{Overleaf} streamlined collaboration and debugging.
-    \end{itemize}
-    \item \textbf{Defining functional vs. non-functional requirements} was tricky due to the performance-based and interpretability-based nature of diffusion models.
-    \begin{itemize}
-        \item \textbf{Resolution:} We categorized requirements explicitly after team discussions.
-    \end{itemize}
-    \item \textbf{Bounding box accuracy} in diffusion models presented challenges in defining precision.
-    \begin{itemize}
-        \item \textbf{Resolution:} We referred to industry benchmarks and medical imaging standards to define thresholds.
+        \item \textbf{Resolution:} Using Overleaf streamlined collaboration and debugging.
     \end{itemize}
 \end{itemize}
 
 \subsubsection{3. Which design decisions stemmed from clients/peers, and which came from research?}
+\label{sec:designdecisions}
 
-\textbf{Decisions influenced by stakeholders:}
-\begin{itemize}
-    \item \textbf{HardwareAcceleration}: Ensured compatibility with GPUs/TPUs for efficiency based on stakeholder feedback.
-    \item \textbf{Bounding boxes for interpretability}: Based on radiologists’ need for clear anomaly indicators.
-    \item \textbf{Integration with PACS}: Shaped by discussions on existing workflows in medical imaging.
-\end{itemize}
+Several design decisions stemmed from discussions with peers and client feedback, including the need for a modular architecture and the separation of frontend and backend responsibilities. Suggestions like grouping metric calculations and simplifying transform logic were peer-driven for better clarity and usability. 
 
-\textbf{Decisions based on research:}
 \begin{itemize}
-    \item \textbf{Diffusion models}: Chosen for high-quality synthetic X-rays based on recent literature.
-    \item \textbf{Evaluation metrics}: Adopted standard quality assessments from medical AI research.
-    \item \textbf{Training dataset selection}: Publicly available datasets were selected due to limited access to proprietary hospital data.
+    \item \textbf{On the other hand,} decisions such as using a pretrained MobileNetV2, implementing multi-label classification with \texttt{BCEWithLogitsLoss}, and incorporating regularization (margin/sparsity) were based on research into best practices for medical image classification.
 \end{itemize}
 
 \subsubsection{4. What parts of other documents needed changes, and why?}
+\label{sec:documentschanges}
+
 \begin{itemize}
-    \item \textbf{SRS Functional Requirements}: Clarified the \textbf{difference between DatasetHandler and DataPreprocessing} to avoid redundancy.
-    \item \textbf{Traceability Matrix}: Adjusted \textbf{anticipated changes (AC5)} to include \textbf{IntegrationModule} for handling data exports.
-    \item \textbf{Hazard Analysis}: Expanded to include risks related to false positives and false negatives in AI-based diagnostics.
-    \item \textbf{Mission Goals (MG)}: Revised to better reflect user workflows.
-    \item \textbf{User Interaction Model}: Refined to ensure radiologists could override AI suggestions when necessary.
+    \item \textbf{SRS Functional Requirements:} Clarified the difference between \texttt{DatasetHandler} and \texttt{DataPreprocessing} to avoid redundancy.
+    \item \textbf{Traceability Matrix:} Adjusted anticipated changes (AC5) to include \texttt{IntegrationModule} for handling data exports.
+    \item \textbf{Hazard Analysis:} Expanded to include risks related to false positives and false negatives in AI-based diagnostics.
+    \item \textbf{Mission Goals (MG):} Revised to better reflect user workflows.
+    \item \textbf{User Interaction Model:} Refined to ensure radiologists could override AI suggestions when necessary.
 \end{itemize}
 
 \subsubsection{5. What are the limitations of your solution?}
+\label{sec:limitations}
+
 \begin{itemize}
-    \item \textbf{Hardware constraints}: Dependence on GPUs/TPUs may limit accessibility for smaller institutions.
-    \item \textbf{Data availability}: Limited access to real medical datasets impacts training quality.
-    \item \textbf{Regulatory compliance}: More effort is required to meet \textbf{HIPAA/GDPR} standards for handling medical data.
-    \item \textbf{AI explainability}: Additional interpretability tools could provide clearer reasoning behind outputs.
-    \item \textbf{Computational efficiency}: Diffusion models require significant GPU resources, limiting real-time applications.
-    \item \textbf{Robustness}: Model sensitivity to dataset biases requires a more diverse dataset.
+    \item \textbf{Hardware constraints:} Dependence on GPUs/TPUs may limit accessibility for smaller institutions.
+    \item \textbf{Data availability:} Limited access to real medical datasets impacts training quality.
+    \item \textbf{Regulatory compliance:} More effort is required to meet HIPAA/GDPR standards for handling medical data.
+    \item \textbf{AI explainability:} Additional interpretability tools could provide clearer reasoning behind outputs.
+    \item \textbf{Computational efficiency:} Training models require significant GPU resources, limiting real-time applications.
 \end{itemize}
 
 \subsubsection{6. What alternative designs were considered, and why was this one chosen?}
+\label{sec:alternativedesigns}
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|p{3cm}|p{5cm}|p{5cm}|}
-    \hline
-    \textbf{Design} & \textbf{Pros} & \textbf{Cons} \\
-    \hline
-    \textbf{Monolithic} & Simple, easier to debug & Hard to scale, tightly coupled components \\
-    \hline
-    \textbf{Microservices} & Scalable, allows independent updates & Increased complexity in API management \\
-    \hline
-    \textbf{Event-Driven} & Efficient for real-time data processing & More difficult to debug, not necessary for our use case \\
-    \hline
-    \textbf{CNN-based classification} & Faster inference, well-documented in medical AI & No spatial localization, prone to overfitting \\
-    \hline
-    \textbf{U-Net for segmentation} & Better at localizing abnormalities & Requires large labeled datasets, high annotation costs \\
-    \hline
-    \textbf{Transformer-based models} & Models long-range dependencies effectively & Computationally expensive, less mature in medical AI \\
-    \hline
-    \textbf{Diffusion model with inpainting} & High fidelity, better at uncertainty estimation & Slower than CNNs, requires fine-tuning \\
-    \hline
-\end{tabular}
-\caption{Comparison of Alternative Design Choices}
-\label{table:designComparison}
-\end{table}
+We considered several design approaches before choosing our final architecture. A monolithic design was simpler and easier to build, but it would have made future changes harder due to its tightly connected components. Microservices were another option that would allow us to separate different parts of the system (like the model, preprocessing, and UI), but this added unnecessary complexity for our current needs.
 
-We chose \textbf{modular architecture with diffusion models} because it balances \textbf{flexibility, maintainability, and scalability} without adding unnecessary complexity. The diffusion models' ability to handle \textbf{uncertainty modeling} and provide \textbf{spatial localization} with bounding boxes aligned with stakeholder needs.
+We also looked at different types of models. Vision Transformers were appealing because they can capture patterns across the entire image, but they require more computing power and are not yet widely used in medical imaging. U-Net was considered for its ability to show where abnormalities appear in the image, but it requires detailed annotations, which we didn't have. Diffusion models were also explored for their strengths in uncertainty estimation and image generation, but they were slower and not focused on classification tasks.
 
+In the end, we chose a modular CNN-based classifier because it was fast, reliable, and well-supported in medical AI research. It allowed us to build a clean pipeline that can be maintained and expanded easily while keeping the model efficient and practical for our dataset and use case.
 
 
 \end{document}
